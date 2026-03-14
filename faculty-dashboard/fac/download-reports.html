@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Reports - Faculty Attendance System</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* Sidebar (same as dashboard) */
+    .sidebar {
+      width: 240px;
+      background-color: #006400;
+      color: white;
+      padding: 20px 15px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow-y: auto;
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar.collapsed {
+      width: 70px;
+    }
+    .sidebar.collapsed .sidebar-text {
+      display: none;
+    }
+    .sidebar-logo {
+      width: 140px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+    .sidebar-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      text-align: right;
+      width: 100%;
+    }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #228B22;
+    }
+    .sidebar i {
+      margin-right: 12px;
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+
+    /* Main Content */
+    .main {
+      margin-left: 240px;
+      padding: 30px;
+      transition: margin-left 0.3s ease;
+    }
+    .main.collapsed {
+      margin-left: 70px;
+    }
+
+    .top-bar {
+      background-color: #006400;
+      color: white;
+      padding: 18px;
+      text-align: center;
+      margin-left: 240px;
+      transition: margin-left 0.3s ease;
+      border-radius: 0 0 8px 8px;
+    }
+    .top-bar.collapsed {
+      margin-left: 70px;
+    }
+    .top-bar h1 {
+      font-size: 26px;
+      margin: 0;
+    }
+    .top-bar p {
+      margin: 5px 0 0;
+      font-size: 16px;
+    }
+
+    .report-card {
+      background: white;
+      border: 1px solid #006400;
+      border-radius: 8px;
+      padding: 30px;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .report-card h2 {
+      color: #006400;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+    .report-btn {
+      display: block;
+      width: 80%;
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 15px;
+      font-size: 18px;
+      color: white;
+      background: linear-gradient(to right, #228B22, #006400);
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .report-btn:hover {
+      opacity: 0.9;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin: 20px 0;
+      color: #006400;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    .note {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+   
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" onclick="toggleSidebarDesktop()">←</button>
+    <img src="https://www.asiatech.edu.ph/wp-content/uploads/2023/03/ASIATECH-LOGO-1.png" alt="ASIATECH Logo" class="sidebar-logo">
+    <h2>Faculty Menu</h2>
+    <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
+    <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
+    <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
+    <a href="scan-qr.html"><i class="fas fa-qrcode"></i> <span class="sidebar-text">Scan QR Code</span></a>
+    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View Records</span></a>
+    <a href="download-reports.html"><i class="fas fa-download"></i> <span class="sidebar-text">Download Reports</span></a>
+    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
+    <a href="loginpage.html"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main" id="main">
+
+    <div class="top-bar" id="topbar">
+      <h1>Download Reports</h1>
+      <p>Cloud-based Event Attendance Checker for CEITE</p>
+    </div>
+
+    <div class="report-card">
+
+      <h2>Select Report Type</h2>
+
+      <a href="#" class="report-btn">Download Attendance Summary</a>
+      <a href="#" class="report-btn">Download Event Report</a>
+      <a href="#" class="report-btn">Export to Excel</a>
+
+      <p class="note">
+        In the real system, these buttons will download files directly from your Google Sheet.<br>
+        For demo, they are placeholders. Replace "#" with actual export links (e.g., /export?format=xlsx).
+      </p>
+
+      <a href="faculty-dashboard.html" class="back-link">← Back to Dashboard</a>
+
+    </div>
+
+  </main>
+
+  <!-- JavaScript (same toggle as dashboard) -->
+  <script>
+    // Toggle collapse on desktop (← button)
+    function toggleSidebarDesktop() {
+      const sidebar = document.getElementById('sidebar');
+      const main = document.getElementById('main');
+      const topbar = document.getElementById('topbar');
+      sidebar.classList.toggle('collapsed');
+      main.classList.toggle('collapsed');
+      topbar.classList.toggle('collapsed');
+    }
+
+    
+    const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.sidebar a').forEach(link => {
+    if (link.getAttribute('href') === currentPage) {
+      link.classList.add('active');
+    }
+  }
+);
+
+
+
+
+
+
+  </script>
+
+</body>
+</html>

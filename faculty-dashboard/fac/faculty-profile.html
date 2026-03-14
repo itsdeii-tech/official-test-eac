@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Faculty Attendance System</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* Sidebar (same as dashboard) */
+    .sidebar {
+      width: 240px;
+      background-color: #006400;
+      color: white;
+      padding: 20px 15px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow-y: auto;
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar.collapsed {
+      width: 70px;
+    }
+    .sidebar.collapsed .sidebar-text {
+      display: none;
+    }
+    .sidebar-logo {
+      width: 140px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+    .sidebar-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      text-align: right;
+      width: 100%;
+    }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #228B22;
+    }
+    .sidebar i {
+      margin-right: 12px;
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+
+    /* Main Content */
+    .main {
+      margin-left: 240px;
+      padding: 30px;
+      transition: margin-left 0.3s ease;
+    }
+    .main.collapsed {
+      margin-left: 70px;
+    }
+
+    .profile-card {
+      background: white;
+      border: 1px solid #006400;
+      border-radius: 8px;
+      padding: 30px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .profile-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #228B22;
+      margin-bottom: 15px;
+    }
+    .profile-name {
+      font-size: 26px;
+      color: #006400;
+      margin: 10px 0;
+    }
+    .profile-role {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .profile-info {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .profile-info p {
+      margin: 12px 0;
+    }
+    .profile-info strong {
+      color: #006400;
+    }
+    .edit-btn {
+      background: #228B22;
+      color: white;
+      padding: 12px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      display: block;
+      margin: 30px auto 0;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #006400;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar (same as dashboard) -->
+  <nav class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" onclick="toggleSidebarDesktop()">←</button>
+    <h2>Faculty Menu</h2>
+    <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
+    <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
+    <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
+    <a href="scan-qr.html"><i class="fas fa-qrcode"></i> <span class="sidebar-text">Scan QR Code</span></a>
+    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View Records</span></a>
+    <a href="download-reports.html"><i class="fas fa-download"></i> <span class="sidebar-text">Download Reports</span></a>
+    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
+    <a href="loginpage.html"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main" id="main">
+
+    <div class="profile-card">
+      <div class="profile-header">
+        <img src="images/Jde.png" alt="Profile Picture" class="profile-avatar">
+        <div class="profile-name">John Dayle Escarlan</div>
+        <div class="profile-role">Faculty Member - CEITE</div>
+      </div>
+
+      <div class="profile-info">
+        <p><strong>Employee ID:</strong> FAC-2024-045</p>
+        <p><strong>Email:</strong> 1-230420@asiatech.edu.ph</p>
+        <p><strong>Contact Number:</strong> 917 123 4567</p>
+        <p><strong>Department:</strong> (BSIT)</p>
+        <p><strong>Joined:</strong> June 2023</p>
+        <p><strong>Account Type:</strong> Faculty</p>
+      </div>
+
+      <button class="edit-btn" onclick="alert('Edit profile feature coming soon! (Demo)')">Edit Profile</button>
+
+      <a href="faculty-dashboard.html" class="back-link">← Back to Dashboard</a>
+    </div>
+
+  </main>
+
+  <!-- JavaScript (same as dashboard for sidebar toggle) -->
+  <script>
+    // Toggle collapse on desktop (← button)
+    function toggleSidebarDesktop() {
+      const sidebar = document.getElementById('sidebar');
+      const main = document.getElementById('main');
+      sidebar.classList.toggle('collapsed');
+      main.classList.toggle('collapsed');
+    }
+
+
+
+    const currentPage = window.location.pathname.split('/').pop();
+     document.querySelectorAll('.sidebar a').forEach(link => {
+    if (link.getAttribute('href') === currentPage) {
+      link.classList.add('active');
+    }
+  });
+
+
+
+
+
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Event Attendance Checker</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e6f0e6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,100,0,0.15);
+      overflow: hidden;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .header {
+      background: #006400;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .header img {
+      width: 140px;
+      margin-bottom: 15px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .form-body {
+      padding: 30px 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #006400;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #228B22;
+      box-shadow: 0 0 0 3px rgba(34,139,34,0.1);
+    }
+
+    .role-selection {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .role-option {
+      flex: 1;
+      text-align: center;
+    }
+
+    .role-option input[type="radio"] {
+      display: none;
+    }
+
+    .role-option label {
+      display: block;
+      padding: 12px;
+      background: #f0f7f0;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: normal;
+    }
+
+    .role-option input[type="radio"]:checked + label {
+      background: #228B22;
+      color: white;
+      border-color: #006400;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: #006400;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-login:hover {
+      opacity: 0.9;
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-size: 14px;
+      margin-top: -15px;
+      margin-bottom: 15px;
+      text-align: center;
+      display: none;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .links a {
+      color: #006400;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      background: #006400;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 13px;
+      margin-top: 30px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+
+    <div class="header">
+      <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo">
+      <h1>Event Attendance Checker</h1>
+      <p>Cloud-based QR Attendance System for CEITE</p>
+    </div>
+
+    <div class="form-body">
+      <form id="loginForm" onsubmit="handleLogin(event)">
+
+        <div class="role-selection">
+          <div class="role-option">
+            <input type="radio" id="role-faculty" name="role" value="faculty" checked>
+            <label for="role-faculty">Faculty</label>
+          </div>
+          <div class="role-option">
+            <input type="radio" id="role-student" name="role" value="student">
+            <label for="role-student">Student</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="1-230420@asiatech.edu.ph" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+
+        <div class="error-message" id="errorMsg">Please fill in all fields correctly.</div>
+
+        <button type="submit" class="btn-login">Login</button>
+      </form>
+
+      <div class="links">
+        <a href="#">Forgot Password?</a> • <a href="#">Register</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      YOUR KEY TO GLOBAL SUCCESS! • © 2026 ASIATECH
+    </div>
+
+  </div>
+
+  <script>
+
+    
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const role = document.querySelector('input[name="role"]:checked')?.value;
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+
+      // Basic validation
+      if (!role || !email || !password) {
+        errorMsg.textContent = "Please fill in all fields.";
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Hide error if valid
+      errorMsg.style.display = 'none';
+
+      // Demo success message
+      alert(`Login successful as ${role.toUpperCase()}!\nEmail: ${email}\n\nRedirecting...`);
+
+      // Redirect based on role
+      if (role === 'faculty') {
+        window.location.href = 'faculty-dashboard.html';
+      } else if (role === 'student') {
+        window.location.href = 'student-portal.html';
+      }
+    }
+  </script>
+
+</body>
+</html>

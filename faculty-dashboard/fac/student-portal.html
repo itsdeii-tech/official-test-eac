@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance Portal - ASIATECH CEITE</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ... (Pinanatili ko ang lahat ng original styles mo) ... */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; color: #333; min-height: 100vh; }
+
+    .sidebar { width: 240px; background-color: #006400; color: white; padding: 20px 15px; height: 100vh; position: fixed; left: 0; top: 0; overflow-y: auto; transition: width 0.3s ease; z-index: 1000; }
+    .sidebar.collapsed { width: 70px; }
+    .sidebar.collapsed .sidebar-text { display: none; }
+    .sidebar-logo { width: 140px; margin: 0 auto 20px; display: block; }
+    .sidebar-toggle { background: none; border: none; color: white; font-size: 24px; cursor: pointer; margin-bottom: 20px; text-align: right; width: 100%; }
+    .sidebar a { display: flex; align-items: center; color: white; text-decoration: none; padding: 12px 15px; margin-bottom: 8px; border-radius: 6px; transition: background 0.2s; }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
+    .sidebar i { margin-right: 12px; font-size: 18px; width: 24px; text-align: center; }
+
+    .top-bar { background-color: #006400; color: white; padding: 18px; text-align: center; margin-left: 240px; transition: margin-left 0.3s ease; border-radius: 0 0 8px 8px; }
+    .top-bar.collapsed { margin-left: 70px; }
+    .top-bar h1 { font-size: 26px; margin: 0; }
+
+    .main { margin-left: 240px; padding: 30px; transition: margin-left 0.3s ease; }
+    .main.collapsed { margin-left: 70px; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-bottom: 40px; }
+    .btn { padding: 15px 30px; font-size: 18px; color: white; border: none; border-radius: 30px; cursor: pointer; min-width: 220px; text-align: center; transition: opacity 0.2s; text-decoration: none; display: inline-block; }
+    .btn-scan { background: #228B22; }
+    .btn-view  { background: #2e8b57; }
+
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    .card { background: white; border: 1px solid #006400; border-radius: 8px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .card h3 { color: #006400; font-size: 20px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+
+    /* Custom Event Item Design */
+    .event-item { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 6px; border-left: 5px solid #228B22; position: relative; }
+    .event-item h4 { color: #333; margin-bottom: 5px; }
+    .event-item span { font-size: 13px; color: #666; display: block; }
+    .register-link { display: inline-block; margin-top: 10px; color: #228B22; font-weight: bold; text-decoration: none; border: 1px solid #228B22; padding: 5px 10px; border-radius: 4px; transition: 0.3s; }
+    .register-link:hover { background: #228B22; color: white; }
+    
+    .loading-text { font-style: italic; color: #888; text-align: center; padding: 20px; }
+
+    .footer { text-align: center; margin-top: 50px; padding: 20px; background-color: #006400; color: white; border-radius: 8px; font-size: 14px; }
+
+
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" onclick="toggleSidebarDesktop()">←</button>
+    <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
+    <h2 style="text-align:center; font-size: 18px; margin-bottom: 10px;">Student Portal</h2>
+    <a href="student-portal.html"><i class="fas fa-user"></i> <span class="sidebar-text">Student Portal</span></a>
+    <a href="student-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
+    <a href="#"><i class="fas fa-cog"></i> <span class="sidebar-text">Settings</span></a>
+    <a href="loginpage.html"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+  </nav>
+
+  <main class="main" id="main">
+
+    <div class="top-bar" id="topbar">
+      <h1>Student Attendance Portal</h1>
+      <p>Cloud-based Event Attendance Checker for CEITE</p>
+    </div>
+
+    <div class="actions" style="margin-top: 20px;">
+      <a href="#" class="btn btn-scan"><i class="fas fa-camera"></i> Generate QR Code</a>
+      <a href="#" class="btn btn-view"><i class="fas fa-eye"></i> View My Attendance</a>
+    </div>
+
+    <div class="content-grid">
+
+      <div class="card">
+        <h3><i class="fas fa-calendar-days"></i> Upcoming Events</h3>
+        <div id="event-list-container">
+          <p class="loading-text">Fetching live events from EAC_Database...</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-bullhorn"></i> Announcements</h3>
+        <div class="announce-item">Schedule for "Career Fair" changed to 1:00 PM.</div>
+        <div class="announce-item">Reminder: Attendance scanning closes 15 mins after event start.</div>
+      </div>
+
+      <div class="card" style="grid-column: span 2;">
+        <h3><i class="fas fa-bell"></i> Notifications</h3>
+        <div class="notify-item">Don’t forget to scan the QR code during events to record your attendance.</div>
+      </div>
+
+    </div>
+
+    <div class="footer">Student Portal © 2026 - ASIATECH CEITE</div>
+
+  </main>
+
+  <script>
+   // 1. Sidebar Toggle Logic
+  function toggleSidebarDesktop() {
+    const elements = ['sidebar', 'main', 'topbar'];
+    elements.forEach(id => document.getElementById(id).classList.toggle('collapsed'));
+  } 
+
+  const currentPage = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.sidebar a').forEach(link => {
+    if (link.getAttribute('href') === currentPage) {
+      link.classList.add('active');
+    }
+  }
+);
+
+
+  // 2. CLOUD INTEGRATION LOGIC
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxJxgHgwYl9ky_TlUxLGr9wJTVkGP1lUamvNzQLFP5iyL7OoZmtTvuRYASZSLUoBMVYow/exec'; // Ilagay dito ang tamang URL ng iyong Google Apps Script na nagre-return ng event data'
+
+
+// Add this function BEFORE loadLiveEvents()
+function formatDate(dateStr) {
+  // If ISO or YYYY-MM-DD format
+  if (dateStr.includes('T') || dateStr.match(/^\d{4}-\d{2}-\d{2}/)) {
+    var date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Asia/Manila'
+    });
+  }
+  // Kung pre-formatted na (March 18, 2026...), display as is
+  return dateStr;
+}
+
+    async function loadLiveEvents() {
+  const container = document.getElementById('event-list-container');
+  // DAGDAGAN NATIN NG ?action=getEvents SA DULO NG URL
+  const fullURL = scriptURL + "?action=getEvents"; 
+
+  try {
+    const response = await fetch(fullURL, {
+      method: "GET",
+      redirect: "follow" // IMPORTANTE: Para sa Google Apps Script
+    });
+
+    if (!response.ok) throw new Error("Network response was not ok");
+    
+    const events = await response.json();
+    
+    if (events.length === 0) {
+      container.innerHTML = "<p>No upcoming events found.</p>";
+      return;
+    }
+
+    container.innerHTML = ""; 
+    events.forEach(event => {
+      const eventHtml = `
+        <div class="event-item">
+          <h4>${event.name}</h4>
+          <span><i class="fas fa-clock"></i>${formatDate(event.date)}</span>
+          <span><i class="fas fa-location-dot"></i> ${event.location}</span>
+          <div style="background: #e8f5e9; padding: 10px; border-radius: 5px; margin: 10px 0;">
+            <strong>Note:</strong> ${event.notes || 'No instructions.'}
+          </div>
+          <a href="${event.formUrl}" target="_blank" class="register-link">
+            Register for Event
+          </a>
+        </div>
+      `;
+      container.innerHTML += eventHtml;
+    });
+  } catch (error) {
+    console.error("Fetch error:", error);
+    container.innerHTML = "<p style='color:red;'>Error connecting to cloud.</p>";
+  }
+}
+
+// Palitan ang dating window.onload ng ganito:
+window.onload = () => {
+  loadLiveEvents(); // Unang load pagbukas ng page
+  
+  // REAL-TIME FETCH: Mag-che-check sa database tuwing 30 segundo
+  setInterval(loadLiveEvents, 30000); 
+};
+  </script>
+
+</body>
+</html>
