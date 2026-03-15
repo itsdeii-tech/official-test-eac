@@ -8,41 +8,178 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; color: #333; min-height: 100vh; }
-    .sidebar { width: 240px; background-color: #006400; color: white; padding: 20px 15px; height: 100vh; position: fixed; left: 0; top: 0; overflow-y: auto; transition: width 0.3s ease; z-index: 1000; }
-    .sidebar.collapsed { width: 70px; }
-    .sidebar.collapsed .sidebar-text { display: none; }
-    .sidebar-logo { width: 140px; margin: 0 auto 20px; display: block; }
-    .sidebar-toggle { background: none; border: none; color: white; font-size: 24px; cursor: pointer; margin-bottom: 20px; text-align: right; width: 100%; }
-    .sidebar a { display: flex; align-items: center; color: white; text-decoration: none; padding: 12px 15px; margin-bottom: 8px; border-radius: 6px; transition: background 0.2s; }
+
+    /* SIDEBAR — default collapsed, hover to open */
+    .sidebar {
+      width: 70px;
+      background-color: #006400;
+      color: white;
+      padding: 20px 10px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow: hidden;
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar:hover { width: 240px; }
+    .sidebar-text { display: none; white-space: nowrap; }
+    .sidebar:hover .sidebar-text { display: inline; }
+    .sidebar-logo {
+      width: 50px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 50%;
+      transition: width 0.3s ease;
+    }
+    .sidebar:hover .sidebar-logo { width: 120px; }
+    .sidebar-title {
+      display: none;
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 10px;
+      white-space: nowrap;
+    }
+    .sidebar:hover .sidebar-title { display: block; }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      padding: 12px 10px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
     .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
-    .sidebar i { margin-right: 12px; font-size: 18px; width: 24px; text-align: center; }
-    .top-bar { background-color: #006400; color: white; padding: 18px; text-align: center; margin-left: 240px; transition: margin-left 0.3s ease; border-radius: 0 0 8px 8px; }
-    .top-bar.collapsed { margin-left: 70px; }
+    .sidebar i {
+      min-width: 24px;
+      font-size: 18px;
+      text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
+    }
+    .sidebar:hover i { margin-right: 12px; }
+
+    /* MAIN */
+    .main {
+      margin-left: 70px;
+      padding: 0;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* TOP BAR — flush */
+    .top-bar {
+      background-color: #006400;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
     .top-bar h1 { font-size: 26px; margin: 0; }
-    .main { margin-left: 240px; padding: 30px; transition: margin-left 0.3s ease; }
-    .main.collapsed { margin-left: 70px; }
-    .form-card { background: white; border: 1px solid #006400; border-radius: 8px; padding: 30px; max-width: 700px; margin: 0 auto; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .form-card h2 { color: #006400; margin-bottom: 25px; text-align: center; font-size: 24px; }
-    label { display: block; margin: 15px 0 5px; font-size: 16px; color: #006400; }
-    input, textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; font-family: inherit; }
-    textarea { resize: vertical; }
-    input:focus, textarea:focus { outline: none; border-color: #006400; }
+    .top-bar p  { margin: 5px 0 0; font-size: 15px; opacity: 0.9; }
+
+    /* CONTENT */
+    .content-wrap { padding: 0 25px 25px; }
+
+    .form-card {
+      background: white;
+      border: 1px solid #006400;
+      border-radius: 8px;
+      padding: 30px;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .form-card h2 {
+      color: #006400;
+      margin-bottom: 25px;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #006400;
+    }
+
+    .input-wrapper { position: relative; }
+    .input-wrapper i.input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 14px;
+    }
+    .input-wrapper input,
+    .input-wrapper textarea {
+      width: 100%;
+      padding: 11px 14px 11px 36px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border 0.2s;
+    }
+    .input-wrapper textarea {
+      padding-top: 12px;
+      resize: vertical;
+    }
+    .input-wrapper input:focus,
+    .input-wrapper textarea:focus {
+      outline: none;
+      border-color: #006400;
+      box-shadow: 0 0 0 3px rgba(0,100,0,0.1);
+    }
+
     .row { display: flex; gap: 20px; flex-wrap: wrap; }
     .row > div { flex: 1; min-width: 200px; }
-    .create-btn { background: #228B22; color: white; padding: 15px 40px; font-size: 18px; border: none; border-radius: 30px; cursor: pointer; display: block; margin: 30px auto; }
-    .create-btn:hover { opacity: 0.9; }
+
+    .create-btn {
+      background: #228B22;
+      color: white;
+      padding: 14px 40px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      display: block;
+      margin: 25px auto;
+      width: 100%;
+    }
+    .create-btn:hover    { opacity: 0.9; }
     .create-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .back-link { display: block; text-align: center; margin: 25px 0; color: #006400; font-weight: bold; text-decoration: underline; }
-    .note { text-align: center; color: #555; font-size: 14px; margin-top: 40px; }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin: 15px 0;
+      color: #006400;
+      font-weight: bold;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+    .note {
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
-    <button class="sidebar-toggle" onclick="toggleSidebarDesktop()">←</button>
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <h2>Faculty Menu</h2>
-
+    <h2 class="sidebar-title">Faculty Menu</h2>
     <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
     <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
     <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
@@ -50,139 +187,160 @@
     <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View Records</span></a>
     <a href="download-reports.html"><i class="fas fa-download"></i> <span class="sidebar-text">Download Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
-    <a href="loginpage.html"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
   </nav>
 
+  <!-- Main -->
   <main class="main" id="main">
-    <div class="top-bar" id="topbar">
+
+    <div class="top-bar">
       <h1>Post New Event</h1>
       <p>Cloud-based Event Attendance Checker for CEITE</p>
     </div>
 
-    <div class="form-card">
-      <h2>Create a New Event</h2>
+    <div class="content-wrap">
+      <div class="form-card">
+        <h2><i class="fas fa-calendar-plus"></i> Create a New Event</h2>
 
-      <label>Event Title</label>
-      <input type="text" id="eventTitle" placeholder="e.g. Orientation Seminar" required>
-
-      <div class="row">
-        <div>
-          <label>Date</label>
-          <input type="date" id="eventDate" required>
+        <!-- Event Title -->
+        <label>Event Title</label>
+        <div class="input-wrapper">
+          <i class="fas fa-pen input-icon"></i>
+          <input type="text" id="eventTitle" placeholder="e.g. Orientation Seminar" required>
         </div>
-        <div>
-          <label>Time</label>
-          <input type="time" id="eventTime" required>
+
+        <!-- Date + Time -->
+        <div class="row">
+          <div>
+            <label>Date</label>
+            <div class="input-wrapper">
+              <i class="fas fa-calendar input-icon"></i>
+              <input type="date" id="eventDate" required>
+            </div>
+          </div>
+          <div>
+            <label>Time</label>
+            <div class="input-wrapper">
+              <i class="fas fa-clock input-icon"></i>
+              <input type="time" id="eventTime" required>
+            </div>
+          </div>
         </div>
+
+        <!-- Venue -->
+        <label>Venue / Location</label>
+        <div class="input-wrapper">
+          <i class="fas fa-location-dot input-icon"></i>
+          <input type="text" id="eventVenue" placeholder="e.g. Main Hall">
+        </div>
+
+        <!-- Event Note -->
+        <label>Event Note</label>
+        <div class="input-wrapper">
+          <i class="fas fa-note-sticky input-icon"></i>
+          <textarea id="eventNote" rows="4"
+            placeholder="e.g. Bring your student ID. Wear proper uniform."></textarea>
+        </div>
+
+        <button class="create-btn" onclick="createEventRealTime()">
+          <i class="fas fa-plus"></i> Create Event
+        </button>
+
+        <div style="text-align: center;">
+          <a href="my-events.html" style="color: #006400; font-weight: bold; font-size: 14px;">
+            Go to My Events →
+          </a>
+        </div>
+
+        <a href="faculty-dashboard.html" class="back-link">← Back to Dashboard</a>
+
+        <p class="note">
+          <i class="fas fa-cloud"></i>
+          All data is securely pushed to <b>EAC_Database</b> via Google Cloud Services.
+        </p>
       </div>
-
-      <label>Venue / Location</label>
-      <input type="text" id="eventVenue" placeholder="e.g. Main Hall">
-
-      <!-- ← BAGONG TEXTAREA PARA SA EVENT NOTE -->
-      <label>Event Note</label>
-      <textarea
-        id="eventNote"
-        placeholder="e.g. Bring your student ID. Wear proper uniform. Attendance closes 15 mins after event starts."
-        rows="4">
-      </textarea>
-
-      <button class="create-btn" onclick="createEventRealTime()">Create Event</button>
-
-      <div style="text-align: center;">
-        <a href="my-events.html" style="color: #006400; font-weight: bold;">Go to My Events →</a>
-      </div>
-
-      <a href="faculty-dashboard.html" class="back-link">← Back to Dashboard</a>
-
-      <p class="note">
-        <b>System Status:</b> Live Synchronization Active<br>
-        All data is securely pushed to <b>EAC_Database</b> via Google Cloud Services.
-      </p>
     </div>
   </main>
 
   <script>
-    function toggleSidebarDesktop() {
-      const sidebar = document.getElementById('sidebar');
-      const main = document.getElementById('main');
-      const topbar = document.getElementById('topbar');
-      sidebar.classList.toggle('collapsed');
-      main.classList.toggle('collapsed');
-      topbar.classList.toggle('collapsed');
+    // Check login — faculty only
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (!user || user.role !== 'faculty') {
+      window.location.href = 'loginpage.html';
     }
 
+    // Active sidebar link
+    const currentPage = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
 
-
-  const currentPage = window.location.pathname.split('/').pop();
-  document.querySelectorAll('.sidebar a').forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
-      link.classList.add('active');
+    // Logout
+    function logout() {
+      sessionStorage.removeItem('user');
+      window.location.href = 'loginpage.html';
     }
-  });
 
+    // Format date
+    function formatEventDate(date, time) {
+      const months = ["January","February","March","April","May","June",
+                      "July","August","September","October","November","December"];
+      const [year, month, day] = date.split("-");
+      let [hour, minute] = time.split(":");
+      hour = parseInt(hour);
+      const ampm = hour >= 12 ? "PM" : "AM";
+      hour = hour % 12 || 12;
+      return `${months[parseInt(month)-1]} ${parseInt(day)}, ${year} ${hour}:${minute} ${ampm}`;
+    }
 
+    // Create event
+    async function createEventRealTime() {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwtH8aKL1Uaz0hMO6EeZn78j6-EqMeDudYKtUNjW7vR2ZZ7BJY--xInotoNZYTYgqtrjg/exec';
 
+      const name     = document.getElementById('eventTitle').value.trim();
+      const dateVal  = document.getElementById('eventDate').value;
+      const timeVal  = document.getElementById('eventTime').value;
+      const location = document.getElementById('eventVenue').value.trim();
+      const notes    = document.getElementById('eventNote').value.trim();
 
+      if (!name || !dateVal) {
+        alert("Event Title and Date are required!");
+        return;
+      }
 
+      const date = formatEventDate(dateVal, timeVal);
+      const btn  = document.querySelector('.create-btn');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing to Cloud...';
+      btn.disabled  = true;
 
+      try {
+        const url = `${scriptURL}?action=createEvent` +
+          `&name=${encodeURIComponent(name)}` +
+          `&date=${encodeURIComponent(date)}` +
+          `&location=${encodeURIComponent(location)}` +
+          `&notes=${encodeURIComponent(notes)}`;
 
+        await fetch(url, { method: "GET", redirect: "follow" });
 
+        alert(`Success! "${name}" is now live for all students.`);
 
-function formatEventDate(date, time) {
-  // e.g. date = "2026-03-04", time = "08:35"
-  const months = ["January","February","March","April","May","June",
-                  "July","August","September","October","November","December"];
-  const [year, month, day] = date.split("-");
-  
-  // Convert time to 12hr format
-  let [hour, minute] = time.split(":");
-  hour = parseInt(hour);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  hour = hour % 12 || 12;
-  
-  return `${months[parseInt(month)-1]} ${parseInt(day)}, ${year} ${hour}:${minute} ${ampm}`;
-}
+        // Clear form
+        document.getElementById('eventTitle').value = "";
+        document.getElementById('eventDate').value  = "";
+        document.getElementById('eventTime').value  = "";
+        document.getElementById('eventVenue').value = "";
+        document.getElementById('eventNote').value  = "";
 
-  async function createEventRealTime() {
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxJxgHgwYl9ky_TlUxLGr9wJTVkGP1lUamvNzQLFP5iyL7OoZmtTvuRYASZSLUoBMVYow/exec';
-
-  const name     = document.getElementById('eventTitle').value;
-  const date     = formatEventDate(document.getElementById('eventDate').value, document.getElementById('eventTime').value);
-  const location = document.getElementById('eventVenue').value;
-  const notes    = document.getElementById('eventNote').value;
-
-  if (!name || !document.getElementById('eventDate').value) {
-    alert("Event Title and Date are required!");
-    return;
-  }
-
-  const btn = document.querySelector('.create-btn');
-  btn.innerText = "Syncing to Cloud...";
-  btn.disabled = true;
-
-  try {
-    // FIXED: GET request instead of POST — walang CORS issue
-    const url = `${scriptURL}?action=createEvent&name=${encodeURIComponent(name)}&date=${encodeURIComponent(date)}&location=${encodeURIComponent(location)}&notes=${encodeURIComponent(notes)}`;
-    
-    await fetch(url, { method: "GET", redirect: "follow" });
-
-    alert(`Success! "${name}" is now live for all students.`);
-
-    document.getElementById('eventTitle').value = "";
-    document.getElementById('eventDate').value = "";
-    document.getElementById('eventTime').value = "";
-    document.getElementById('eventVenue').value = "";
-    document.getElementById('eventNote').value = "";
-
-  } catch (error) {
-    console.error('Error!', error.message);
-    alert('Cloud connection failed.');
-  } finally {
-    btn.innerText = "Create Event";
-    btn.disabled = false;
-  }
-}
+      } catch (error) {
+        alert('Cloud connection failed. Please try again.');
+      } finally {
+        btn.innerHTML = '<i class="fas fa-plus"></i> Create Event';
+        btn.disabled  = false;
+      }
+    }
   </script>
+
 </body>
 </html>

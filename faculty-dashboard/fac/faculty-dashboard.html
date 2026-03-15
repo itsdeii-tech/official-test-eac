@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Faculty Attendance Dashboard - ASIATECH CEITE</title>
-
-  <!-- Font Awesome for icons (free, lightweight) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -17,92 +15,86 @@
       min-height: 100vh;
     }
 
-    /* Sidebar */
+    /* SIDEBAR — default collapsed, hover to open */
     .sidebar {
-      width: 240px;
-      background-color: #006400; /* dark green */
+      width: 70px;
+      background-color: #006400;
       color: white;
-      padding: 20px 15px;
+      padding: 20px 10px;
       height: 100vh;
       position: fixed;
       left: 0;
       top: 0;
-      overflow-y: auto;
-      transition: width 0.3s ease, transform 0.3s ease;
+      overflow: hidden;
+      transition: width 0.3s ease;
       z-index: 1000;
     }
-    .sidebar.collapsed {
-      width: 70px;
-    }
-    .sidebar.collapsed .sidebar-text {
-      display: none;
-    }
+    .sidebar:hover { width: 240px; }
+    .sidebar-text { display: none; white-space: nowrap; }
+    .sidebar:hover .sidebar-text { display: inline; }
     .sidebar-logo {
-      width: 120px;
+      width: 50px;
       margin: 0 auto 20px;
       display: block;
       border-radius: 50%;
+      transition: width 0.3s ease;
     }
-    .sidebar-toggle {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      margin-bottom: 20px;
-      text-align: right;
-      width: 100%;
+    .sidebar:hover .sidebar-logo { width: 120px; }
+    .sidebar-title {
+      display: none;
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 10px;
+      white-space: nowrap;
     }
+    .sidebar:hover .sidebar-title { display: block; }
     .sidebar a {
       display: flex;
       align-items: center;
       color: white;
       text-decoration: none;
-      padding: 12px 15px;
+      padding: 12px 10px;
       margin-bottom: 8px;
       border-radius: 6px;
       transition: background 0.2s;
     }
-    .sidebar a:hover, .sidebar a.active {
-      background-color: #228B22;
-    }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
     .sidebar i {
-      margin-right: 12px;
+      min-width: 24px;
       font-size: 18px;
-      width: 24px;
       text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
     }
+    .sidebar:hover i { margin-right: 12px; }
 
-
-    /* Main Content */
+    /* MAIN */
     .main {
-      margin-left: 240px;
-      padding: 25px;
+      margin-left: 70px;
+      padding: 0;
       transition: margin-left 0.3s ease;
     }
-    .main.collapsed {
-      margin-left: 70px;
-    }
 
+    /* TOP BAR — flush */
     .top-bar {
       background-color: #006400;
       color: white;
-      padding: 18px;
+      padding: 20px;
       text-align: center;
-      margin-bottom: 30px;
-      border-radius: 8px;
+      margin-bottom: 25px;
     }
-    .top-bar h1 {
-      font-size: 26px;
-      margin: 0;
-    }
+    .top-bar h1 { font-size: 26px; margin: 0; }
+    .top-bar p  { margin: 5px 0 0; font-size: 15px; opacity: 0.9; }
+
+    /* CONTENT */
+    .content-wrap { padding: 0 25px 25px; }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
       justify-content: center;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
     .btn {
       padding: 12px 24px;
@@ -113,16 +105,17 @@
       cursor: pointer;
       min-width: 180px;
       text-align: center;
-      transition: background 0.2s;
+      transition: opacity 0.2s;
+      text-decoration: none;
+      display: inline-block;
     }
-    .btn-generate { background: #228B22; }
     .btn-view     { background: #2e8b57; }
     .btn-download { background: #006400; }
     .btn:hover    { opacity: 0.9; }
 
     .content-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 25px;
     }
     .card {
@@ -137,43 +130,65 @@
       margin-bottom: 15px;
       border-bottom: 2px solid #228B22;
       padding-bottom: 8px;
+      font-size: 18px;
     }
-    .event-item {
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
+    .card h2 i { margin-right: 8px; }
+
+    /* Table styles */
+    .events-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
     }
+    .events-table thead tr { background: #f0f2f5; text-align: left; }
+    .events-table th {
+      padding: 10px;
+      border-bottom: 2px solid #006400;
+      color: #006400;
+    }
+    .events-table td { padding: 10px; border-bottom: 1px solid #ddd; }
+    .events-table tr:hover { background: #f9f9f9; }
+    .view-form-link {
+      color: #228B22;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .view-form-link:hover { text-decoration: underline; }
+
     .create-btn {
       background: #228B22;
       color: white;
       padding: 15px 35px;
-      font-size: 18px;
+      font-size: 16px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       display: block;
-      margin: 20px auto;
+      margin: 10px auto;
+      width: 100%;
     }
+    .create-btn:hover { opacity: 0.9; }
+
     .reminder {
       background: #fff3e0;
       color: #333;
       padding: 15px;
       border-radius: 6px;
-      margin-top: 20px;
+      margin-top: 15px;
       border-left: 4px solid #d4a017;
     }
+    .reminder h3 { margin-bottom: 5px; }
 
-
+    .loading-text { color: #888; font-size: 14px; text-align: center; padding: 20px; }
   </style>
 </head>
 <body>
 
-
-
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
-    <button class="sidebar-toggle" onclick="toggleSidebarDesktop()">←</button>
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <h2>Faculty Menu</h2>
+    <h2 class="sidebar-title">Faculty Menu</h2>
     <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
     <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
     <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
@@ -181,7 +196,7 @@
     <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View Records</span></a>
     <a href="download-reports.html"><i class="fas fa-download"></i> <span class="sidebar-text">Download Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
-    <a href="loginpage.html"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
   </nav>
 
   <!-- Main Content -->
@@ -192,144 +207,133 @@
       <p>Cloud-based Event Attendance Checker for CEITE</p>
     </div>
 
-    <div class="actions">
-     
-      <a href="scan-qr.html" class="btn btn-view">Scan QR Code</a>
-      <a href="view-records.html" class="btn btn-view">View Attendance Records</a>
-      <a href="download-reports.html" class="btn btn-download">Download Report</a>
-    </div>
+    <div class="content-wrap">
 
-       <!-- ito ung bagong div para sa My Posted Events na may real-time data mula sa Google Sheets -->
-       <div class="content-grid"></div>
+      <div class="actions">
+        <a href="scan-qr.html" class="btn btn-view">
+          <i class="fas fa-qrcode"></i> Scan QR Code
+        </a>
+        <a href="view-records.html" class="btn btn-view">
+          <i class="fas fa-list"></i> View/Download Reports
+        </a>
+      </div>
+
+      <div class="content-grid">
+
+        <!-- Card 1 — My Posted Events -->
         <div class="card">
-          <h2><i class="fas fa-list-check"></i> My Posted Events</h2>
+          <h2><i class="fas fa-calendar-check"></i> My Posted Events</h2>
           <div id="faculty-event-list">
-          <p class="loading-text">Syncing with EAC_Database...</p>
+            <p class="loading-text">Syncing with EAC_Database...</p>
           </div>
         </div>
 
-
-      <div class="card">
-        <h2>Post New Event</h2>
-        <button class="create-btn" onclick="window.location.href='create-event.html'">+ Create New Event</button>
-        
-        
-
-        <div class="reminder">
-          <h3>Reminder</h3>
-          <p>Ensure students scan QR codes during events.</p>
+        <!-- Card 2 — Post New Event -->
+        <div class="card">
+          <h2><i class="fas fa-plus-circle"></i> Post New Event</h2>
+          <button class="create-btn" onclick="window.location.href='create-event.html'">
+            <i class="fas fa-plus"></i> Create New Event
+          </button>
+          <div class="reminder">
+            <h3><i class="fas fa-bell"></i> Reminder</h3>
+            <p style="margin-top: 5px;">Ensure students scan QR codes during events.</p>
+          </div>
         </div>
+
       </div>
     </div>
-
   </main>
 
   <script>
-    
-    // Toggle sidebar collapse on desktop (← button)
-    function toggleSidebarDesktop() {
-      const sidebar = document.getElementById('sidebar');
-      const main = document.getElementById('main');
-      sidebar.classList.toggle('collapsed');
-      main.classList.toggle('collapsed');
+    // Check login — faculty only
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (!user || user.role !== 'faculty') {
+      window.location.href = 'loginpage.html';
     }
 
-     const currentPage = window.location.pathname.split('/').pop();
-     document.querySelectorAll('.sidebar a').forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
-      link.classList.add('active');
-    }
-  });
-
-
-
- const scriptURL = 'https://script.google.com/macros/s/AKfycbxJxgHgwYl9ky_TlUxLGr9wJTVkGP1lUamvNzQLFP5iyL7OoZmtTvuRYASZSLUoBMVYow/exec';
-
-function formatDate(dateStr) {
-  if (dateStr && dateStr.toString().includes('T')) {
-    var date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric', month: 'long', day: 'numeric',
-      hour: '2-digit', minute: '2-digit',
-      timeZone: 'Asia/Manila'
-    });
-  }
-  return dateStr;
-}
-
-async function loadLiveEvents() {
-  // FIX 1: correct div ID
-  const container = document.getElementById('faculty-event-list');
-  const fullURL = scriptURL + "?action=getEvents";
-
-  try {
-    const response = await fetch(fullURL, {
-      method: "GET",
-      redirect: "follow"
+    // Active sidebar link
+    const currentPage = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
     });
 
-    if (!response.ok) throw new Error("Network response was not ok");
-    
-    const events = await response.json();
-    
-    if (events.length === 0) {
-      container.innerHTML = "<p>No events found.</p>";
-      return;
+    // Logout
+    function logout() {
+      sessionStorage.removeItem('user');
+      window.location.href = 'loginpage.html';
     }
 
-    let html = `
-      <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
-        <thead>
-          <tr style="background: #f0f2f5; text-align: left;">
-            <th style="padding: 10px; border-bottom: 2px solid #006400;">Event Name</th>
-            <th style="padding: 10px; border-bottom: 2px solid #006400;">Date/Time</th>
-            <th style="padding: 10px; border-bottom: 2px solid #006400;">Location</th>
-            <th style="padding: 10px; border-bottom: 2px solid #006400;">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwtH8aKL1Uaz0hMO6EeZn78j6-EqMeDudYKtUNjW7vR2ZZ7BJY--xInotoNZYTYgqtrjg/exec';
 
-    events.forEach(event => {
-      html += `
-        <tr style="border-bottom: 1px solid #ddd;">
-          <td style="padding: 10px; font-weight: bold;">${event.name}</td>
-          <td style="padding: 10px;">${formatDate(event.date)}</td>
-          <td style="padding: 10px;">${event.location}</td>
-          <td style="padding: 10px;">
-            <a href="${event.formUrl}" target="_blank" 
-               style="color: #228B22; text-decoration: none; font-weight: bold;">
-              <i class="fas fa-external-link-alt"></i> View Form
-            </a>
-          </td>
-        </tr>
-      `;
-    });
+    function formatDate(dateStr) {
+      if (dateStr && dateStr.toString().includes('T')) {
+        var date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric', month: 'long', day: 'numeric',
+          hour: '2-digit', minute: '2-digit',
+          timeZone: 'Asia/Manila'
+        });
+      }
+      return dateStr;
+    }
 
-    html += `</tbody></table>`;
-    // FIX 2: correct variable name
-    container.innerHTML = html;
+    async function loadLiveEvents() {
+      const container = document.getElementById('faculty-event-list');
+      try {
+        const response = await fetch(scriptURL + "?action=getEvents", {
+          method: "GET", redirect: "follow"
+        });
+        if (!response.ok) throw new Error("Network error");
 
-  } catch (error) {
-    console.error("Error loading events:", error);
-    document.getElementById('faculty-event-list').innerHTML = 
-      "<p style='color:red;'>Failed to sync events.</p>";
-  }
-}
+        const events = await response.json();
 
-function toggleSidebarDesktop() {
-  const sidebar = document.getElementById('sidebar');
-  const main = document.getElementById('main');
-  sidebar.classList.toggle('collapsed');
-  main.classList.toggle('collapsed');
-}
+        if (events.length === 0) {
+          container.innerHTML = "<p style='color:#888;'>No events found.</p>";
+          return;
+        }
 
-// FIX 3: correct function name
-window.onload = () => {
-  loadLiveEvents();
-  setInterval(loadLiveEvents, 30000);
-};
-    
+        let html = `
+          <table class="events-table">
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th>Date/Time</th>
+                <th>Location</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        events.forEach(event => {
+          html += `
+            <tr>
+              <td><strong>${event.name}</strong></td>
+              <td>${formatDate(event.date)}</td>
+              <td>${event.location}</td>
+              <td>
+                <a href="${event.formUrl}" target="_blank" class="view-form-link">
+                  <i class="fas fa-external-link-alt"></i> View Form
+                </a>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+
+      } catch (error) {
+        container.innerHTML = "<p style='color:red;'>Failed to sync events.</p>";
+      }
+    }
+
+    window.onload = () => {
+      loadLiveEvents();
+      setInterval(loadLiveEvents, 30000);
+    };
   </script>
 
 </body>

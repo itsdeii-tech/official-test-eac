@@ -4,102 +4,83 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Scan Student QR Code - Faculty Attendance System</title>
-
-  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- html5-qrcode library for camera scanning -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; color: #333; min-height: 100vh; }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: #f8f9fa;
-      color: #333;
-      min-height: 100vh;
-    }
-
-    /* ── Sidebar ── */
+    /* SIDEBAR — default collapsed, hover to open */
     .sidebar {
-      width: 240px;
+      width: 70px;
       background-color: #006400;
       color: white;
-      padding: 20px 15px;
+      padding: 20px 10px;
       height: 100vh;
       position: fixed;
-      left: 0;
-      top: 0;
-      overflow-y: auto;
+      left: 0; top: 0;
+      overflow: hidden;
       transition: width 0.3s ease;
       z-index: 1000;
     }
-    .sidebar.collapsed { width: 70px; }
-    .sidebar.collapsed .sidebar-text { display: none; }
-
+    .sidebar:hover { width: 240px; }
+    .sidebar-text { display: none; white-space: nowrap; }
+    .sidebar:hover .sidebar-text { display: inline; }
     .sidebar-logo {
-      width: 140px;
+      width: 50px;
       margin: 0 auto 20px;
       display: block;
+      border-radius: 50%;
+      transition: width 0.3s ease;
     }
-    .sidebar-toggle {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      margin-bottom: 20px;
-      text-align: right;
-      width: 100%;
-    }
-    .sidebar h2 {
+    .sidebar:hover .sidebar-logo { width: 120px; }
+    .sidebar-title {
+      display: none;
+      text-align: center;
       font-size: 16px;
-      margin-bottom: 14px;
-      padding-left: 4px;
+      margin-bottom: 10px;
+      white-space: nowrap;
     }
+    .sidebar:hover .sidebar-title { display: block; }
     .sidebar a {
       display: flex;
       align-items: center;
       color: white;
       text-decoration: none;
-      padding: 12px 15px;
+      padding: 12px 10px;
       margin-bottom: 8px;
       border-radius: 6px;
       transition: background 0.2s;
     }
-    .sidebar a:hover,
-    .sidebar a.active { background-color: #228B22; }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
     .sidebar i {
-      margin-right: 12px;
+      min-width: 24px;
       font-size: 18px;
-      width: 24px;
       text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
     }
+    .sidebar:hover i { margin-right: 12px; }
 
-    /* ── Top Bar ── */
+    /* MAIN */
+    .main { margin-left: 70px; padding: 0; transition: margin-left 0.3s ease; }
+
+    /* TOP BAR — flush */
     .top-bar {
       background-color: #006400;
       color: white;
-      padding: 18px;
+      padding: 20px;
       text-align: center;
-      margin-left: 240px;
-      transition: margin-left 0.3s ease;
-      border-radius: 0 0 8px 8px;
+      margin-bottom: 25px;
     }
-    .top-bar.collapsed { margin-left: 70px; }
     .top-bar h1 { font-size: 26px; margin: 0; }
-    .top-bar p  { margin: 5px 0 0; font-size: 16px; }
+    .top-bar p  { margin: 5px 0 0; font-size: 15px; opacity: 0.9; }
 
-    /* ── Main Content ── */
-    .main {
-      margin-left: 240px;
-      padding: 30px;
-      transition: margin-left 0.3s ease;
-    }
-    .main.collapsed { margin-left: 70px; }
+    /* CONTENT */
+    .content-wrap { padding: 0 25px 25px; }
 
-    /* ── Scanner Card ── */
+    /* SCAN CARD */
     .scan-card {
       background: white;
       border: 1px solid #006400;
@@ -110,20 +91,36 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       text-align: center;
     }
+    .scan-card h2 { color: #006400; margin-bottom: 10px; font-size: 22px; }
+    .scan-card > p { color: #555; font-size: 14px; margin-bottom: 20px; }
 
-    .scan-card h2 {
+    /* EVENT SELECT */
+    .event-select-wrap {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .event-select-wrap label {
+      display: block;
+      font-weight: bold;
       color: #006400;
-      margin-bottom: 10px;
-      font-size: 24px;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .event-select-wrap select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border 0.2s;
+    }
+    .event-select-wrap select:focus {
+      outline: none;
+      border-color: #006400;
+      box-shadow: 0 0 0 3px rgba(0,100,0,0.1);
     }
 
-    .scan-card > p {
-      color: #555;
-      font-size: 15px;
-      margin-bottom: 25px;
-    }
-
-    /* ── Status Box ── */
+    /* STATUS BOX */
     .status-box {
       display: flex;
       align-items: center;
@@ -133,71 +130,52 @@
       border: 1px solid #b8ddc8;
       border-radius: 8px;
       padding: 12px 20px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       font-size: 14px;
       color: #555;
     }
     .status-dot {
-      width: 10px;
-      height: 10px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       background: #ccc;
       flex-shrink: 0;
     }
-    .status-dot.ready   { background: #22c55e; }
+    .status-dot.ready    { background: #22c55e; }
     .status-dot.scanning { background: #f97316; animation: blink 1s infinite; }
-    .status-dot.success { background: #006400; }
-    .status-dot.error   { background: #dc2626; }
+    .status-dot.success  { background: #006400; }
+    .status-dot.error    { background: #dc2626; }
     @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
 
-    /* ── Camera Viewfinder ── */
+    /* VIEWFINDER */
     .viewfinder-wrap {
       position: relative;
-      width: 280px;
-      height: 280px;
+      width: 280px; height: 280px;
       margin: 0 auto 24px;
       border-radius: 12px;
       overflow: hidden;
       background: #111;
     }
-
-    /* Corner brackets overlay */
-    .viewfinder-wrap::before,
-    .viewfinder-wrap::after {
+    .viewfinder-wrap::before, .viewfinder-wrap::after {
       content: '';
       position: absolute;
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-color: #00e87a;
       border-style: solid;
       z-index: 10;
       pointer-events: none;
     }
-    .viewfinder-wrap::before {
-      top: 12px; left: 12px;
-      border-width: 3px 0 0 3px;
-      border-radius: 4px 0 0 0;
-    }
-    .viewfinder-wrap::after {
-      bottom: 12px; right: 12px;
-      border-width: 0 3px 3px 0;
-      border-radius: 0 0 4px 0;
-    }
-
-    /* Extra corners via inner div */
+    .viewfinder-wrap::before { top:12px; left:12px; border-width:3px 0 0 3px; border-radius:4px 0 0 0; }
+    .viewfinder-wrap::after  { bottom:12px; right:12px; border-width:0 3px 3px 0; border-radius:0 0 4px 0; }
     .corner-tr, .corner-bl {
       position: absolute;
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-color: #00e87a;
       border-style: solid;
       z-index: 10;
       pointer-events: none;
     }
-    .corner-tr { top: 12px; right: 12px; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
-    .corner-bl { bottom: 12px; left: 12px; border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
-
-    /* Scan line animation */
+    .corner-tr { top:12px; right:12px; border-width:3px 3px 0 0; border-radius:0 4px 0 0; }
+    .corner-bl { bottom:12px; left:12px; border-width:0 0 3px 3px; border-radius:0 0 0 4px; }
     .scan-line {
       display: none;
       position: absolute;
@@ -208,15 +186,9 @@
       animation: scanMove 2s linear infinite;
     }
     .scan-line.active { display: block; }
-    @keyframes scanMove {
-      0%   { top: 20px; }
-      100% { top: 260px; }
-    }
-
-    /* Placeholder shown before camera starts */
+    @keyframes scanMove { 0%{top:20px;} 100%{top:260px;} }
     .cam-placeholder {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -226,57 +198,38 @@
       font-size: 14px;
     }
     .cam-placeholder i { font-size: 48px; color: #555; }
+    #qr-reader { width:100%!important; height:100%!important; border:none!important; }
+    #qr-reader__scan_region { border:none!important; }
+    #qr-reader__dashboard { display:none!important; }
 
-    /* html5-qrcode reader div */
-    #qr-reader {
-      width: 100% !important;
-      height: 100% !important;
-      border: none !important;
-    }
-    #qr-reader__scan_region { border: none !important; }
-    #qr-reader__dashboard { display: none !important; }
-
-    /* ── Buttons ── */
+    /* BUTTONS */
     .btn-start {
-      background: #006400;
-      color: white;
-      padding: 14px 40px;
-      font-size: 17px;
-      border: none;
-      border-radius: 30px;
+      background: #006400; color: white;
+      padding: 13px 35px; font-size: 16px;
+      border: none; border-radius: 30px;
       cursor: pointer;
       display: inline-flex;
-      align-items: center;
-      gap: 10px;
+      align-items: center; gap: 10px;
       transition: opacity 0.2s;
       margin-bottom: 10px;
     }
     .btn-start:hover { opacity: 0.88; }
-
     .btn-stop {
-      background: #dc2626;
-      color: white;
-      padding: 14px 40px;
-      font-size: 17px;
-      border: none;
-      border-radius: 30px;
+      background: #dc2626; color: white;
+      padding: 13px 35px; font-size: 16px;
+      border: none; border-radius: 30px;
       cursor: pointer;
       display: none;
-      align-items: center;
-      gap: 10px;
+      align-items: center; gap: 10px;
       transition: opacity 0.2s;
       margin-bottom: 10px;
     }
     .btn-stop:hover { opacity: 0.88; }
     .btn-stop.visible { display: inline-flex; }
-
     .btn-again {
-      background: #228B22;
-      color: white;
-      padding: 12px 32px;
-      font-size: 16px;
-      border: none;
-      border-radius: 30px;
+      background: #228B22; color: white;
+      padding: 11px 28px; font-size: 15px;
+      border: none; border-radius: 30px;
       cursor: pointer;
       display: none;
       margin: 10px auto 0;
@@ -285,49 +238,23 @@
     .btn-again:hover { opacity: 0.88; }
     .btn-again.visible { display: inline-block; }
 
-    /* ── Result Box ── */
-    .result-box {
-      display: none;
-      margin: 22px 0 0;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: left;
-    }
-    .result-box.success {
-      display: block;
-      background: #f0faf0;
-      border: 1px solid #86efac;
-    }
-    .result-box.error {
-      display: block;
-      background: #fff5f5;
-      border: 1px solid #fca5a5;
-    }
-
-    .result-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    /* RESULT BOX */
+    .result-box { display: none; margin: 20px 0 0; border-radius: 10px; padding: 20px; text-align: left; }
+    .result-box.success { display: block; background: #f0faf0; border: 1px solid #86efac; }
+    .result-box.error   { display: block; background: #fff5f5; border: 1px solid #fca5a5; }
+    .result-title { font-size: 15px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .result-title.ok  { color: #006400; }
     .result-title.err { color: #dc2626; }
-
     .result-content {
-      font-size: 14px;
-      color: #444;
+      font-size: 14px; color: #444;
       background: white;
       border: 1px solid #e0e0e0;
       border-radius: 6px;
       padding: 12px 14px;
       line-height: 1.8;
-      word-break: break-all;
-      white-space: pre-wrap;
     }
 
-    /* ── Instructions ── */
+    /* INSTRUCTIONS */
     .instructions {
       background: #f9f9f9;
       border: 1px solid #ddd;
@@ -336,38 +263,26 @@
       margin: 24px 0 0;
       text-align: left;
     }
-    .instructions h3 {
-      font-size: 14px;
-      font-weight: bold;
-      color: #006400;
-      margin-bottom: 10px;
-    }
-    .instructions ol {
-      padding-left: 18px;
-      font-size: 13px;
-      color: #555;
-      line-height: 2;
-    }
+    .instructions h3 { font-size: 14px; font-weight: bold; color: #006400; margin-bottom: 10px; }
+    .instructions ol { padding-left: 18px; font-size: 13px; color: #555; line-height: 2; }
 
     .back-link {
       display: block;
       text-align: center;
-      margin: 24px 0 0;
+      margin: 20px 0 0;
       color: #006400;
       font-weight: bold;
       text-decoration: underline;
       font-size: 14px;
     }
-    
   </style>
 </head>
 <body>
 
-  <!-- ── Sidebar (Faculty Menu) ── -->
+  <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
-    <button class="sidebar-toggle" onclick="toggleSidebar()">←</button>
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <h2>Faculty Menu</h2>
+    <h2 class="sidebar-title">Faculty Menu</h2>
     <a href="faculty-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span></a>
     <a href="create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Post New Event</span></a>
     <a href="my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">My Events</span></a>
@@ -375,300 +290,281 @@
     <a href="view-records.html"><i class="fas fa-list-check"></i><span class="sidebar-text">View Records</span></a>
     <a href="download-reports.html"><i class="fas fa-download"></i><span class="sidebar-text">Download Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span></a>
-    <a href="loginpage.html"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span></a>
   </nav>
 
-  <!-- ── Main ── -->
+  <!-- Main -->
   <main class="main" id="main">
 
-    <div class="top-bar" id="topbar">
+    <div class="top-bar">
       <h1>Scan Student QR Code</h1>
       <p>Cloud-based Event Attendance Checker for CEITE</p>
     </div>
 
-    <div class="scan-card">
+    <div class="content-wrap">
+      <div class="scan-card">
 
-      <h2><i class="fas fa-qrcode" style="margin-right:8px;"></i>Check-In / Check-Out</h2>
-      <p>Scan the student's QR code to mark attendance (Present) or check-out.</p>
+        <h2><i class="fas fa-qrcode" style="margin-right:8px;"></i>Check-In / Check-Out</h2>
+        <p>Scan the student's QR code to mark attendance or check-out.</p>
 
-      <!-- Status indicator -->
-      <div class="status-box">
-        <div class="status-dot" id="status-dot"></div>
-        <span id="status-text">Camera not started. Click below to begin.</span>
-      </div>
-
-      <!-- Add this sa scan-card, bago yung viewfinder -->
-<select id="eventSelect" style="width:100%; padding:10px; margin-bottom:20px; border-radius:8px; border:1px solid #006400;">
-  <option value="">-- Select Event --</option>
-</select>
-
-
-      <!-- Camera viewfinder -->
-      <div class="viewfinder-wrap" id="viewfinder-wrap">
-        <div class="corner-tr"></div>
-        <div class="corner-bl"></div>
-        <div class="scan-line" id="scan-line"></div>
-
-        <!-- Placeholder before camera starts -->
-        <div class="cam-placeholder" id="cam-placeholder">
-          <i class="fas fa-camera"></i>
-          <span>Camera preview will appear here</span>
+        <!-- Status -->
+        <div class="status-box">
+          <div class="status-dot" id="status-dot"></div>
+          <span id="status-text">Camera not started. Click below to begin.</span>
         </div>
 
-        <!-- html5-qrcode mounts here -->
-        <div id="qr-reader"></div>
-      </div>
+        <!-- Event Select -->
+        <div class="event-select-wrap">
+          <label><i class="fas fa-calendar-check"></i> Select Event</label>
+          <select id="eventSelect">
+            <option value="">-- Select Event --</option>
+          </select>
+        </div>
 
-      <!-- Buttons -->
-      <div>
-        <button class="btn-start" id="btn-start" onclick="startScanner()">
-          <i class="fas fa-camera"></i> Start Scanner
+        <!-- Viewfinder -->
+        <div class="viewfinder-wrap" id="viewfinder-wrap">
+          <div class="corner-tr"></div>
+          <div class="corner-bl"></div>
+          <div class="scan-line" id="scan-line"></div>
+          <div class="cam-placeholder" id="cam-placeholder">
+            <i class="fas fa-camera"></i>
+            <span>Camera preview will appear here</span>
+          </div>
+          <div id="qr-reader"></div>
+        </div>
+
+        <!-- Buttons -->
+        <div>
+          <button class="btn-start" id="btn-start" onclick="startScanner()">
+            <i class="fas fa-camera"></i> Start Scanner
+          </button>
+          <button class="btn-stop" id="btn-stop" onclick="stopScanner()">
+            <i class="fas fa-stop"></i> Stop Scanner
+          </button>
+        </div>
+
+        <button class="btn-again" id="btn-again" onclick="scanAgain()">
+          <i class="fas fa-rotate-right"></i> Scan Again
         </button>
-        <button class="btn-stop" id="btn-stop" onclick="stopScanner()">
-          <i class="fas fa-stop"></i> Stop Scanner
-        </button>
+
+        <!-- Result -->
+        <div class="result-box" id="result-box">
+          <div class="result-title" id="result-title"></div>
+          <div class="result-content" id="result-content"></div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+          <h3><i class="fas fa-circle-info" style="margin-right:6px;"></i>How to use:</h3>
+          <ol>
+            <li>Select the event first.</li>
+            <li>Click <strong>Start Scanner</strong> and allow camera access.</li>
+            <li>Hold the student's QR code steady in front of the camera.</li>
+            <li>Attendance will be updated automatically in Google Sheets.</li>
+            <li>Use the same QR for check-out.</li>
+          </ol>
+        </div>
+
+        <a href="faculty-dashboard.html" class="back-link">← Back to Dashboard</a>
+
       </div>
-
-      <button class="btn-again" id="btn-again" onclick="scanAgain()">
-        <i class="fas fa-rotate-right"></i> Scan Again
-      </button>
-
-      <!-- Result -->
-      <div class="result-box" id="result-box">
-        <div class="result-title" id="result-title"></div>
-        <div class="result-content" id="result-content"></div>
-      </div>
-
-      <!-- Instructions -->
-      <div class="instructions">
-        <h3><i class="fas fa-circle-info" style="margin-right:6px;"></i>How to use:</h3>
-        <ol>
-          <li>Click <strong>Start Scanner</strong> and allow camera access.</li>
-          <li>Hold the student's QR code steady in front of the camera.</li>
-          <li>Attendance will be updated in Google Sheets (Absent → Present).</li>
-          <li>Use the same QR for check-out (optional).</li>
-        </ol>
-      </div>
-
-      <a href="faculty-dashboard.html" class="back-link">← Back to Dashboard</a>
-
     </div>
   </main>
 
   <script>
-    // ── Sidebar toggle ──────────────────────────────
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const main    = document.getElementById('main');
-      const topbar  = document.getElementById('topbar');
-      sidebar.classList.toggle('collapsed');
-      main.classList.toggle('collapsed');
-      topbar.classList.toggle('collapsed');
+    // Check login — faculty only
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (!user || user.role !== 'faculty') {
+      window.location.href = 'loginpage.html';
     }
 
-
-
+    // Active sidebar link
     const currentPage = window.location.pathname.split('/').pop();
-  document.querySelectorAll('.sidebar a').forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
-      link.classList.add('active');
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
+
+    // Logout
+    function logout() {
+      sessionStorage.removeItem('user');
+      window.location.href = 'loginpage.html';
     }
-  }
-);
 
- 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxJxgHgwYl9ky_TlUxLGr9wJTVkGP1lUamvNzQLFP5iyL7OoZmtTvuRYASZSLUoBMVYow/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwtH8aKL1Uaz0hMO6EeZn78j6-EqMeDudYKtUNjW7vR2ZZ7BJY--xInotoNZYTYgqtrjg/exec';
 
-// Load events from Google Sheets
-async function loadEvents() {
-  try {
-    const response = await fetch(scriptURL + "?action=getEvents", {
-      method: "GET",
-      redirect: "follow"
-    });
-    const events = await response.json();
-    
-    const select = document.getElementById('eventSelect');
-    select.innerHTML = '<option value="">-- Select Event --</option>'; // reset muna
-    
-    events.forEach(event => {
-      const option = document.createElement('option');
-      option.value = event.name; // exact event name — gagamitin sa scanQrCode
-      option.text  = event.name; // FIX 1: wag na isama yung date para malinis
-      select.appendChild(option);
-    });
-  } catch (err) {
-    console.error("Failed to load events:", err);
-  }
-}
+    // Load events
+    async function loadEvents() {
+      try {
+        const response = await fetch(scriptURL + "?action=getEvents", { method: "GET", redirect: "follow" });
+        const events   = await response.json();
+        const select   = document.getElementById('eventSelect');
+        select.innerHTML = '<option value="">-- Select Event --</option>';
+        events.forEach(event => {
+          const option = document.createElement('option');
+          option.value = event.name;
+          option.text  = event.name;
+          select.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Failed to load events:", err);
+      }
+    }
 
-window.onload = () => {
-  loadEvents();
-};
+    // Scanner
+    let html5QrCode = null;
+    let scanning    = false;
 
-// QR Scanner state
-let html5QrCode = null;
-let scanning    = false;
+    function setStatus(state, message) {
+      document.getElementById('status-dot').className  = 'status-dot ' + state;
+      document.getElementById('status-text').textContent = message;
+    }
 
-function setStatus(state, message) {
-  const dot  = document.getElementById('status-dot');
-  const text = document.getElementById('status-text');
-  dot.className    = 'status-dot ' + state;
-  text.textContent = message;
-}
+    function startScanner() {
+      const eventName = document.getElementById('eventSelect').value;
+      if (!eventName) {
+        alert("Please select an event first!");
+        return;
+      }
 
-function startScanner() {
-  // FIX 2: Check if event selected BEFORE starting scanner
-  const eventName = document.getElementById('eventSelect').value;
-  if (!eventName) {
-    alert("Please select an event first before scanning!");
-    return;
-  }
+      document.getElementById('cam-placeholder').style.display = 'none';
+      document.getElementById('scan-line').classList.add('active');
+      document.getElementById('btn-start').style.display = 'none';
+      document.getElementById('btn-stop').classList.add('visible');
+      document.getElementById('result-box').className = 'result-box';
+      document.getElementById('btn-again').classList.remove('visible');
 
-  document.getElementById('cam-placeholder').style.display = 'none';
-  document.getElementById('scan-line').classList.add('active');
-  document.getElementById('btn-start').style.display = 'none';
-  document.getElementById('btn-stop').classList.add('visible');
-  document.getElementById('result-box').className = 'result-box';
-  document.getElementById('btn-again').classList.remove('visible');
+      setStatus('scanning', 'Scanning... Point camera at student QR code');
 
-  setStatus('scanning', 'Scanning... Point camera at student QR code');
+      html5QrCode = new Html5Qrcode("qr-reader");
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 220, height: 220 } },
+        onScanSuccess,
+        onScanFailure
+      ).catch(() => {
+        setStatus('error', 'Camera access denied. Please allow permission.');
+        resetUI();
+      });
 
-  html5QrCode = new Html5Qrcode("qr-reader");
+      scanning = true;
+    }
 
-  html5QrCode.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: { width: 220, height: 220 } },
-    onScanSuccess,
-    onScanFailure
-  ).catch(err => {
-    setStatus('error', 'Camera access denied. Please allow permission.');
-    resetUI();
-  });
+    function stopScanner() {
+      if (html5QrCode && scanning) {
+        html5QrCode.stop().then(() => {
+          scanning = false;
+          resetUI();
+          setStatus('', 'Scanner stopped.');
+        });
+      }
+    }
 
-  scanning = true;
-}
+    function onScanSuccess(decodedText) {
+      if (html5QrCode && scanning) {
+        html5QrCode.stop().then(() => { scanning = false; });
+      }
 
-function stopScanner() {
-  if (html5QrCode && scanning) {
-    html5QrCode.stop().then(() => {
-      scanning = false;
-      resetUI();
-      setStatus('', 'Scanner stopped.');
-    });
-  }
-}
+      document.getElementById('scan-line').classList.remove('active');
+      document.getElementById('btn-stop').classList.remove('visible');
+      document.getElementById('btn-again').classList.add('visible');
 
-function onScanSuccess(decodedText, decodedResult) {
-  if (html5QrCode && scanning) {
-    html5QrCode.stop().then(() => { scanning = false; });
-  }
+      setStatus('success', 'QR scanned! Processing...');
 
-  document.getElementById('scan-line').classList.remove('active');
-  document.getElementById('btn-stop').classList.remove('visible');
-  document.getElementById('btn-again').classList.add('visible');
+      const box     = document.getElementById('result-box');
+      const title   = document.getElementById('result-title');
+      const content = document.getElementById('result-content');
 
-  setStatus('success', 'Student QR scanned! Processing...');
+      box.className   = 'result-box success';
+      title.className = 'result-title ok';
+      title.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+      content.innerHTML = `QR Code: <strong>${decodedText}</strong><br>Updating attendance...`;
 
-  const box     = document.getElementById('result-box');
-  const title   = document.getElementById('result-title');
-  const content = document.getElementById('result-content');
+      const eventName = document.getElementById('eventSelect').value;
 
-  box.className     = 'result-box success';
-  title.className   = 'result-title ok';
-  title.innerHTML   = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-  content.innerHTML = `QR Code: <strong>${decodedText}</strong><br>Updating attendance records...`;
-
-  // FIX 3: Get event name — simple lang, wala nang urlParams
-  const eventName = document.getElementById('eventSelect').value;
-
-  // FIX 4: Log para ma-debug kung tama yung values
-  console.log("Scanning:", decodedText, "Event:", eventName);
-
-  fetch(`${scriptURL}?action=scan&code=${encodeURIComponent(decodedText)}&event=${encodeURIComponent(eventName)}`, {
-    method: "GET",
-    redirect: "follow"
-  })
-    .then(res => res.json())
-    .then(result => {
-      console.log("Result:", result); // FIX 5: Log result para ma-debug
-
-      if (result.success) {
-        if (result.action === 'CHECK-IN') {
-          box.className     = 'result-box success';
-          title.className   = 'result-title ok';
-          title.innerHTML   = '<i class="fas fa-circle-check"></i> Check-In Recorded!';
+      fetch(`${scriptURL}?action=scan&code=${encodeURIComponent(decodedText)}&event=${encodeURIComponent(eventName)}`, {
+        method: "GET", redirect: "follow"
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          if (result.action === 'CHECK-IN') {
+            box.className   = 'result-box success';
+            title.className = 'result-title ok';
+            title.innerHTML = '<i class="fas fa-circle-check"></i> Check-In Recorded!';
+            content.innerHTML = `
+              <strong>Name:</strong> ${result.name}<br>
+              <strong>Student ID:</strong> ${result.studentId}<br>
+              <strong>Course:</strong> ${result.course}<br>
+              <strong>Year Level:</strong> ${result.yearLevel}<br>
+              <strong>Section:</strong> ${result.section}<br>
+              <strong>Check-in Time:</strong> ${result.time}<br>
+              <strong>Status:</strong> PRESENT ✅
+            `;
+            setStatus('success', 'Check-In recorded successfully!');
+          } else if (result.action === 'CHECK-OUT') {
+            box.className   = 'result-box success';
+            title.className = 'result-title ok';
+            title.innerHTML = '<i class="fas fa-circle-check"></i> Check-Out Recorded!';
+            content.innerHTML = `
+              <strong>Name:</strong> ${result.name}<br>
+              <strong>Student ID:</strong> ${result.studentId}<br>
+              <strong>Course:</strong> ${result.course}<br>
+              <strong>Year Level:</strong> ${result.yearLevel}<br>
+              <strong>Section:</strong> ${result.section}<br>
+              <strong>Check-out Time:</strong> ${result.time}<br>
+              <strong>Status:</strong> COMPLETED ✅
+            `;
+            setStatus('success', 'Check-Out recorded successfully!');
+          } else if (result.action === 'ALREADY_SCANNED') {
+            box.className   = 'result-box error';
+            title.className = 'result-title err';
+            title.innerHTML = '<i class="fas fa-circle-exclamation"></i> Already Scanned!';
+            content.innerHTML = `
+              <strong>Name:</strong> ${result.name}<br>
+              <strong>Message:</strong> ${result.message}
+            `;
+            setStatus('error', 'Student already checked in and out!');
+          }
+        } else {
+          box.className   = 'result-box error';
+          title.className = 'result-title err';
+          title.innerHTML = '<i class="fas fa-circle-xmark"></i> QR Not Found!';
           content.innerHTML = `
-            <strong>Name:</strong> ${result.name}<br>
-            <strong>Student ID:</strong> ${result.studentId}<br>
-            <strong>Course:</strong> ${result.course}<br>
-            <strong>Section:</strong> ${result.section}<br>
-            <strong>Check-in Time:</strong> ${result.time}<br>
-            <strong>Status:</strong> PRESENT ✅
-          `;
-          setStatus('success', 'Check-In recorded successfully!');
-        } else if (result.action === 'CHECK-OUT') {
-          box.className     = 'result-box success';
-          title.className   = 'result-title ok';
-          title.innerHTML   = '<i class="fas fa-circle-check"></i> Check-Out Recorded!';
-          content.innerHTML = `
-            <strong>Name:</strong> ${result.name}<br>
-            <strong>Student ID:</strong> ${result.studentId}<br>
-            <strong>Course:</strong> ${result.course}<br>
-            <strong>Section:</strong> ${result.section}<br>
-            <strong>Check-out Time:</strong> ${result.time}<br>
-            <strong>Status:</strong> COMPLETED ✅
-          `;
-          setStatus('success', 'Check-Out recorded successfully!');
-        } else if (result.action === 'ALREADY_SCANNED') {
-          box.className     = 'result-box error';
-          title.className   = 'result-title err';
-          title.innerHTML   = '<i class="fas fa-circle-exclamation"></i> Already Scanned!';
-          content.innerHTML = `
-            <strong>Name:</strong> ${result.name}<br>
+            <strong>Code Scanned:</strong> ${decodedText}<br>
+            <strong>Event:</strong> ${eventName}<br>
             <strong>Message:</strong> ${result.message}
           `;
-          setStatus('error', 'Student already checked in and out!');
+          setStatus('error', 'QR Code not recognized!');
         }
-      } else {
-        box.className     = 'result-box error';
-        title.className   = 'result-title err';
-        title.innerHTML   = '<i class="fas fa-circle-xmark"></i> QR Not Found!';
-        content.innerHTML = `
-          <strong>Code Scanned:</strong> ${decodedText}<br>
-          <strong>Event Selected:</strong> ${eventName}<br>
-          <strong>Message:</strong> ${result.message}
-        `;
-        setStatus('error', 'QR Code not recognized!');
-      }
-    })
-    .catch(err => {
-      console.error("Fetch error:", err);
-      box.className     = 'result-box error';
-      title.className   = 'result-title err';
-      title.innerHTML   = '<i class="fas fa-circle-xmark"></i> Connection Error!';
-      content.innerHTML = `Failed to connect to server. Please try again.`;
-      setStatus('error', 'Connection failed!');
-    });
-}
+      })
+      .catch(() => {
+        box.className   = 'result-box error';
+        title.className = 'result-title err';
+        title.innerHTML = '<i class="fas fa-circle-xmark"></i> Connection Error!';
+        content.innerHTML = 'Failed to connect to server. Please try again.';
+        setStatus('error', 'Connection failed!');
+      });
+    }
 
-function onScanFailure(error) {
-  // Silent
-}
+    function onScanFailure(error) { /* silent */ }
 
-function scanAgain() {
-  document.getElementById('result-box').className = 'result-box';
-  document.getElementById('btn-again').classList.remove('visible');
-  document.getElementById('cam-placeholder').style.display = 'none';
-  startScanner();
-}
+    function scanAgain() {
+      document.getElementById('result-box').className = 'result-box';
+      document.getElementById('btn-again').classList.remove('visible');
+      document.getElementById('cam-placeholder').style.display = 'none';
+      startScanner();
+    }
 
-function resetUI() {
-  document.getElementById('btn-start').style.display  = 'inline-flex';
-  document.getElementById('btn-stop').classList.remove('visible');
-  document.getElementById('scan-line').classList.remove('active');
-  document.getElementById('cam-placeholder').style.display = 'flex';
-}
+    function resetUI() {
+      document.getElementById('btn-start').style.display = 'inline-flex';
+      document.getElementById('btn-stop').classList.remove('visible');
+      document.getElementById('scan-line').classList.remove('active');
+      document.getElementById('cam-placeholder').style.display = 'flex';
+    }
+
+    window.onload = loadEvents;
   </script>
 
 </body>

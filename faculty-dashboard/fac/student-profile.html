@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Profile - Attendance Portal</title>
-
-  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -17,92 +15,78 @@
       min-height: 100vh;
     }
 
-    /* Sidebar (same as faculty pages) */
+    /* SIDEBAR — default collapsed, hover to open */
     .sidebar {
-      width: 240px;
+      width: 70px;
       background-color: #006400;
       color: white;
-      padding: 20px 15px;
+      padding: 20px 10px;
       height: 100vh;
       position: fixed;
       left: 0;
       top: 0;
-      overflow-y: auto;
+      overflow: hidden;
       transition: width 0.3s ease;
       z-index: 1000;
     }
-    .sidebar.collapsed {
-      width: 70px;
-    }
-    .sidebar.collapsed .sidebar-text {
-      display: none;
-    }
+    .sidebar:hover { width: 240px; }
+    .sidebar-text { display: none; white-space: nowrap; }
+    .sidebar:hover .sidebar-text { display: inline; }
     .sidebar-logo {
-      width: 140px;
+      width: 50px;
       margin: 0 auto 20px;
       display: block;
+      transition: width 0.3s ease;
     }
-    .sidebar-toggle {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      margin-bottom: 20px;
-      text-align: right;
-      width: 100%;
+    .sidebar:hover .sidebar-logo { width: 120px; }
+    .sidebar-title {
+      display: none;
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 10px;
+      white-space: nowrap;
     }
+    .sidebar:hover .sidebar-title { display: block; }
     .sidebar a {
       display: flex;
       align-items: center;
       color: white;
       text-decoration: none;
-      padding: 12px 15px;
+      padding: 12px 10px;
       margin-bottom: 8px;
       border-radius: 6px;
       transition: background 0.2s;
     }
-    .sidebar a:hover, .sidebar a.active {
-      background-color: #228B22;
-    }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
     .sidebar i {
-      margin-right: 12px;
+      min-width: 24px;
       font-size: 18px;
-      width: 24px;
       text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
+    }
+    .sidebar:hover i { margin-right: 12px; }
+
+    /* MAIN */
+    .main {
+      margin-left: 70px;
+      padding: 0;
+      transition: margin-left 0.3s ease;
     }
 
-    /* Top Bar */
+    /* TOP BAR — flush */
     .top-bar {
       background-color: #006400;
       color: white;
-      padding: 18px;
+      padding: 20px;
       text-align: center;
-      margin-left: 240px;
-      transition: margin-left 0.3s ease;
-      border-radius: 0 0 8px 8px;
+      margin-bottom: 25px;
     }
-    .top-bar.collapsed {
-      margin-left: 70px;
-    }
-    .top-bar h1 {
-      font-size: 26px;
-      margin: 0;
-    }
-    .top-bar p {
-      margin: 5px 0 0;
-      font-size: 16px;
-    }
+    .top-bar h1 { font-size: 26px; margin: 0; }
+    .top-bar p  { margin: 5px 0 0; font-size: 15px; opacity: 0.9; }
 
-    /* Main Content */
-    .main {
-      margin-left: 240px;
-      padding: 30px;
-      transition: margin-left 0.3s ease;
-    }
-    .main.collapsed {
-      margin-left: 70px;
-    }
+    /* CONTENT */
+    .content-wrap { padding: 0 30px 30px; }
 
     .profile-card {
       background: white;
@@ -114,9 +98,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       text-align: center;
     }
-    .profile-header {
-      margin-bottom: 30px;
-    }
+
     .profile-avatar {
       width: 120px;
       height: 120px;
@@ -125,47 +107,47 @@
       border: 4px solid #228B22;
       margin-bottom: 15px;
     }
+
     .profile-name {
       font-size: 26px;
       color: #006400;
-      margin: 10px 0;
+      margin: 10px 0 5px;
+      font-weight: bold;
     }
-    .profile-role {
-      font-size: 18px;
-      color: #555;
-      margin-bottom: 10px;
-    }
+
     .profile-info {
-      font-size: 16px;
-      line-height: 1.6;
+      font-size: 15px;
+      line-height: 1.8;
       text-align: left;
-      max-width: 500px;
-      margin: 0 auto;
+      max-width: 400px;
+      margin: 20px auto 0;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
     }
-    .profile-info p {
-      margin: 12px 0;
-    }
-    .profile-info strong {
-      color: #006400;
-    }
+    .profile-info p { margin: 10px 0; }
+    .profile-info strong { color: #006400; }
+
     .edit-btn {
       background: #228B22;
       color: white;
       padding: 12px 30px;
-      font-size: 16px;
+      font-size: 15px;
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      display: block;
-      margin: 30px auto 0;
+      margin: 25px auto 0;
+      display: inline-block;
     }
+    .edit-btn:hover { opacity: 0.9; }
+
     .back-link {
       display: block;
       text-align: center;
-      margin-top: 25px;
+      margin-top: 20px;
       color: #006400;
       font-weight: bold;
       text-decoration: underline;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -173,67 +155,86 @@
 
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
-    <button class="sidebar-toggle" onclick="toggleSidebarDesktop()">←</button>
- 
-    <h2>Student Portal</h2>
-    <a href="student-portal.html"><i class="fas fa-user"></i> <span class="sidebar-text">Student Portal</span></a>
+    <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
+    <h2 class="sidebar-title">Student Portal</h2>
+    <a href="student-portal.html"><i class="fas fa-home"></i> <span class="sidebar-text">Student Portal</span></a>
     <a href="student-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
+    <a href="view-attendance.html"><i class="fas fa-calendar-check"></i> <span class="sidebar-text">View Attendance</span></a>
     <a href="#"><i class="fas fa-cog"></i> <span class="sidebar-text">Settings</span></a>
-    <a href="#"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
   </nav>
 
-  <!-- Main Content -->
+  <!-- Main -->
   <main class="main" id="main">
 
-    <div class="top-bar" id="topbar">
+    <div class="top-bar">
       <h1>My Profile</h1>
       <p>Cloud-based Event Attendance Checker for CEITE</p>
     </div>
 
-    <div class="profile-card">
-      <div class="profile-header">
-        <img src="https://via.placeholder.com/120/006400/ffffff?text=JD" alt="Profile Picture" class="profile-avatar">
-        <div class="profile-name">Juan Dela Cruz</div>
-        <div class="profile-role">BS Information Technology Student</div>
+    <div class="content-wrap">
+      <div class="profile-card">
+
+        <img src="images/default-avatar.png" alt="Profile Picture"
+             class="profile-avatar" id="profileAvatar"
+             onerror="this.src='https://ui-avatars.com/api/?name=Student&background=006400&color=fff&size=120'">
+
+        <div class="profile-name" id="profileName">Loading...</div>
+
+        <div class="profile-info">
+          <p><strong><i class="fas fa-id-card"></i> Student ID:</strong> <span id="profileStudentId">—</span></p>
+          <p><strong><i class="fas fa-book"></i> Course:</strong> <span id="profileCourse">—</span></p>
+          <p><strong><i class="fas fa-layer-group"></i> Year Level:</strong> <span id="profileYearLevel">—</span></p>
+          <p><strong><i class="fas fa-users"></i> Section:</strong> <span id="profileSection">—</span></p>
+          <p><strong><i class="fas fa-envelope"></i> Email:</strong> <span id="profileEmail">—</span></p>
+        </div>
+
+        <button class="edit-btn">
+          <i class="fas fa-edit"></i> Edit Profile
+        </button>
+
+        <a href="student-portal.html" class="back-link">← Back to Student Portal</a>
+
       </div>
-
-      <div class="profile-info">
-        <p><strong>Student ID:</strong> 1-230674</p>
-        <p><strong>Program:</strong> BSIT - College of Engineering, Information Technology & Entrepreneurship (CEITE)</p>
-        <p><strong>Email:</strong> juan.delacruz@asiatech.edu.ph</p>
-        <p><strong>Contact:</strong> +63 917 555 1234</p>
-        <p><strong>Year Level:</strong> 3rd Year</p>
-        <p><strong>Total Events Attended:</strong> 18</p>
-        <p><strong>Attendance Rate:</strong> 92% (Present in 18 out of 20 events)</p>
-        <p><strong>Last Scanned Event:</strong> Tech Seminar – Sept 5, 2025</p>
-      </div>
-
-      <button class="edit-btn" onclick="alert('Edit profile feature coming soon! (Demo)')">Edit Profile</button>
-
-      <a href="student-portal.html" class="back-link">← Back to Student Portal</a>
     </div>
-
   </main>
 
-  <!-- JavaScript (same as other pages) -->
   <script>
-    function toggleSidebarDesktop() {
-      const sidebar = document.getElementById('sidebar');
-      const main = document.getElementById('main');
-      const topbar = document.getElementById('topbar');
-      sidebar.classList.toggle('collapsed');
-      main.classList.toggle('collapsed');
-      topbar.classList.toggle('collapsed');
+    // Check login
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (!user || user.role !== 'student') {
+      window.location.href = 'loginpage.html';
     }
 
+    // Load profile from sessionStorage
+    function loadProfile() {
+      if (!user) return;
+      document.getElementById('profileName').textContent      = user.name      || '—';
+      document.getElementById('profileStudentId').textContent = user.studentId || '—';
+      document.getElementById('profileCourse').textContent    = user.course    || '—';
+      document.getElementById('profileYearLevel').textContent = user.yearLevel || '—';
+      document.getElementById('profileSection').textContent   = user.section   || '—';
+      document.getElementById('profileEmail').textContent     = user.email     || '—';
+
+      document.getElementById('profileAvatar').src =
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=006400&color=fff&size=120`;
+    }
+
+    // Active sidebar link
     const currentPage = window.location.pathname.split('/').pop();
-  document.querySelectorAll('.sidebar a').forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
-      link.classList.add('active');
-    }
-  }
-);
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
 
+    // Logout
+    function logout() {
+      sessionStorage.removeItem('user');
+      window.location.href = 'loginpage.html';
+    }
+
+    window.onload = loadProfile;
   </script>
 
 </body>
