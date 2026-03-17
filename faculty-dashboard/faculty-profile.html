@@ -34,13 +34,7 @@
       transition: width 0.3s ease;
     }
     .sidebar:hover .sidebar-logo { width: 120px; }
-    .sidebar-title {
-      display: none;
-      text-align: center;
-      font-size: 16px;
-      margin-bottom: 10px;
-      white-space: nowrap;
-    }
+   
     .sidebar:hover .sidebar-title { display: block; }
     .sidebar a {
       display: flex;
@@ -153,13 +147,11 @@
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <h2 class="sidebar-title">Faculty Menu</h2>
     <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
     <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
     <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
     <a href="scan-qr.html"><i class="fas fa-qrcode"></i> <span class="sidebar-text">Scan QR Code</span></a>
-    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View Records</span></a>
-    <a href="download-reports.html"><i class="fas fa-download"></i> <span class="sidebar-text">Download Reports</span></a>
+    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View/Download Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
   </nav>

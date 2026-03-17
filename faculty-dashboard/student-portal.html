@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance Portal - ASIATECH CEITE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f4f0; color: #333; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 70px;
+      background-color: #006400;
+      color: white;
+      padding: 20px 10px;
+      height: 100vh;
+      position: fixed;
+      left: 0; top: 0;
+      overflow: hidden;
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar:hover { width: 230px; }
+    .sidebar-text { display: none; white-space: nowrap; }
+    .sidebar:hover .sidebar-text { display: inline; }
+    .sidebar-logo { width: 46px; margin: 0 auto 18px; display: block; border-radius: 50%; transition: width 0.3s ease; }
+    .sidebar:hover .sidebar-logo { width: 110px; }
+    .sidebar a { display: flex; align-items: center; color: white; text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
+    .sidebar i { min-width: 24px; font-size: 17px; text-align: center; margin-right: 0; transition: margin 0.3s ease; }
+    .sidebar:hover i { margin-right: 12px; }
+    .tooltip { display: none; position: absolute; left: 72px; top: 50%; transform: translateY(-50%); background: #333; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 9999; pointer-events: none; }
+    .sidebar:not(:hover) a:hover .tooltip { display: block; }
+
+    /* MAIN */
+    .main { margin-left: 70px; min-height: 100vh; }
+
+    /* TOP BAR */
+    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .top-bar-left h1 { font-size: 18px; font-weight: bold; }
+    .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+    .top-bar-right { display: flex; align-items: center; gap: 12px; }
+    .greeting-chip { background: rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 14px; font-size: 13px; }
+    .date-chip { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 6px 14px; font-size: 12px; opacity: 0.85; }
+
+    /* CONTENT */
+    .content-wrap { padding: 24px 28px; }
+
+    /* TOOLBAR ROW */
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    .stat-chip {
+      background: white;
+      border: 1px solid #d4e8d4;
+      border-radius: 8px;
+      padding: 9px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      white-space: nowrap;
+    }
+    .stat-chip i { color: #006400; font-size: 15px; }
+    .stat-chip .num { font-size: 16px; font-weight: bold; color: #1a2e1a; }
+    .stat-chip .lbl { font-size: 12px; color: #7a9a7a; margin-left: 3px; }
+    .divider { width: 1px; height: 32px; background: #d4e8d4; flex-shrink: 0; }
+
+    /* BUTTONS */
+    .btn { padding: 9px 18px; font-size: 13px; font-weight: bold; color: white; border: none; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; transition: opacity 0.2s; font-family: inherit; white-space: nowrap; }
+    .btn:hover { opacity: 0.88; }
+    .btn-primary   { background: #006400; }
+    .btn-secondary { background: #2e8b57; }
+
+    /* CARDS */
+    .card { background: white; border: 1px solid #d4e8d4; border-radius: 10px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .card-head { padding: 14px 20px; border-bottom: 1px solid #e8f0e8; }
+    .card-head h2 { font-size: 15px; color: #006400; display: flex; align-items: center; gap: 8px; }
+    .card-body { padding: 20px; }
+
+    /* BOTTOM GRID */
+    .bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+    /* EVENT ITEMS */
+    .event-item {
+      padding: 14px;
+      border-bottom: 1px solid #f0f5f0;
+      border-left: 4px solid #228B22;
+      margin-bottom: 10px;
+      border-radius: 0 6px 6px 0;
+      background: #fafff8;
+    }
+    .event-item:last-child { border-bottom: none; margin-bottom: 0; }
+    .event-item h4 { color: #1a2e1a; font-size: 14px; margin-bottom: 6px; }
+    .event-item span { font-size: 12px; color: #666; display: block; margin: 2px 0; }
+    .event-note {
+      background: #e8f5e9;
+      padding: 7px 10px;
+      border-radius: 4px;
+      margin: 8px 0;
+      font-size: 12px;
+      color: #555;
+    }
+    .register-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      color: #228B22;
+      font-weight: bold;
+      text-decoration: none;
+      border: 1px solid #228B22;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      transition: 0.2s;
+    }
+    .register-link:hover { background: #228B22; color: white; }
+
+    /* ANNOUNCE */
+    .announce-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid #f0f5f0;
+      font-size: 13px;
+      color: #555;
+    }
+    .announce-item:last-child { border-bottom: none; }
+    .announce-item i { color: #228B22; margin-top: 2px; flex-shrink: 0; }
+
+    /* NOTIFY */
+    .notify-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #fff8ee;
+      border-left: 4px solid #d4a017;
+      padding: 12px 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .notify-item:last-child { margin-bottom: 0; }
+    .notify-item i { color: #d4a017; flex-shrink: 0; margin-top: 2px; }
+
+    .loading-text { color: #aaa; font-size: 14px; text-align: center; padding: 30px; }
+
+    @media (max-width: 900px) {
+      .bottom-grid { grid-template-columns: 1fr; }
+      .toolbar-row { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
+    <a href="student-portal.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
+    <a href="student-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
+    <a href="view-attendance.html"><i class="fas fa-calendar-check"></i> <span class="sidebar-text">My Attendance</span></a>
+    <a href="#"><i class="fas fa-cog"></i> <span class="sidebar-text">Settings</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <h1>Student Attendance Portal</h1>
+        <p>Cloud-based Event Attendance Checker for CEITE</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="greeting-chip" id="greeting-chip">👋 Good morning!</div>
+        <div class="date-chip" id="date-chip"></div>
+      </div>
+    </div>
+
+    <div class="content-wrap">
+
+      <!-- TOOLBAR ROW -->
+      <div class="toolbar-row">
+        <div class="stat-chip">
+          <i class="fas fa-calendar-check"></i>
+          <span class="num" id="stat-events">—</span>
+          <span class="lbl">Upcoming Events</span>
+        </div>
+        <div class="divider"></div>
+        <a href="student-attendance.html" class="btn btn-primary">
+          <i class="fas fa-calendar-check"></i> My Attendance
+        </a>
+        <a href="student-profile.html" class="btn btn-secondary">
+          <i class="fas fa-user-circle"></i> My Profile
+        </a>
+      </div>
+
+      <!-- BOTTOM GRID -->
+      <div class="bottom-grid">
+
+        <!-- Upcoming Events -->
+        <div class="card">
+          <div class="card-head">
+            <h2><i class="fas fa-calendar-days"></i> Upcoming Events</h2>
+          </div>
+          <div class="card-body" id="event-list-container">
+            <p class="loading-text"><i class="fas fa-spinner fa-spin"></i> Fetching events...</p>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div>
+
+          <!-- Announcements -->
+          <div class="card" style="margin-bottom: 20px;">
+            <div class="card-head">
+              <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
+            </div>
+            <div class="card-body">
+              <div class="announce-item">
+                <i class="fas fa-circle-info"></i>
+                Schedule for "Career Fair" changed to 1:00 PM.
+              </div>
+              <div class="announce-item">
+                <i class="fas fa-circle-info"></i>
+                Attendance scanning closes 15 mins after event start.
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <div class="card">
+            <div class="card-head">
+              <h2><i class="fas fa-bell"></i> Notifications</h2>
+            </div>
+            <div class="card-body">
+              <div class="notify-item">
+                <i class="fas fa-triangle-exclamation"></i>
+                Don't forget to scan the QR code during events to record your attendance.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Check login
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (!user || user.role !== 'student') {
+      window.location.href = 'loginpage.html';
+    }
+
+    // Active sidebar
+    const currentPage = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      if (link.getAttribute('href') === currentPage) link.classList.add('active');
+    });
+
+    // Logout
+    function logout() {
+      sessionStorage.removeItem('user');
+      window.location.href = 'loginpage.html';
+    }
+
+    // Greeting + Date
+    function setGreeting() {
+      const now   = new Date();
+      const hour  = now.getHours();
+      const greet = hour < 12 ? '☀️ Good morning' : hour < 18 ? '🌤 Good afternoon' : '🌙 Good evening';
+      const name  = user?.name ? `, ${user.name}!` : '!';
+      document.getElementById('greeting-chip').textContent = greet + name;
+      document.getElementById('date-chip').textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+    }
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyp7Y6S2g1ov_xXH8BONmBRe75lqrEDMRFaamUcyvbJTgZfD00vZB6x34o1co6gVOSt/exec';
+
+    function formatDate(dateStr) {
+      if (dateStr && (dateStr.includes('T') || dateStr.match(/^\d{4}-\d{2}-\d{2}/))) {
+        var date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric', month: 'long', day: 'numeric',
+          hour: '2-digit', minute: '2-digit',
+          timeZone: 'Asia/Manila'
+        });
+      }
+      return dateStr;
+    }
+
+    async function loadLiveEvents() {
+      const container = document.getElementById('event-list-container');
+      try {
+        const response = await fetch(scriptURL + "?action=getEvents", {
+          method: "GET", redirect: "follow"
+        });
+        if (!response.ok) throw new Error("Network error");
+
+        const events = await response.json();
+
+        // Update stat
+        document.getElementById('stat-events').textContent = events.length;
+
+        if (events.length === 0) {
+          container.innerHTML = `
+            <div style="text-align:center;padding:30px;color:#aaa;">
+              <i class="fas fa-inbox" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+              No upcoming events.
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = "";
+        events.forEach(event => {
+          container.innerHTML += `
+            <div class="event-item">
+              <h4>${event.name}</h4>
+              <span><i class="fas fa-clock"></i> ${formatDate(event.date)}</span>
+              <span><i class="fas fa-location-dot"></i> ${event.location || '—'}</span>
+              <div class="event-note">
+                <strong>Note:</strong> ${event.notes || 'No instructions.'}
+              </div>
+              <a href="${event.formUrl}" target="_blank" class="register-link">
+                <i class="fas fa-pen"></i> Register for Event
+              </a>
+            </div>
+          `;
+        });
+
+      } catch (error) {
+        container.innerHTML = "<p style='color:#dc2626;text-align:center;'>Error connecting to cloud.</p>";
+      }
+    }
+
+    window.onload = () => {
+      setGreeting();
+      loadLiveEvents();
+      setInterval(loadLiveEvents, 30000);
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Events - Faculty Attendance System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; color: #333; min-height: 100vh; }
+
+    /* SIDEBAR — default collapsed, hover to open */
+    .sidebar {
+      width: 70px;
+      background-color: #006400;
+      color: white;
+      padding: 20px 10px;
+      height: 100vh;
+      position: fixed;
+      left: 0; top: 0;
+      overflow: hidden;
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar:hover { width: 240px; }
+    .sidebar-text { display: none; white-space: nowrap; }
+    .sidebar:hover .sidebar-text { display: inline; }
+    .sidebar-logo {
+      width: 50px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 50%;
+      transition: width 0.3s ease;
+    }
+    .sidebar:hover .sidebar-logo { width: 120px; }
+    
+    .sidebar:hover .sidebar-title { display: block; }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      padding: 12px 10px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
+    .sidebar i {
+      min-width: 24px;
+      font-size: 18px;
+      text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
+    }
+    .sidebar:hover i { margin-right: 12px; }
+
+    /* MAIN */
+    .main { margin-left: 70px; padding: 0; transition: margin-left 0.3s ease; }
+
+    /* TOP BAR */
+    .top-bar {
+      background-color: #006400;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .top-bar h1 { font-size: 26px; margin: 0; }
+    .top-bar p  { margin: 5px 0 0; font-size: 15px; opacity: 0.9; }
+
+    /* CONTENT */
+    .content-wrap { padding: 0 25px 25px; }
+
+    .filters {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .filter-btn {
+      padding: 10px 20px;
+      margin: 8px;
+      font-size: 15px;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .new-event { background-color: #228B22; }
+    .filter-btn:hover { opacity: 0.9; }
+
+    .events-card {
+      background: white;
+      border: 1px solid #006400;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #228B22;
+    }
+    .card-header h2 { color: #006400; font-size: 20px; }
+    .card-header p  { color: #888; font-size: 13px; }
+
+    .events-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .events-table thead tr { background: #006400; color: white; }
+    .events-table th { padding: 12px 15px; text-align: left; }
+    .events-table td { padding: 12px 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
+    .events-table tr:hover td { background: #f9f9f9; }
+
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+      padding: 7px 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .delete-btn:hover { opacity: 0.85; }
+
+    .loading-text { text-align: center; color: #888; padding: 30px; font-size: 14px; }
+    .empty-text   { text-align: center; color: #888; padding: 30px; font-size: 14px; }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #006400;
+      font-weight: bold;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
+    <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
+    <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
+    <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
+    <a href="scan-qr.html"><i class="fas fa-qrcode"></i> <span class="sidebar-text">Scan QR Code</span></a>
+    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View/Download Reports</span></a>
+    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+  </nav>
+
+  <!-- Main -->
+  <main class="main" id="main">
+
+    <div class="top-bar">
+      <h1>My Events</h1>
+      <p>Event Attendance Checker for CEITE</p>
+    </div>
+
+    <div class="content-wrap">
+
+      <div class="filters">
+        <a href="create-event.html" class="filter-btn new-event">
+          <i class="fas fa-plus"></i> New Event
+        </a>
+      </div>
+
+      <div class="events-card">
+        <div class="card-header">
+          <h2><i class="fas fa-calendar-alt"></i> My Posted Events</h2>
+          <p id="event-count">Loading...</p>
+        </div>
+
+        <table class="events-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Event Title</th>
+              <th>Date / Time</th>
+              <th>Venue</th>
+              <th>Notes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="events-table-body">
+            <tr>
+              <td colspan="6" class="loading-text">
+                <i class="fas fa-spinner fa-spin"></i> Loading your events...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <a href="faculty-dashboard.html" class="back-link">← Back to Dashboard</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Check login
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (!user || user.role !== 'faculty') {
+      window.location.href = 'loginpage.html';
+    }
+
+    // Active sidebar
+    const currentPage = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
+
+    // Logout
+    function logout() {
+      sessionStorage.removeItem('user');
+      window.location.href = 'loginpage.html';
+    }
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyp7Y6S2g1ov_xXH8BONmBRe75lqrEDMRFaamUcyvbJTgZfD00vZB6x34o1co6gVOSt/exec';
+
+    function formatDate(dateStr) {
+      if (dateStr && dateStr.toString().includes('T')) {
+        var date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric', month: 'long', day: 'numeric',
+          hour: '2-digit', minute: '2-digit',
+          timeZone: 'Asia/Manila'
+        });
+      }
+      return dateStr;
+    }
+
+    // Load my events
+    async function loadMyEvents() {
+      const tbody = document.getElementById('events-table-body');
+      const count = document.getElementById('event-count');
+
+      try {
+        const url = `${scriptURL}?action=getMyEvents&faculty=${encodeURIComponent(user.email)}`;
+        const response = await fetch(url, { method: "GET", redirect: "follow" });
+        const events   = await response.json();
+
+        if (events.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="empty-text">
+                <i class="fas fa-calendar-xmark"></i> No events found. 
+                <a href="create-event.html" style="color:#006400; font-weight:bold;">Create one now!</a>
+              </td>
+            </tr>`;
+          count.textContent = "0 events";
+          return;
+        }
+
+        count.textContent = `${events.length} event(s)`;
+        tbody.innerHTML = "";
+
+        events.forEach((event, index) => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${index + 1}</td>
+              <td><strong>${event.name}</strong></td>
+              <td>${formatDate(event.date)}</td>
+              <td>${event.location || '—'}</td>
+              <td>${event.notes || '—'}</td>
+              <td>
+                <button class="delete-btn" onclick="deleteEvent('${event.name.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color:red; text-align:center;">Failed to load events.</td></tr>`;
+        count.textContent = "Error";
+      }
+    }
+
+    // Delete event
+    async function deleteEvent(eventName) {
+      if (!confirm(`Are you sure you want to delete "${eventName}"?`)) return;
+
+      try {
+        const url = `${scriptURL}?action=deleteEvent&name=${encodeURIComponent(eventName)}&faculty=${encodeURIComponent(user.email)}`;
+        const response = await fetch(url, { method: "GET", redirect: "follow" });
+        const result   = await response.json();
+
+        if (result.success) {
+          alert(`"${eventName}" deleted successfully!`);
+          loadMyEvents(); // reload table
+        } else {
+          alert("Failed to delete: " + result.message);
+        }
+      } catch (err) {
+        alert("Connection failed. Please try again.");
+      }
+    }
+
+    window.onload = loadMyEvents;
+  </script>
+
+</body>
+</html>

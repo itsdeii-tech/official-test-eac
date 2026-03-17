@@ -23,8 +23,7 @@
       padding: 20px 10px;
       height: 100vh;
       position: fixed;
-      left: 0;
-      top: 0;
+      left: 0; top: 0;
       overflow: hidden;
       transition: width 0.3s ease;
       z-index: 1000;
@@ -36,16 +35,11 @@
       width: 50px;
       margin: 0 auto 20px;
       display: block;
+      border-radius: 50%;
       transition: width 0.3s ease;
     }
     .sidebar:hover .sidebar-logo { width: 120px; }
-    .sidebar-title {
-      display: none;
-      text-align: center;
-      font-size: 16px;
-      margin-bottom: 10px;
-      white-space: nowrap;
-    }
+   
     .sidebar:hover .sidebar-title { display: block; }
     .sidebar a {
       display: flex;
@@ -156,10 +150,9 @@
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <h2 class="sidebar-title">Student Portal</h2>
-    <a href="student-portal.html"><i class="fas fa-home"></i> <span class="sidebar-text">Student Portal</span></a>
+    <a href="student-portal.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
     <a href="student-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
-    <a href="view-attendance.html"><i class="fas fa-calendar-check"></i> <span class="sidebar-text">View Attendance</span></a>
+    <a href="view-attendance.html"><i class="fas fa-calendar-check"></i> <span class="sidebar-text">My Attendance</span></a>
     <a href="#"><i class="fas fa-cog"></i> <span class="sidebar-text">Settings</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
   </nav>

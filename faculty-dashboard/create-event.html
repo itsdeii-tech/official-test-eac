@@ -17,8 +17,7 @@
       padding: 20px 10px;
       height: 100vh;
       position: fixed;
-      left: 0;
-      top: 0;
+      left: 0; top: 0;
       overflow: hidden;
       transition: width 0.3s ease;
       z-index: 1000;
@@ -34,13 +33,7 @@
       transition: width 0.3s ease;
     }
     .sidebar:hover .sidebar-logo { width: 120px; }
-    .sidebar-title {
-      display: none;
-      text-align: center;
-      font-size: 16px;
-      margin-bottom: 10px;
-      white-space: nowrap;
-    }
+ 
     .sidebar:hover .sidebar-title { display: block; }
     .sidebar a {
       display: flex;
@@ -179,13 +172,11 @@
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <h2 class="sidebar-title">Faculty Menu</h2>
     <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
     <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
     <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
     <a href="scan-qr.html"><i class="fas fa-qrcode"></i> <span class="sidebar-text">Scan QR Code</span></a>
-    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View Records</span></a>
-    <a href="download-reports.html"><i class="fas fa-download"></i> <span class="sidebar-text">Download Reports</span></a>
+    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View/Download Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
   </nav>
@@ -297,7 +288,7 @@
 
     // Create event
     async function createEventRealTime() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwtH8aKL1Uaz0hMO6EeZn78j6-EqMeDudYKtUNjW7vR2ZZ7BJY--xInotoNZYTYgqtrjg/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyp7Y6S2g1ov_xXH8BONmBRe75lqrEDMRFaamUcyvbJTgZfD00vZB6x34o1co6gVOSt/exec';
 
       const name     = document.getElementById('eventTitle').value.trim();
       const dateVal  = document.getElementById('eventDate').value;
@@ -316,11 +307,14 @@
       btn.disabled  = true;
 
       try {
-        const url = `${scriptURL}?action=createEvent` +
-          `&name=${encodeURIComponent(name)}` +
-          `&date=${encodeURIComponent(date)}` +
-          `&location=${encodeURIComponent(location)}` +
-          `&notes=${encodeURIComponent(notes)}`;
+      const user = JSON.parse(sessionStorage.getItem('user'));
+
+      const url = `${scriptURL}?action=createEvent` +
+        `&name=${encodeURIComponent(name)}` +
+        `&date=${encodeURIComponent(date)}` +
+        `&location=${encodeURIComponent(location)}` +
+        `&notes=${encodeURIComponent(notes)}` +
+        `&faculty=${encodeURIComponent(user.email)}`;
 
         await fetch(url, { method: "GET", redirect: "follow" });
 
