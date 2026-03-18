@@ -20,7 +20,7 @@
       position: fixed;
       left: 0; top: 0;
       overflow: hidden;
-      transition: width 0.3s ease;
+      transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
     .sidebar:hover { width: 230px; }
@@ -35,11 +35,34 @@
     .tooltip { display: none; position: absolute; left: 72px; top: 50%; transform: translateY(-50%); background: #333; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 9999; pointer-events: none; }
     .sidebar:not(:hover) a:hover .tooltip { display: block; }
 
+    /* OVERLAY */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    .overlay.active { display: block; }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
     /* MAIN */
     .main { margin-left: 70px; min-height: 100vh; }
 
     /* TOP BAR */
     .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .top-bar-left { display: flex; align-items: center; gap: 12px; }
     .top-bar-left h1 { font-size: 18px; font-weight: bold; }
     .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
     .top-bar-right { display: flex; align-items: center; gap: 12px; }
@@ -100,87 +123,82 @@
     .event-item:last-child { border-bottom: none; margin-bottom: 0; }
     .event-item h4 { color: #1a2e1a; font-size: 14px; margin-bottom: 6px; }
     .event-item span { font-size: 12px; color: #666; display: block; margin: 2px 0; }
-    .event-note {
-      background: #e8f5e9;
-      padding: 7px 10px;
-      border-radius: 4px;
-      margin: 8px 0;
-      font-size: 12px;
-      color: #555;
-    }
+    .event-note { background: #e8f5e9; padding: 7px 10px; border-radius: 4px; margin: 8px 0; font-size: 12px; color: #555; }
     .register-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 8px;
-      color: #228B22;
-      font-weight: bold;
-      text-decoration: none;
-      border: 1px solid #228B22;
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      transition: 0.2s;
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 8px; color: #228B22; font-weight: bold;
+      text-decoration: none; border: 1px solid #228B22;
+      padding: 5px 12px; border-radius: 6px; font-size: 12px; transition: 0.2s;
     }
     .register-link:hover { background: #228B22; color: white; }
 
     /* ANNOUNCE */
-    .announce-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 11px 0;
-      border-bottom: 1px solid #f0f5f0;
-      font-size: 13px;
-      color: #555;
-    }
+    .announce-item { display: flex; align-items: flex-start; gap: 10px; padding: 11px 0; border-bottom: 1px solid #f0f5f0; font-size: 13px; color: #555; }
     .announce-item:last-child { border-bottom: none; }
     .announce-item i { color: #228B22; margin-top: 2px; flex-shrink: 0; }
 
     /* NOTIFY */
-    .notify-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: #fff8ee;
-      border-left: 4px solid #d4a017;
-      padding: 12px 14px;
-      border-radius: 0 6px 6px 0;
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 10px;
-    }
+    .notify-item { display: flex; align-items: flex-start; gap: 10px; background: #fff8ee; border-left: 4px solid #d4a017; padding: 12px 14px; border-radius: 0 6px 6px 0; font-size: 13px; color: #555; margin-bottom: 10px; }
     .notify-item:last-child { margin-bottom: 0; }
     .notify-item i { color: #d4a017; flex-shrink: 0; margin-top: 2px; }
 
     .loading-text { color: #aaa; font-size: 14px; text-align: center; padding: 30px; }
 
-    @media (max-width: 900px) {
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar { width: 230px; transform: translateX(-100%); }
+      .sidebar:hover { width: 230px; }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .sidebar.mobile-open .sidebar-text { display: inline; }
+      .sidebar.mobile-open i { margin-right: 12px; }
+      .sidebar.mobile-open .sidebar-logo { width: 110px; }
+      .main { margin-left: 0; }
+      .top-bar { padding: 0 15px; }
+      .top-bar-left h1 { font-size: 15px; }
+      .top-bar-left p { display: none; }
+      .top-bar-right { gap: 6px; }
+      .date-chip { display: none; }
+      .greeting-chip { font-size: 11px; padding: 5px 10px; }
+      .hamburger { display: block; }
+      .content-wrap { padding: 15px; }
+      .toolbar-row { gap: 8px; }
+      .divider { display: none; }
+      .btn { padding: 8px 14px; font-size: 12px; }
       .bottom-grid { grid-template-columns: 1fr; }
-      .toolbar-row { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 480px) {
+      .stat-chip .lbl { display: none; }
+      .top-bar-right { display: none; }
     }
   </style>
 </head>
 <body>
 
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay" onclick="closeMobileSidebar()"></div>
+
   <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <a href="student-portal.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
-    <a href="student-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
-    <a href="view-attendance.html"><i class="fas fa-calendar-check"></i> <span class="sidebar-text">My Attendance</span></a>
-    <a href="#"><i class="fas fa-cog"></i> <span class="sidebar-text">Settings</span></a>
-    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+    <a href="student-portal.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span><span class="tooltip">Dashboard</span></a>
+    <a href="student-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span><span class="tooltip">Profile</span></a>
+    <a href="student-attendance.html"><i class="fas fa-calendar-check"></i><span class="sidebar-text">My Attendance</span><span class="tooltip">My Attendance</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span><span class="tooltip">Logout</span></a>
   </nav>
 
   <!-- MAIN -->
   <main class="main">
 
-    <!-- Top Bar -->
     <div class="top-bar">
       <div class="top-bar-left">
-        <h1>Student Attendance Portal</h1>
-        <p>Cloud-based Event Attendance Checker for CEITE</p>
+        <button class="hamburger" onclick="toggleMobileSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div>
+          <h1>Student Dashboard</h1>
+          <p>Cloud-based Event Attendance Checker for CEITE</p>
+        </div>
       </div>
       <div class="top-bar-right">
         <div class="greeting-chip" id="greeting-chip">👋 Good morning!</div>
@@ -195,7 +213,12 @@
         <div class="stat-chip">
           <i class="fas fa-calendar-check"></i>
           <span class="num" id="stat-events">—</span>
-          <span class="lbl">Upcoming Events</span>
+          <span class="lbl">Active Events</span>
+        </div>
+        <div class="stat-chip">
+          <i class="fas fa-pen-to-square"></i>
+          <span class="num" id="stat-registered">—</span>
+          <span class="lbl">Registered</span>
         </div>
         <div class="divider"></div>
         <a href="student-attendance.html" class="btn btn-primary">
@@ -230,11 +253,11 @@
             <div class="card-body">
               <div class="announce-item">
                 <i class="fas fa-circle-info"></i>
-                Schedule for "Career Fair" changed to 1:00 PM.
+                Welcome! Check out the upcoming events.
               </div>
               <div class="announce-item">
                 <i class="fas fa-circle-info"></i>
-                Attendance scanning closes 15 mins after event start.
+                Please ensure you have a valid QR code before attending any events.
               </div>
             </div>
           </div>
@@ -276,6 +299,16 @@
       window.location.href = 'loginpage.html';
     }
 
+    // Mobile sidebar
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('overlay').classList.remove('active');
+    }
+
     // Greeting + Date
     function setGreeting() {
       const now   = new Date();
@@ -288,15 +321,14 @@
       });
     }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyp7Y6S2g1ov_xXH8BONmBRe75lqrEDMRFaamUcyvbJTgZfD00vZB6x34o1co6gVOSt/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMPFF6fA9o6FEbHr1eaRtnLIiE7kvmvOIL9nYx6IIKK9zi_jAc2blqnu3hrYi72u4qwA/exec';
 
     function formatDate(dateStr) {
       if (dateStr && (dateStr.includes('T') || dateStr.match(/^\d{4}-\d{2}-\d{2}/))) {
         var date = new Date(dateStr);
         return date.toLocaleDateString('en-US', {
           year: 'numeric', month: 'long', day: 'numeric',
-          hour: '2-digit', minute: '2-digit',
-          timeZone: 'Asia/Manila'
+          hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Manila'
         });
       }
       return dateStr;
@@ -305,17 +337,31 @@
     async function loadLiveEvents() {
       const container = document.getElementById('event-list-container');
       try {
-        const response = await fetch(scriptURL + "?action=getEvents", {
-          method: "GET", redirect: "follow"
+        // Fetch events at attendance sabay
+        const [eventsRes, attendanceRes] = await Promise.all([
+          fetch(scriptURL + "?action=getEvents", { method: "GET", redirect: "follow" }),
+          fetch(`${scriptURL}?action=getStudentAttendance&email=${encodeURIComponent(user.email)}`, { method: "GET", redirect: "follow" })
+        ]);
+
+        const events     = await eventsRes.json();
+        const attendance = await attendanceRes.json();
+
+        // Active events — future only
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const activeEvents = events.filter(event => {
+          var eventDate = new Date(Date.parse(event.date));
+          return eventDate >= today;
         });
-        if (!response.ok) throw new Error("Network error");
 
-        const events = await response.json();
+        // Registered count
+        const registered = attendance.success ? attendance.total : 0;
 
-        // Update stat
-        document.getElementById('stat-events').textContent = events.length;
+        // Update stats
+        document.getElementById('stat-events').textContent     = activeEvents.length;
+        document.getElementById('stat-registered').textContent = registered;
 
-        if (events.length === 0) {
+        if (activeEvents.length === 0) {
           container.innerHTML = `
             <div style="text-align:center;padding:30px;color:#aaa;">
               <i class="fas fa-inbox" style="font-size:24px;margin-bottom:8px;display:block;"></i>
@@ -325,7 +371,7 @@
         }
 
         container.innerHTML = "";
-        events.forEach(event => {
+        activeEvents.forEach(event => {
           container.innerHTML += `
             <div class="event-item">
               <h4>${event.name}</h4>

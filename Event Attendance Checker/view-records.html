@@ -8,9 +8,9 @@
 
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; color: #333; min-height: 100vh; }
+    body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f4f0; color: #333; min-height: 100vh; }
 
-    /* SIDEBAR — default collapsed, hover to open */
+    /* SIDEBAR */
     .sidebar {
       width: 70px;
       background-color: #006400;
@@ -20,142 +20,90 @@
       position: fixed;
       left: 0; top: 0;
       overflow: hidden;
-      transition: width 0.3s ease;
+      transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
-    .sidebar:hover { width: 240px; }
+    .sidebar:hover { width: 230px; }
     .sidebar-text { display: none; white-space: nowrap; }
     .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo {
-      width: 50px;
-      margin: 0 auto 20px;
-      display: block;
-      border-radius: 50%;
-      transition: width 0.3s ease;
-    }
-    .sidebar:hover .sidebar-logo { width: 120px; }
-    
-    .sidebar:hover .sidebar-title { display: block; }
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      color: white;
-      text-decoration: none;
-      padding: 12px 10px;
-      margin-bottom: 8px;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
-    .sidebar i {
-      min-width: 24px;
-      font-size: 18px;
-      text-align: center;
-      margin-right: 0;
-      transition: margin 0.3s ease;
-    }
+    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
+    .sidebar:hover .sidebar-logo { width: 110px; }
+    .sidebar a { display: flex; align-items: center; color: rgba(255,255,255,0.85); text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; color: white; }
+    .sidebar i { min-width: 24px; font-size: 17px; text-align: center; margin-right: 0; transition: margin 0.3s ease; }
     .sidebar:hover i { margin-right: 12px; }
+    .tooltip { display: none; position: absolute; left: 72px; top: 50%; transform: translateY(-50%); background: #006400; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 9999; pointer-events: none; }
+    .sidebar:not(:hover) a:hover .tooltip { display: block; }
+
+    /* OVERLAY */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    .overlay.active { display: block; }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 5px;
+    }
 
     /* MAIN */
-    .main { margin-left: 70px; padding: 0; transition: margin-left 0.3s ease; }
+    .main { margin-left: 70px; min-height: 100vh; }
 
     /* TOP BAR */
-    .top-bar {
-      background-color: #006400;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      margin-bottom: 25px;
-    }
-    .top-bar h1 { font-size: 26px; margin: 0; }
-    .top-bar p  { margin: 5px 0 0; font-size: 15px; opacity: 0.9; }
+    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .top-bar-left { display: flex; align-items: center; gap: 12px; }
+    .top-bar-left h1 { font-size: 18px; font-weight: bold; }
+    .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
 
     /* CONTENT */
-    .content-wrap { padding: 0 25px 25px; }
+    .content-wrap { padding: 24px 28px; }
 
-    .records-card {
-      background: white;
-      border: 1px solid #006400;
-      border-radius: 8px;
-      padding: 25px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #228B22;
-    }
-    .card-header h2 {
-      color: #006400;
-      font-size: 20px;
-    }
-    .card-header p {
-      color: #888;
-      font-size: 13px;
-    }
+    /* CARD */
+    .card { background: white; border: 1px solid #d4e8d4; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .card-head { padding: 14px 20px; border-bottom: 1px solid #e8f0e8; background: #f5faf5; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .card-head h2 { font-size: 15px; color: #006400; display: flex; align-items: center; gap: 8px; }
+    .card-head p { color: #888; font-size: 13px; }
 
     /* TABLE */
-    .events-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    .events-table thead tr { background: #006400; color: white; }
-    .events-table th {
-      padding: 12px 15px;
-      text-align: left;
-      font-weight: bold;
-    }
-    .events-table td {
-      padding: 12px 15px;
-      border-bottom: 1px solid #eee;
-      vertical-align: middle;
-    }
-    .events-table tr:hover td { background: #f9f9f9; }
-    .events-table tbody tr:last-child td { border-bottom: none; }
-
-    /* BADGES */
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    .badge-active  { background: #e8f5e9; color: #228B22; }
-    .badge-past    { background: #f0f0f0; color: #888; }
+    .table-wrap { overflow-x: auto; }
+    .events-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 550px; }
+    .events-table thead tr { background: #f5faf5; }
+    .events-table th { padding: 10px 14px; border-bottom: 2px solid #d4e8d4; color: #006400; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; text-align: left; }
+    .events-table td { padding: 12px 14px; border-bottom: 1px solid #f0f5f0; vertical-align: middle; }
+    .events-table tr:last-child td { border-bottom: none; }
+    .events-table tr:hover td { background: #fafff8; }
 
     /* ACTION BUTTONS */
     .btn-view {
-      background: #006400;
-      color: white;
-      padding: 7px 14px;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      margin-right: 6px;
+      background: #006400; color: white;
+      padding: 6px 12px; border: none;
+      border-radius: 6px; font-size: 12px;
+      cursor: pointer; transition: opacity 0.2s;
+      margin-right: 5px; display: inline-flex;
+      align-items: center; gap: 4px;
     }
     .btn-view:hover { opacity: 0.85; }
-
     .btn-download {
-      background: #228B22;
-      color: white;
-      padding: 7px 14px;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: opacity 0.2s;
+      background: #228B22; color: white;
+      padding: 6px 12px; border: none;
+      border-radius: 6px; font-size: 12px;
+      cursor: pointer; transition: opacity 0.2s;
+      display: inline-flex; align-items: center; gap: 4px;
     }
     .btn-download:hover { opacity: 0.85; }
 
-    /* ATTENDANCE MODAL */
+    /* MODAL */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -165,14 +113,14 @@
       z-index: 2000;
       align-items: center;
       justify-content: center;
+      padding: 15px;
     }
     .modal-overlay.active { display: flex; }
-
     .modal {
       background: white;
       border-radius: 10px;
       padding: 25px;
-      width: 90%;
+      width: 100%;
       max-width: 850px;
       max-height: 85vh;
       overflow-y: auto;
@@ -182,96 +130,113 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #228B22;
-    }
-    .modal-header h3 { color: #006400; font-size: 18px; }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      color: #888;
-    }
-    .modal-close:hover { color: #dc2626; }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
       margin-bottom: 15px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #d4e8d4;
+      flex-wrap: wrap;
+      gap: 8px;
     }
+    .modal-header h3 { color: #006400; font-size: 16px; }
+    .modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #888; }
+    .modal-close:hover { color: #dc2626; }
+    .modal-actions { margin-bottom: 15px; }
     .btn-csv {
-      background: #228B22;
-      color: white;
-      padding: 8px 18px;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      cursor: pointer;
+      background: #228B22; color: white;
+      padding: 8px 18px; border: none;
+      border-radius: 6px; font-size: 13px;
+      cursor: pointer; display: inline-flex;
+      align-items: center; gap: 6px;
     }
     .btn-csv:hover { opacity: 0.85; }
 
     /* ATTENDANCE TABLE */
-    .attendance-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
+    .att-wrap { overflow-x: auto; }
+    .attendance-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
     .attendance-table thead tr { background: #006400; color: white; }
     .attendance-table th { padding: 10px 12px; text-align: left; }
-    .attendance-table td { padding: 10px 12px; border-bottom: 1px solid #eee; }
-    .attendance-table tr:hover td { background: #f9f9f9; }
+    .attendance-table td { padding: 10px 12px; border-bottom: 1px solid #f0f5f0; }
+    .attendance-table tr:last-child td { border-bottom: none; }
+    .attendance-table tr:hover td { background: #fafff8; }
 
     .status-present  { color: #228B22; font-weight: bold; }
     .status-absent   { color: #dc2626; font-weight: bold; }
     .status-complete { color: #006400; font-weight: bold; }
 
-    .loading-text { text-align: center; color: #888; padding: 30px; font-size: 14px; }
-    .empty-text   { text-align: center; color: #888; padding: 30px; font-size: 14px; }
+    .loading-text { text-align: center; color: #aaa; padding: 30px; font-size: 14px; }
+    .empty-text   { text-align: center; color: #aaa; padding: 30px; font-size: 14px; }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar { width: 230px; transform: translateX(-100%); }
+      .sidebar:hover { width: 230px; }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .sidebar.mobile-open .sidebar-text { display: inline; }
+      .sidebar.mobile-open i { margin-right: 12px; }
+      .sidebar.mobile-open .sidebar-logo { width: 110px; }
+      .main { margin-left: 0; }
+      .top-bar { padding: 0 15px; }
+      .top-bar-left h1 { font-size: 15px; }
+      .top-bar-left p { display: none; }
+      .hamburger { display: block; }
+      .content-wrap { padding: 15px; }
+      .modal { padding: 18px; }
+      .modal-header h3 { font-size: 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .top-bar-left h1 { font-size: 14px; }
+      .btn-view, .btn-download { padding: 5px 10px; font-size: 11px; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay" onclick="closeMobileSidebar()"></div>
+
+  <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
-    <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
-    <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
-    <a href="scan-qr.html"><i class="fas fa-qrcode"></i> <span class="sidebar-text">Scan QR Code</span></a>
-    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View/Download Reports</span></a>
-    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
-    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+    <a href="faculty-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span><span class="tooltip">Dashboard</span></a>
+    <a href="create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Post New Event</span><span class="tooltip">Post New Event</span></a>
+    <a href="my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">My Events</span><span class="tooltip">My Events</span></a>
+    <a href="scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scan QR Code</span><span class="tooltip">Scan QR Code</span></a>
+    <a href="view-records.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Reports</span><span class="tooltip">Reports</span></a>
+    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span><span class="tooltip">Profile</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span><span class="tooltip">Logout</span></a>
   </nav>
 
-  <!-- Main -->
-  <main class="main" id="main">
+  <!-- MAIN -->
+  <main class="main">
 
     <div class="top-bar">
-      <h1>View / Download Reports</h1>
-      <p>Cloud-based Event Attendance Checker for CEITE</p>
+      <div class="top-bar-left">
+        <button class="hamburger" onclick="toggleMobileSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div>
+          <h1>View / Download Reports</h1>
+
+        </div>
+      </div>
     </div>
 
     <div class="content-wrap">
-      <div class="records-card">
-
-        <div class="card-header">
+      <div class="card">
+        <div class="card-head">
           <h2><i class="fas fa-list-check"></i> All Events</h2>
           <p id="event-count">Loading events...</p>
         </div>
-
-        <div id="events-table-wrap">
+        <div class="table-wrap" id="events-table-wrap">
           <p class="loading-text">
             <i class="fas fa-spinner fa-spin"></i> Fetching events from EAC_Database...
           </p>
         </div>
-
       </div>
     </div>
   </main>
 
-  <!-- Attendance Modal -->
+  <!-- MODAL -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <div class="modal-header">
@@ -280,68 +245,65 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-
       <div class="modal-actions">
         <button class="btn-csv" onclick="downloadCSV()">
           <i class="fas fa-download"></i> Download CSV
         </button>
       </div>
-
-      <div id="attendance-table-wrap">
-        <p class="loading-text">Loading attendance records...</p>
+      <div class="att-wrap">
+        <div id="attendance-table-wrap">
+          <p class="loading-text">Loading attendance records...</p>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    // Check login
     const user = JSON.parse(sessionStorage.getItem('user'));
     if (!user || user.role !== 'faculty') {
       window.location.href = 'loginpage.html';
     }
 
-    // Active sidebar
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.sidebar a').forEach(link => {
-      if (link.getAttribute('href') === currentPage) {
-        link.classList.add('active');
-      }
+      if (link.getAttribute('href') === currentPage) link.classList.add('active');
     });
 
-    // Logout
     function logout() {
       sessionStorage.removeItem('user');
       window.location.href = 'loginpage.html';
     }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyp7Y6S2g1ov_xXH8BONmBRe75lqrEDMRFaamUcyvbJTgZfD00vZB6x34o1co6gVOSt/exec';
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('overlay').classList.remove('active');
+    }
 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMPFF6fA9o6FEbHr1eaRtnLIiE7kvmvOIL9nYx6IIKK9zi_jAc2blqnu3hrYi72u4qwA/exec';
     let currentEventName = '';
     let currentAttendance = [];
 
-    // Format date
     function formatDate(dateStr) {
       if (dateStr && dateStr.toString().includes('T')) {
         var date = new Date(dateStr);
         return date.toLocaleDateString('en-US', {
           year: 'numeric', month: 'long', day: 'numeric',
-          hour: '2-digit', minute: '2-digit',
-          timeZone: 'Asia/Manila'
+          hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Manila'
         });
       }
       return dateStr;
     }
 
-    // Load events
     async function loadEvents() {
-      const wrap = document.getElementById('events-table-wrap');
+      const wrap  = document.getElementById('events-table-wrap');
       const count = document.getElementById('event-count');
-
       try {
-        const response = await fetch(scriptURL + "?action=getEvents", {
-          method: "GET", redirect: "follow"
-        });
-        const events = await response.json();
+        const response = await fetch(scriptURL + "?action=getEvents", { method: "GET", redirect: "follow" });
+        const events   = await response.json();
 
         if (events.length === 0) {
           wrap.innerHTML = "<p class='empty-text'>No events found.</p>";
@@ -361,9 +323,7 @@
                 <th>Location</th>
                 <th>Actions</th>
               </tr>
-            </thead>
-            <tbody>
-        `;
+            </thead><tbody>`;
 
         events.forEach((event, index) => {
           html += `
@@ -371,7 +331,7 @@
               <td>${index + 1}</td>
               <td><strong>${event.name}</strong></td>
               <td>${formatDate(event.date)}</td>
-              <td>${event.location}</td>
+              <td>${event.location || '—'}</td>
               <td>
                 <button class="btn-view" onclick="viewAttendance('${event.name.replace(/'/g, "\\'")}')">
                   <i class="fas fa-eye"></i> View
@@ -380,36 +340,31 @@
                   <i class="fas fa-download"></i> Download
                 </button>
               </td>
-            </tr>
-          `;
+            </tr>`;
         });
 
         html += `</tbody></table>`;
         wrap.innerHTML = html;
 
       } catch (error) {
-        wrap.innerHTML = "<p style='color:red; text-align:center;'>Failed to load events.</p>";
-        count.textContent = "Error loading";
+        wrap.innerHTML = "<p style='color:#dc2626; text-align:center; padding:20px;'>Failed to load events.</p>";
+        count.textContent = "Error";
       }
     }
 
-    // View attendance
     async function viewAttendance(eventName, autoDownload = false) {
       currentEventName = eventName;
-      document.getElementById('modalTitle').innerHTML =
-        `<i class="fas fa-users"></i> ${eventName} — Attendance`;
-      document.getElementById('attendance-table-wrap').innerHTML =
-        "<p class='loading-text'><i class='fas fa-spinner fa-spin'></i> Loading...</p>";
+      document.getElementById('modalTitle').innerHTML = `<i class="fas fa-users"></i> ${eventName} — Attendance`;
+      document.getElementById('attendance-table-wrap').innerHTML = "<p class='loading-text'><i class='fas fa-spinner fa-spin'></i> Loading...</p>";
       document.getElementById('modalOverlay').classList.add('active');
 
       try {
-        const url = `${scriptURL}?action=getAttendance&event=${encodeURIComponent(eventName)}`;
+        const url      = `${scriptURL}?action=getAttendance&event=${encodeURIComponent(eventName)}`;
         const response = await fetch(url, { method: "GET", redirect: "follow" });
         const result   = await response.json();
 
         if (!result.success || result.data.length === 0) {
-          document.getElementById('attendance-table-wrap').innerHTML =
-            "<p class='empty-text'>No attendance records found for this event.</p>";
+          document.getElementById('attendance-table-wrap').innerHTML = "<p class='empty-text'>No attendance records found.</p>";
           return;
         }
 
@@ -419,26 +374,17 @@
           <table class="attendance-table">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Student ID</th>
-                <th>Course</th>
-                <th>Year</th>
-                <th>Section</th>
-                <th>Status</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
+                <th>#</th><th>Name</th><th>Student ID</th>
+                <th>Course</th><th>Year</th><th>Section</th>
+                <th>Status</th><th>Check-in</th><th>Check-out</th>
               </tr>
-            </thead>
-            <tbody>
-        `;
+            </thead><tbody>`;
 
         result.data.forEach((row, i) => {
           const statusClass =
-            row.status === 'PRESENT'        ? 'status-present'  :
-            row.status === 'COMPLETED (OUT)'? 'status-complete'  :
+            row.status === 'PRESENT'         ? 'status-present'  :
+            row.status === 'COMPLETED (OUT)'  ? 'status-complete' :
             'status-absent';
-
           html += `
             <tr>
               <td>${i + 1}</td>
@@ -450,50 +396,33 @@
               <td class="${statusClass}">${row.status}</td>
               <td>${row.checkIn  || '—'}</td>
               <td>${row.checkOut || '—'}</td>
-            </tr>
-          `;
+            </tr>`;
         });
 
         html += `</tbody></table>`;
         document.getElementById('attendance-table-wrap').innerHTML = html;
-
-        // Auto download if button clicked
         if (autoDownload) downloadCSV();
 
       } catch (err) {
-        document.getElementById('attendance-table-wrap').innerHTML =
-          "<p style='color:red; text-align:center;'>Failed to load attendance.</p>";
+        document.getElementById('attendance-table-wrap').innerHTML = "<p style='color:#dc2626; text-align:center;'>Failed to load attendance.</p>";
       }
     }
 
-    // Close modal
     function closeModal() {
       document.getElementById('modalOverlay').classList.remove('active');
       currentAttendance = [];
       currentEventName  = '';
     }
 
-    // Download CSV
     function downloadCSV() {
       if (!currentAttendance.length) return;
-
       const headers = ['#', 'Name', 'Student ID', 'Course', 'Year Level', 'Section', 'Status', 'Check-in', 'Check-out'];
       const rows = currentAttendance.map((row, i) => [
-        i + 1,
-        row.name,
-        row.studentId,
-        row.course,
-        row.yearLevel,
-        row.section,
-        row.status,
-        row.checkIn  || '',
-        row.checkOut || ''
+        i + 1, row.name, row.studentId, row.course,
+        row.yearLevel, row.section, row.status,
+        row.checkIn || '', row.checkOut || ''
       ]);
-
-      const csvContent = [headers, ...rows]
-        .map(r => r.map(val => `"${val}"`).join(','))
-        .join('\n');
-
+      const csvContent = [headers, ...rows].map(r => r.map(val => `"${val}"`).join(',')).join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url  = URL.createObjectURL(blob);
       const a    = document.createElement('a');
@@ -503,7 +432,6 @@
       URL.revokeObjectURL(url);
     }
 
-    // Close modal on overlay click
     document.getElementById('modalOverlay').addEventListener('click', function(e) {
       if (e.target === this) closeModal();
     });

@@ -9,9 +9,9 @@
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; color: #333; min-height: 100vh; }
+    body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f4f0; color: #333; min-height: 100vh; }
 
-    /* SIDEBAR — default collapsed, hover to open */
+    /* SIDEBAR */
     .sidebar {
       width: 70px;
       background-color: #006400;
@@ -21,97 +21,85 @@
       position: fixed;
       left: 0; top: 0;
       overflow: hidden;
-      transition: width 0.3s ease;
+      transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
-    .sidebar:hover { width: 240px; }
+    .sidebar:hover { width: 230px; }
     .sidebar-text { display: none; white-space: nowrap; }
     .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo {
-      width: 50px;
-      margin: 0 auto 20px;
-      display: block;
-      border-radius: 50%;
-      transition: width 0.3s ease;
-    }
-    .sidebar:hover .sidebar-logo { width: 120px; }
-   
-    .sidebar:hover .sidebar-title { display: block; }
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      color: white;
-      text-decoration: none;
-      padding: 12px 10px;
-      margin-bottom: 8px;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
-    .sidebar i {
-      min-width: 24px;
-      font-size: 18px;
-      text-align: center;
-      margin-right: 0;
-      transition: margin 0.3s ease;
-    }
+    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
+    .sidebar:hover .sidebar-logo { width: 110px; }
+    .sidebar a { display: flex; align-items: center; color: rgba(255,255,255,0.85); text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; color: white; }
+    .sidebar i { min-width: 24px; font-size: 17px; text-align: center; margin-right: 0; transition: margin 0.3s ease; }
     .sidebar:hover i { margin-right: 12px; }
+    .tooltip { display: none; position: absolute; left: 72px; top: 50%; transform: translateY(-50%); background: #006400; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 9999; pointer-events: none; }
+    .sidebar:not(:hover) a:hover .tooltip { display: block; }
+
+    /* OVERLAY */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    .overlay.active { display: block; }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 5px;
+    }
 
     /* MAIN */
-    .main { margin-left: 70px; padding: 0; transition: margin-left 0.3s ease; }
+    .main { margin-left: 70px; min-height: 100vh; }
 
-    /* TOP BAR — flush */
-    .top-bar {
-      background-color: #006400;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      margin-bottom: 25px;
-    }
-    .top-bar h1 { font-size: 26px; margin: 0; }
-    .top-bar p  { margin: 5px 0 0; font-size: 15px; opacity: 0.9; }
+    /* TOP BAR */
+    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .top-bar-left { display: flex; align-items: center; gap: 12px; }
+    .top-bar-left h1 { font-size: 18px; font-weight: bold; }
+    .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
 
     /* CONTENT */
-    .content-wrap { padding: 0 25px 25px; }
+    .content-wrap { padding: 24px 28px; }
 
     /* SCAN CARD */
     .scan-card {
       background: white;
-      border: 1px solid #006400;
-      border-radius: 8px;
+      border: 1px solid #d4e8d4;
+      border-radius: 10px;
       padding: 30px;
-      max-width: 700px;
+      max-width: 680px;
       margin: 0 auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       text-align: center;
     }
-    .scan-card h2 { color: #006400; margin-bottom: 10px; font-size: 22px; }
-    .scan-card > p { color: #555; font-size: 14px; margin-bottom: 20px; }
+    .scan-card h2 { color: #006400; margin-bottom: 8px; font-size: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .scan-card > p { color: #666; font-size: 13px; margin-bottom: 20px; }
 
     /* EVENT SELECT */
-    .event-select-wrap {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-    .event-select-wrap label {
-      display: block;
-      font-weight: bold;
-      color: #006400;
-      font-size: 14px;
-      margin-bottom: 6px;
-    }
+    .event-select-wrap { margin-bottom: 20px; text-align: left; }
+    .event-select-wrap label { display: block; font-weight: bold; color: #006400; font-size: 13px; margin-bottom: 6px; }
     .event-select-wrap select {
       width: 100%;
       padding: 11px 14px;
-      border: 1px solid #ccc;
+      border: 1px solid #d4e8d4;
       border-radius: 8px;
       font-size: 14px;
+      background: #fafff8;
       transition: border 0.2s;
     }
     .event-select-wrap select:focus {
       outline: none;
-      border-color: #006400;
-      box-shadow: 0 0 0 3px rgba(0,100,0,0.1);
+      border-color: #228B22;
+      box-shadow: 0 0 0 3px rgba(34,139,34,0.1);
     }
 
     /* STATUS BOX */
@@ -125,15 +113,10 @@
       border-radius: 8px;
       padding: 12px 20px;
       margin-bottom: 20px;
-      font-size: 14px;
+      font-size: 13px;
       color: #555;
     }
-    .status-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: #ccc;
-      flex-shrink: 0;
-    }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
     .status-dot.ready    { background: #22c55e; }
     .status-dot.scanning { background: #f97316; animation: blink 1s infinite; }
     .status-dot.success  { background: #006400; }
@@ -143,8 +126,8 @@
     /* VIEWFINDER */
     .viewfinder-wrap {
       position: relative;
-      width: 280px; height: 280px;
-      margin: 0 auto 24px;
+      width: 260px; height: 260px;
+      margin: 0 auto 20px;
       border-radius: 12px;
       overflow: hidden;
       background: #111;
@@ -160,160 +143,117 @@
     }
     .viewfinder-wrap::before { top:12px; left:12px; border-width:3px 0 0 3px; border-radius:4px 0 0 0; }
     .viewfinder-wrap::after  { bottom:12px; right:12px; border-width:0 3px 3px 0; border-radius:0 0 4px 0; }
-    .corner-tr, .corner-bl {
-      position: absolute;
-      width: 40px; height: 40px;
-      border-color: #00e87a;
-      border-style: solid;
-      z-index: 10;
-      pointer-events: none;
-    }
+    .corner-tr, .corner-bl { position: absolute; width: 40px; height: 40px; border-color: #00e87a; border-style: solid; z-index: 10; pointer-events: none; }
     .corner-tr { top:12px; right:12px; border-width:3px 3px 0 0; border-radius:0 4px 0 0; }
     .corner-bl { bottom:12px; left:12px; border-width:0 0 3px 3px; border-radius:0 0 0 4px; }
-    .scan-line {
-      display: none;
-      position: absolute;
-      left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #00e87a, transparent);
-      z-index: 11;
-      animation: scanMove 2s linear infinite;
-    }
+    .scan-line { display: none; position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #00e87a, transparent); z-index: 11; animation: scanMove 2s linear infinite; }
     .scan-line.active { display: block; }
-    @keyframes scanMove { 0%{top:20px;} 100%{top:260px;} }
-    .cam-placeholder {
-      width: 100%; height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      color: #aaa;
-      font-size: 14px;
-    }
-    .cam-placeholder i { font-size: 48px; color: #555; }
+    @keyframes scanMove { 0%{top:20px;} 100%{top:240px;} }
+    .cam-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: #aaa; font-size: 13px; }
+    .cam-placeholder i { font-size: 42px; color: #555; }
     #qr-reader { width:100%!important; height:100%!important; border:none!important; }
     #qr-reader__scan_region { border:none!important; }
     #qr-reader__dashboard { display:none!important; }
 
     /* BUTTONS */
-    .btn-start {
-      background: #006400; color: white;
-      padding: 13px 35px; font-size: 16px;
-      border: none; border-radius: 30px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center; gap: 10px;
-      transition: opacity 0.2s;
-      margin-bottom: 10px;
-    }
+    .btn-start { background: #006400; color: white; padding: 12px 30px; font-size: 15px; border: none; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s; margin-bottom: 10px; }
     .btn-start:hover { opacity: 0.88; }
-    .btn-stop {
-      background: #dc2626; color: white;
-      padding: 13px 35px; font-size: 16px;
-      border: none; border-radius: 30px;
-      cursor: pointer;
-      display: none;
-      align-items: center; gap: 10px;
-      transition: opacity 0.2s;
-      margin-bottom: 10px;
-    }
+    .btn-stop { background: #dc2626; color: white; padding: 12px 30px; font-size: 15px; border: none; border-radius: 30px; cursor: pointer; display: none; align-items: center; gap: 8px; transition: opacity 0.2s; margin-bottom: 10px; }
     .btn-stop:hover { opacity: 0.88; }
     .btn-stop.visible { display: inline-flex; }
-    .btn-again {
-      background: #228B22; color: white;
-      padding: 11px 28px; font-size: 15px;
-      border: none; border-radius: 30px;
-      cursor: pointer;
-      display: none;
-      margin: 10px auto 0;
-      transition: opacity 0.2s;
-    }
+    .btn-again { background: #228B22; color: white; padding: 10px 25px; font-size: 14px; border: none; border-radius: 30px; cursor: pointer; display: none; margin: 10px auto 0; transition: opacity 0.2s; }
     .btn-again:hover { opacity: 0.88; }
     .btn-again.visible { display: inline-block; }
 
     /* RESULT BOX */
-    .result-box { display: none; margin: 20px 0 0; border-radius: 10px; padding: 20px; text-align: left; }
+    .result-box { display: none; margin: 20px 0 0; border-radius: 10px; padding: 18px; text-align: left; }
     .result-box.success { display: block; background: #f0faf0; border: 1px solid #86efac; }
     .result-box.error   { display: block; background: #fff5f5; border: 1px solid #fca5a5; }
-    .result-title { font-size: 15px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .result-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
     .result-title.ok  { color: #006400; }
     .result-title.err { color: #dc2626; }
-    .result-content {
-      font-size: 14px; color: #444;
-      background: white;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      padding: 12px 14px;
-      line-height: 1.8;
-    }
+    .result-content { font-size: 13px; color: #444; background: white; border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px 14px; line-height: 1.8; }
 
     /* INSTRUCTIONS */
-    .instructions {
-      background: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px 20px;
-      margin: 24px 0 0;
-      text-align: left;
-    }
-    .instructions h3 { font-size: 14px; font-weight: bold; color: #006400; margin-bottom: 10px; }
+    .instructions { background: #f5faf5; border: 1px solid #d4e8d4; border-radius: 8px; padding: 16px 20px; margin: 20px 0 0; text-align: left; }
+    .instructions h3 { font-size: 13px; font-weight: bold; color: #006400; margin-bottom: 8px; }
     .instructions ol { padding-left: 18px; font-size: 13px; color: #555; line-height: 2; }
 
-    .back-link {
-      display: block;
-      text-align: center;
-      margin: 20px 0 0;
-      color: #006400;
-      font-weight: bold;
-      text-decoration: underline;
-      font-size: 14px;
+    .back-link { display: block; text-align: center; margin: 20px 0 0; color: #006400; font-weight: bold; text-decoration: underline; font-size: 13px; }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar { width: 230px; transform: translateX(-100%); }
+      .sidebar:hover { width: 230px; }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .sidebar.mobile-open .sidebar-text { display: inline; }
+      .sidebar.mobile-open i { margin-right: 12px; }
+      .sidebar.mobile-open .sidebar-logo { width: 110px; }
+      .main { margin-left: 0; }
+      .top-bar { padding: 0 15px; }
+      .top-bar-left h1 { font-size: 15px; }
+      .top-bar-left p { display: none; }
+      .hamburger { display: block; }
+      .content-wrap { padding: 15px; }
+      .scan-card { padding: 20px 16px; }
+      .viewfinder-wrap { width: 220px; height: 220px; }
+    }
+
+    @media (max-width: 480px) {
+      .top-bar-left h1 { font-size: 14px; }
+      .viewfinder-wrap { width: 200px; height: 200px; }
+      .btn-start, .btn-stop { padding: 11px 24px; font-size: 14px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay" onclick="closeMobileSidebar()"></div>
+
+  <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <a href="faculty-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span></a>
-    <a href="create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Post New Event</span></a>
-    <a href="my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">My Events</span></a>
-    <a href="scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scan QR Code</span></a>
-    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View/Download Reports</span></a>
-    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span></a>
-    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span></a>
+    <a href="faculty-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span><span class="tooltip">Dashboard</span></a>
+    <a href="create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Post New Event</span><span class="tooltip">Post New Event</span></a>
+    <a href="my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">My Events</span><span class="tooltip">My Events</span></a>
+    <a href="scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scan QR Code</span><span class="tooltip">Scan QR Code</span></a>
+    <a href="view-records.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Reports</span><span class="tooltip">Reports</span></a>
+    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span><span class="tooltip">Profile</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span><span class="tooltip">Logout</span></a>
   </nav>
 
-  <!-- Main -->
-  <main class="main" id="main">
+  <!-- MAIN -->
+  <main class="main">
 
     <div class="top-bar">
-      <h1>Scan Student QR Code</h1>
-      <p>Cloud-based Event Attendance Checker for CEITE</p>
+      <div class="top-bar-left">
+        <button class="hamburger" onclick="toggleMobileSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div>
+          <h1>Scan Student QR Code</h1>
+        </div>
+      </div>
     </div>
 
     <div class="content-wrap">
       <div class="scan-card">
 
-        <h2><i class="fas fa-qrcode" style="margin-right:8px;"></i>Check-In / Check-Out</h2>
-        <p>Scan the student's QR code to mark attendance or check-out.</p>
+        <h2><i class="fas fa-qrcode"></i> Check-In / Check-Out</h2>
+       
 
-        <!-- Status -->
         <div class="status-box">
           <div class="status-dot" id="status-dot"></div>
           <span id="status-text">Camera not started. Click below to begin.</span>
         </div>
 
-        <!-- Event Select -->
         <div class="event-select-wrap">
-          <label><i class="fas fa-calendar-check"></i> Select Event</label>
           <select id="eventSelect">
             <option value="">-- Select Event --</option>
           </select>
         </div>
 
-        <!-- Viewfinder -->
         <div class="viewfinder-wrap" id="viewfinder-wrap">
           <div class="corner-tr"></div>
           <div class="corner-bl"></div>
@@ -325,7 +265,6 @@
           <div id="qr-reader"></div>
         </div>
 
-        <!-- Buttons -->
         <div>
           <button class="btn-start" id="btn-start" onclick="startScanner()">
             <i class="fas fa-camera"></i> Start Scanner
@@ -339,13 +278,11 @@
           <i class="fas fa-rotate-right"></i> Scan Again
         </button>
 
-        <!-- Result -->
         <div class="result-box" id="result-box">
           <div class="result-title" id="result-title"></div>
           <div class="result-content" id="result-content"></div>
         </div>
 
-        <!-- Instructions -->
         <div class="instructions">
           <h3><i class="fas fa-circle-info" style="margin-right:6px;"></i>How to use:</h3>
           <ol>
@@ -364,29 +301,32 @@
   </main>
 
   <script>
-    // Check login — faculty only
     const user = JSON.parse(sessionStorage.getItem('user'));
     if (!user || user.role !== 'faculty') {
       window.location.href = 'loginpage.html';
     }
 
-    // Active sidebar link
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.sidebar a').forEach(link => {
-      if (link.getAttribute('href') === currentPage) {
-        link.classList.add('active');
-      }
+      if (link.getAttribute('href') === currentPage) link.classList.add('active');
     });
 
-    // Logout
     function logout() {
       sessionStorage.removeItem('user');
       window.location.href = 'loginpage.html';
     }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyp7Y6S2g1ov_xXH8BONmBRe75lqrEDMRFaamUcyvbJTgZfD00vZB6x34o1co6gVOSt/exec';
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('overlay').classList.remove('active');
+    }
 
-    // Load events
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMPFF6fA9o6FEbHr1eaRtnLIiE7kvmvOIL9nYx6IIKK9zi_jAc2blqnu3hrYi72u4qwA/exec';
+
     async function loadEvents() {
       try {
         const response = await fetch(scriptURL + "?action=getEvents", { method: "GET", redirect: "follow" });
@@ -404,12 +344,11 @@
       }
     }
 
-    // Scanner
     let html5QrCode = null;
     let scanning    = false;
 
     function setStatus(state, message) {
-      document.getElementById('status-dot').className  = 'status-dot ' + state;
+      document.getElementById('status-dot').className    = 'status-dot ' + state;
       document.getElementById('status-text').textContent = message;
     }
 
@@ -419,27 +358,24 @@
         alert("Please select an event first!");
         return;
       }
-
       document.getElementById('cam-placeholder').style.display = 'none';
       document.getElementById('scan-line').classList.add('active');
       document.getElementById('btn-start').style.display = 'none';
       document.getElementById('btn-stop').classList.add('visible');
       document.getElementById('result-box').className = 'result-box';
       document.getElementById('btn-again').classList.remove('visible');
-
       setStatus('scanning', 'Scanning... Point camera at student QR code');
 
       html5QrCode = new Html5Qrcode("qr-reader");
       html5QrCode.start(
         { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 220, height: 220 } },
+        { fps: 10, qrbox: { width: 200, height: 200 } },
         onScanSuccess,
         onScanFailure
       ).catch(() => {
         setStatus('error', 'Camera access denied. Please allow permission.');
         resetUI();
       });
-
       scanning = true;
     }
 
@@ -457,23 +393,20 @@
       if (html5QrCode && scanning) {
         html5QrCode.stop().then(() => { scanning = false; });
       }
-
       document.getElementById('scan-line').classList.remove('active');
       document.getElementById('btn-stop').classList.remove('visible');
       document.getElementById('btn-again').classList.add('visible');
-
       setStatus('success', 'QR scanned! Processing...');
 
       const box     = document.getElementById('result-box');
       const title   = document.getElementById('result-title');
       const content = document.getElementById('result-content');
+      const eventName = document.getElementById('eventSelect').value;
 
       box.className   = 'result-box success';
       title.className = 'result-title ok';
       title.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
       content.innerHTML = `QR Code: <strong>${decodedText}</strong><br>Updating attendance...`;
-
-      const eventName = document.getElementById('eventSelect').value;
 
       fetch(`${scriptURL}?action=scan&code=${encodeURIComponent(decodedText)}&event=${encodeURIComponent(eventName)}`, {
         method: "GET", redirect: "follow"
@@ -492,8 +425,7 @@
               <strong>Year Level:</strong> ${result.yearLevel}<br>
               <strong>Section:</strong> ${result.section}<br>
               <strong>Check-in Time:</strong> ${result.time}<br>
-              <strong>Status:</strong> PRESENT ✅
-            `;
+              <strong>Status:</strong> PRESENT ✅`;
             setStatus('success', 'Check-In recorded successfully!');
           } else if (result.action === 'CHECK-OUT') {
             box.className   = 'result-box success';
@@ -506,8 +438,7 @@
               <strong>Year Level:</strong> ${result.yearLevel}<br>
               <strong>Section:</strong> ${result.section}<br>
               <strong>Check-out Time:</strong> ${result.time}<br>
-              <strong>Status:</strong> COMPLETED ✅
-            `;
+              <strong>Status:</strong> COMPLETED ✅`;
             setStatus('success', 'Check-Out recorded successfully!');
           } else if (result.action === 'ALREADY_SCANNED') {
             box.className   = 'result-box error';
@@ -515,8 +446,7 @@
             title.innerHTML = '<i class="fas fa-circle-exclamation"></i> Already Scanned!';
             content.innerHTML = `
               <strong>Name:</strong> ${result.name}<br>
-              <strong>Message:</strong> ${result.message}
-            `;
+              <strong>Message:</strong> ${result.message}`;
             setStatus('error', 'Student already checked in and out!');
           }
         } else {
@@ -526,8 +456,7 @@
           content.innerHTML = `
             <strong>Code Scanned:</strong> ${decodedText}<br>
             <strong>Event:</strong> ${eventName}<br>
-            <strong>Message:</strong> ${result.message}
-          `;
+            <strong>Message:</strong> ${result.message}`;
           setStatus('error', 'QR Code not recognized!');
         }
       })

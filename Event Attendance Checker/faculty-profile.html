@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Profile - Faculty Attendance System</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: Arial, Helvetica, sans-serif; background-color: #f8f9fa; color: #333; min-height: 100vh; }
+    body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f4f0; color: #333; min-height: 100vh; }
 
-    /* SIDEBAR — default collapsed, hover to open */
+    /* SIDEBAR */
     .sidebar {
       width: 70px;
       background-color: #006400;
@@ -20,73 +19,68 @@
       position: fixed;
       left: 0; top: 0;
       overflow: hidden;
-      transition: width 0.3s ease;
+      transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
-    .sidebar:hover { width: 240px; }
+    .sidebar:hover { width: 230px; }
     .sidebar-text { display: none; white-space: nowrap; }
     .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo {
-      width: 50px;
-      margin: 0 auto 20px;
-      display: block;
-      border-radius: 50%;
-      transition: width 0.3s ease;
-    }
-    .sidebar:hover .sidebar-logo { width: 120px; }
-   
-    .sidebar:hover .sidebar-title { display: block; }
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      color: white;
-      text-decoration: none;
-      padding: 12px 10px;
-      margin-bottom: 8px;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
-    .sidebar i {
-      min-width: 24px;
-      font-size: 18px;
-      text-align: center;
-      margin-right: 0;
-      transition: margin 0.3s ease;
-    }
+    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
+    .sidebar:hover .sidebar-logo { width: 110px; }
+    .sidebar a { display: flex; align-items: center; color: rgba(255,255,255,0.85); text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
+    .sidebar a:hover, .sidebar a.active { background-color: #228B22; color: white; }
+    .sidebar i { min-width: 24px; font-size: 17px; text-align: center; margin-right: 0; transition: margin 0.3s ease; }
     .sidebar:hover i { margin-right: 12px; }
+    .tooltip { display: none; position: absolute; left: 72px; top: 50%; transform: translateY(-50%); background: #006400; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 9999; pointer-events: none; }
+    .sidebar:not(:hover) a:hover .tooltip { display: block; }
+
+    /* OVERLAY */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    .overlay.active { display: block; }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 5px;
+    }
 
     /* MAIN */
-    .main { margin-left: 70px; padding: 0; transition: margin-left 0.3s ease; }
+    .main { margin-left: 70px; min-height: 100vh; }
 
-    /* TOP BAR — flush */
-    .top-bar {
-      background-color: #006400;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      margin-bottom: 25px;
-    }
-    .top-bar h1 { font-size: 26px; margin: 0; }
-    .top-bar p  { margin: 5px 0 0; font-size: 15px; opacity: 0.9; }
+    /* TOP BAR */
+    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .top-bar-left { display: flex; align-items: center; gap: 12px; }
+    .top-bar-left h1 { font-size: 18px; font-weight: bold; }
+    .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
 
     /* CONTENT */
-    .content-wrap { padding: 0 25px 25px; }
+    .content-wrap { padding: 24px 28px; }
 
     .profile-card {
       background: white;
-      border: 1px solid #006400;
-      border-radius: 8px;
-      padding: 30px;
+      border: 1px solid #d4e8d4;
+      border-radius: 10px;
+      padding: 36px 30px;
       max-width: 600px;
       margin: 0 auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
       text-align: center;
     }
 
     .profile-avatar {
-      width: 120px;
-      height: 120px;
+      width: 120px; height: 120px;
       border-radius: 50%;
       object-fit: cover;
       border: 4px solid #228B22;
@@ -94,25 +88,25 @@
     }
 
     .profile-name {
-      font-size: 26px;
+      font-size: 24px;
       color: #006400;
       margin: 10px 0 5px;
       font-weight: bold;
     }
 
     .profile-role {
-      font-size: 15px;
-      color: #555;
+      font-size: 14px;
+      color: #64748b;
       margin-bottom: 5px;
     }
 
     .profile-info {
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.8;
       text-align: left;
       max-width: 400px;
       margin: 20px auto 0;
-      border-top: 1px solid #eee;
+      border-top: 1px solid #e8f0e8;
       padding-top: 20px;
     }
     .profile-info p { margin: 10px 0; }
@@ -123,11 +117,14 @@
       color: white;
       padding: 12px 30px;
       font-size: 15px;
+      font-weight: bold;
       border: none;
-      border-radius: 30px;
+      border-radius: 8px;
       cursor: pointer;
       margin: 25px auto 0;
       display: inline-block;
+      font-family: inherit;
+      transition: opacity 0.2s;
     }
     .edit-btn:hover { opacity: 0.9; }
 
@@ -140,46 +137,80 @@
       text-decoration: underline;
       font-size: 14px;
     }
+    .back-link:hover { color: #228B22; }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 230px;
+        transform: translateX(-100%);
+      }
+      .sidebar:hover { width: 230px; }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .sidebar.mobile-open .sidebar-text { display: inline; }
+      .sidebar.mobile-open i { margin-right: 12px; }
+      .sidebar.mobile-open .sidebar-logo { width: 110px; }
+      .main { margin-left: 0; }
+      .top-bar { padding: 0 15px; }
+      .top-bar-left h1 { font-size: 15px; }
+      .top-bar-left p { display: none; }
+      .hamburger { display: block; }
+      .content-wrap { padding: 15px; }
+      .profile-card { padding: 24px 16px; }
+      .profile-name { font-size: 20px; }
+      .profile-avatar { width: 90px; height: 90px; }
+    }
+
+    @media (max-width: 480px) {
+      .top-bar-left h1 { font-size: 14px; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay" onclick="closeMobileSidebar()"></div>
+
+  <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
-    <a href="faculty-dashboard.html"><i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span></a>
-    <a href="create-event.html"><i class="fas fa-plus-circle"></i> <span class="sidebar-text">Post New Event</span></a>
-    <a href="my-events.html"><i class="fas fa-calendar-alt"></i> <span class="sidebar-text">My Events</span></a>
-    <a href="scan-qr.html"><i class="fas fa-qrcode"></i> <span class="sidebar-text">Scan QR Code</span></a>
-    <a href="view-records.html"><i class="fas fa-list-check"></i> <span class="sidebar-text">View/Download Reports</span></a>
-    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i> <span class="sidebar-text">Profile</span></a>
-    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span class="sidebar-text">Logout</span></a>
+    <a href="faculty-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span><span class="tooltip">Dashboard</span></a>
+    <a href="create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Post New Event</span><span class="tooltip">Post New Event</span></a>
+    <a href="my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">My Events</span><span class="tooltip">My Events</span></a>
+    <a href="scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scan QR Code</span><span class="tooltip">Scan QR Code</span></a>
+    <a href="view-records.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Reports</span><span class="tooltip">Reports</span></a>
+    <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span><span class="tooltip">Profile</span></a>
+    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span><span class="tooltip">Logout</span></a>
   </nav>
 
-  <!-- Main -->
-  <main class="main" id="main">
+  <!-- MAIN -->
+  <main class="main">
 
     <div class="top-bar">
-      <h1>My Profile</h1>
-      <p>Cloud-based Event Attendance Checker for CEITE</p>
+      <div class="top-bar-left">
+        <button class="hamburger" onclick="toggleMobileSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div>
+          <h1>My Profile</h1>
+          <p>Cloud-based Event Attendance Checker for CEITE</p>
+        </div>
+      </div>
     </div>
 
     <div class="content-wrap">
       <div class="profile-card">
 
-        <!-- Avatar -->
         <img id="profileAvatar" class="profile-avatar"
           src="images/default-avatar.png" alt="Profile Picture"
           onerror="this.src='https://ui-avatars.com/api/?name=Faculty&background=006400&color=fff&size=120'">
 
-        <!-- Name & Role -->
         <div class="profile-name" id="profileName">Loading...</div>
         <div class="profile-role">Faculty Member - CEITE</div>
 
-        <!-- Info -->
         <div class="profile-info">
           <p><strong><i class="fas fa-envelope"></i> Email:</strong> <span id="profileEmail">—</span></p>
-          <p><strong><i class="fas fa-user-tie"></i> Account Type:</strong> Faculty</p>
+          <p><strong><i class="fas fa-user-tie"></i> Account:</strong> Faculty</p>
         </div>
 
         <button class="edit-btn">
@@ -193,19 +224,17 @@
   </main>
 
   <script>
-    // Check login — faculty only
+    // Auth check
     const user = JSON.parse(sessionStorage.getItem('user'));
     if (!user || user.role !== 'faculty') {
       window.location.href = 'loginpage.html';
     }
 
-    // Load profile from sessionStorage
+    // Load profile
     function loadProfile() {
       if (!user) return;
       document.getElementById('profileName').textContent  = user.name  || '—';
       document.getElementById('profileEmail').textContent = user.email || '—';
-
-      // Avatar — initials
       document.getElementById('profileAvatar').src =
         `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=006400&color=fff&size=120`;
     }
@@ -213,15 +242,23 @@
     // Active sidebar link
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.sidebar a').forEach(link => {
-      if (link.getAttribute('href') === currentPage) {
-        link.classList.add('active');
-      }
+      if (link.getAttribute('href') === currentPage) link.classList.add('active');
     });
 
     // Logout
     function logout() {
       sessionStorage.removeItem('user');
       window.location.href = 'loginpage.html';
+    }
+
+    // Mobile sidebar
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('overlay').classList.remove('active');
     }
 
     window.onload = loadProfile;
