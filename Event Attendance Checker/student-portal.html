@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Attendance Portal - ASIATECH CEITE</title>
+  <title>Student Dashboard - CEITE</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -36,32 +36,17 @@
     .sidebar:not(:hover) a:hover .tooltip { display: block; }
 
     /* OVERLAY */
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
-    }
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
     .overlay.active { display: block; }
 
     /* HAMBURGER */
-    .hamburger {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 22px;
-      cursor: pointer;
-      padding: 5px;
-    }
+    .hamburger { display: none; background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 5px; }
 
     /* MAIN */
     .main { margin-left: 70px; min-height: 100vh; }
 
     /* TOP BAR */
-    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .top-bar-left { display: flex; align-items: center; gap: 12px; }
     .top-bar-left h1 { font-size: 18px; font-weight: bold; }
     .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
@@ -73,24 +58,8 @@
     .content-wrap { padding: 24px 28px; }
 
     /* TOOLBAR ROW */
-    .toolbar-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 22px;
-      flex-wrap: wrap;
-    }
-    .stat-chip {
-      background: white;
-      border: 1px solid #d4e8d4;
-      border-radius: 8px;
-      padding: 9px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      white-space: nowrap;
-    }
+    .toolbar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+    .stat-chip { background: white; border: 1px solid #d4e8d4; border-radius: 8px; padding: 9px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); white-space: nowrap; }
     .stat-chip i { color: #006400; font-size: 15px; }
     .stat-chip .num { font-size: 16px; font-weight: bold; color: #1a2e1a; }
     .stat-chip .lbl { font-size: 12px; color: #7a9a7a; margin-left: 3px; }
@@ -104,33 +73,22 @@
 
     /* CARDS */
     .card { background: white; border: 1px solid #d4e8d4; border-radius: 10px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
-    .card-head { padding: 14px 20px; border-bottom: 1px solid #e8f0e8; }
+    .card-head { padding: 14px 20px; border-bottom: 1px solid #e8f0e8; background: #f5faf5; }
     .card-head h2 { font-size: 15px; color: #006400; display: flex; align-items: center; gap: 8px; }
     .card-body { padding: 20px; }
 
     /* BOTTOM GRID */
     .bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
 
-    /* EVENT ITEMS */
-    .event-item {
-      padding: 14px;
-      border-bottom: 1px solid #f0f5f0;
-      border-left: 4px solid #228B22;
-      margin-bottom: 10px;
-      border-radius: 0 6px 6px 0;
-      background: #fafff8;
-    }
-    .event-item:last-child { border-bottom: none; margin-bottom: 0; }
-    .event-item h4 { color: #1a2e1a; font-size: 14px; margin-bottom: 6px; }
-    .event-item span { font-size: 12px; color: #666; display: block; margin: 2px 0; }
-    .event-note { background: #e8f5e9; padding: 7px 10px; border-radius: 4px; margin: 8px 0; font-size: 12px; color: #555; }
-    .register-link {
-      display: inline-flex; align-items: center; gap: 5px;
-      margin-top: 8px; color: #228B22; font-weight: bold;
-      text-decoration: none; border: 1px solid #228B22;
-      padding: 5px 12px; border-radius: 6px; font-size: 12px; transition: 0.2s;
-    }
-    .register-link:hover { background: #228B22; color: white; }
+    /* TABLE — same ng faculty dashboard */
+    .events-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .events-table thead tr { background: #f5faf5; }
+    .events-table th { padding: 10px 14px; border-bottom: 2px solid #d4e8d4; color: #006400; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; text-align: left; }
+    .events-table td { padding: 13px 14px; border-bottom: 1px solid #f0f5f0; }
+    .events-table tr:last-child td { border-bottom: none; }
+    .events-table tr:hover td { background: #fafff8; }
+    .register-link { color: #228B22; text-decoration: none; font-weight: bold; font-size: 13px; display: inline-flex; align-items: center; gap: 5px; }
+    .register-link:hover { text-decoration: underline; }
 
     /* ANNOUNCE */
     .announce-item { display: flex; align-items: flex-start; gap: 10px; padding: 11px 0; border-bottom: 1px solid #f0f5f0; font-size: 13px; color: #555; }
@@ -142,9 +100,9 @@
     .notify-item:last-child { margin-bottom: 0; }
     .notify-item i { color: #d4a017; flex-shrink: 0; margin-top: 2px; }
 
-    .loading-text { color: #aaa; font-size: 14px; text-align: center; padding: 30px; }
+    .loading-text { color: #aaa; font-size: 14px; text-align: center; padding: 36px; }
 
-    /* MOBILE RESPONSIVE */
+    /* MOBILE */
     @media (max-width: 768px) {
       .sidebar { width: 230px; transform: translateX(-100%); }
       .sidebar:hover { width: 230px; }
@@ -165,6 +123,8 @@
       .divider { display: none; }
       .btn { padding: 8px 14px; font-size: 12px; }
       .bottom-grid { grid-template-columns: 1fr; }
+      .card { overflow-x: auto; }
+      .events-table { min-width: 500px; }
     }
 
     @media (max-width: 480px) {
@@ -197,7 +157,6 @@
         </button>
         <div>
           <h1>Student Dashboard</h1>
-          <p>Cloud-based Event Attendance Checker for CEITE</p>
         </div>
       </div>
       <div class="top-bar-right">
@@ -232,12 +191,12 @@
       <!-- BOTTOM GRID -->
       <div class="bottom-grid">
 
-        <!-- Upcoming Events -->
+        <!-- Upcoming Events — TABLE format now -->
         <div class="card">
           <div class="card-head">
             <h2><i class="fas fa-calendar-days"></i> Upcoming Events</h2>
           </div>
-          <div class="card-body" id="event-list-container">
+          <div id="event-list-container">
             <p class="loading-text"><i class="fas fa-spinner fa-spin"></i> Fetching events...</p>
           </div>
         </div>
@@ -281,25 +240,21 @@
   </main>
 
   <script>
-    // Check login
     const user = JSON.parse(sessionStorage.getItem('user'));
     if (!user || user.role !== 'student') {
       window.location.href = 'loginpage.html';
     }
 
-    // Active sidebar
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.sidebar a').forEach(link => {
       if (link.getAttribute('href') === currentPage) link.classList.add('active');
     });
 
-    // Logout
     function logout() {
       sessionStorage.removeItem('user');
       window.location.href = 'loginpage.html';
     }
 
-    // Mobile sidebar
     function toggleMobileSidebar() {
       document.getElementById('sidebar').classList.toggle('mobile-open');
       document.getElementById('overlay').classList.toggle('active');
@@ -309,7 +264,6 @@
       document.getElementById('overlay').classList.remove('active');
     }
 
-    // Greeting + Date
     function setGreeting() {
       const now   = new Date();
       const hour  = now.getHours();
@@ -321,7 +275,7 @@
       });
     }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMPFF6fA9o6FEbHr1eaRtnLIiE7kvmvOIL9nYx6IIKK9zi_jAc2blqnu3hrYi72u4qwA/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
 
     function formatDate(dateStr) {
       if (dateStr && (dateStr.includes('T') || dateStr.match(/^\d{4}-\d{2}-\d{2}/))) {
@@ -337,7 +291,6 @@
     async function loadLiveEvents() {
       const container = document.getElementById('event-list-container');
       try {
-        // Fetch events at attendance sabay
         const [eventsRes, attendanceRes] = await Promise.all([
           fetch(scriptURL + "?action=getEvents", { method: "GET", redirect: "follow" }),
           fetch(`${scriptURL}?action=getStudentAttendance&email=${encodeURIComponent(user.email)}`, { method: "GET", redirect: "follow" })
@@ -363,32 +316,47 @@
 
         if (activeEvents.length === 0) {
           container.innerHTML = `
-            <div style="text-align:center;padding:30px;color:#aaa;">
-              <i class="fas fa-inbox" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+            <div style="text-align:center;padding:40px;color:#aaa;">
+              <i class="fas fa-inbox" style="font-size:28px;margin-bottom:10px;display:block;"></i>
               No upcoming events.
             </div>`;
           return;
         }
 
-        container.innerHTML = "";
-        activeEvents.forEach(event => {
-          container.innerHTML += `
-            <div class="event-item">
-              <h4>${event.name}</h4>
-              <span><i class="fas fa-clock"></i> ${formatDate(event.date)}</span>
-              <span><i class="fas fa-location-dot"></i> ${event.location || '—'}</span>
-              <div class="event-note">
-                <strong>Note:</strong> ${event.notes || 'No instructions.'}
-              </div>
-              <a href="${event.formUrl}" target="_blank" class="register-link">
-                <i class="fas fa-pen"></i> Register for Event
-              </a>
-            </div>
-          `;
-        });
+        // TABLE format — same ng faculty dashboard
+        // TABLE format — same ng faculty dashboard pero may Notes
+          let html = `
+            <table class="events-table">
+              <thead>
+                <tr>
+                  <th>Event Name</th>
+                  <th>Date / Time</th>
+                  <th>Location</th>
+                  <th>Notes</th>
+                  <th>Action</th>
+                </tr>
+              </thead><tbody>`;
+
+          activeEvents.forEach(event => {
+            html += `
+              <tr>
+                <td><strong>${event.name}</strong></td>
+                <td>${formatDate(event.date)}</td>
+                <td>${event.location || '—'}</td>
+                <td>${event.notes || '—'}</td>
+                <td>
+                  <a href="${event.formUrl}" target="_blank" class="register-link">
+                    <i class="fas fa-pen"></i> Register
+                  </a>
+                </td>
+              </tr>`;
+          });
+
+          html += `</tbody></table>`;
+          container.innerHTML = html;
 
       } catch (error) {
-        container.innerHTML = "<p style='color:#dc2626;text-align:center;'>Error connecting to cloud.</p>";
+        container.innerHTML = "<p style='color:#dc2626;text-align:center;padding:24px;'>Error connecting to cloud.</p>";
       }
     }
 

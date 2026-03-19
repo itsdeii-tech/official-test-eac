@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Registration - Event Attendance Checker</title>
+  <title>Student Registration - CEITE</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -302,110 +302,134 @@
   </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMPFF6fA9o6FEbHr1eaRtnLIiE7kvmvOIL9nYx6IIKK9zi_jAc2blqnu3hrYi72u4qwA/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
 
-    // Show/hide password
-    document.getElementById('togglePassword').addEventListener('click', function() {
-      togglePwd('password', 'togglePassword');
-    });
-    document.getElementById('toggleConfirm').addEventListener('click', function() {
-      togglePwd('confirmPassword', 'toggleConfirm');
-    });
+      // Show/hide password toggle — reusable function
+      document.getElementById('togglePassword').addEventListener('click', function() {
+        togglePwd('password', 'togglePassword');
+      });
+      document.getElementById('toggleConfirm').addEventListener('click', function() {
+        togglePwd('confirmPassword', 'toggleConfirm');
+      });
 
-    function togglePwd(inputId, iconId) {
-      const pwd  = document.getElementById(inputId);
-      const icon = document.getElementById(iconId);
-      if (pwd.type === 'password') {
-        pwd.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-      } else {
-        pwd.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-      }
-    }
-
-    async function handleRegister(event) {
-      event.preventDefault();
-
-      const fullname        = document.getElementById('fullname').value.trim();
-      const studentId       = document.getElementById('studentId').value.trim();
-      const email           = document.getElementById('email').value.trim();
-      const course          = document.getElementById('course').value;
-      const yearLevel       = document.getElementById('yearLevel').value;
-      const section         = document.getElementById('section').value;
-      const password        = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      const btn             = document.getElementById('btn-register');
-
-      hideMessages();
-
-      // Validations
-      if (!email.endsWith('@asiatech.edu.ph')) {
-        showError("Please use your institutional email (@asiatech.edu.ph) only!");
-        return;
-      }
-
-      if (password.length < 6) {
-        showError("Password must be at least 6 characters.");
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        showError("Passwords do not match!");
-        return;
-      }
-
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
-      btn.disabled  = true;
-
-      try {
-        const url = `${scriptURL}?action=register` +
-          `&email=${encodeURIComponent(email)}` +
-          `&password=${encodeURIComponent(password)}` +
-          `&name=${encodeURIComponent(fullname)}` +
-          `&studentId=${encodeURIComponent(studentId)}` +
-          `&course=${encodeURIComponent(course)}` +
-          `&yearLevel=${encodeURIComponent(yearLevel)}` +
-          `&section=${encodeURIComponent(section)}`;
-
-        const response = await fetch(url, { method: "GET", redirect: "follow" });
-        const result   = await response.json();
-
-        if (result.success) {
-          showSuccess("Account created successfully! Redirecting to login...");
-          setTimeout(() => {
-            window.location.href = 'loginpage.html';
-          }, 2000);
+      // Toggle password visibility — ginagamit ng dalawang password fields
+      function togglePwd(inputId, iconId) {
+        const pwd  = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        // Kung naka-password type — i-show
+        if (pwd.type === 'password') {
+          pwd.type = 'text';
+          icon.classList.replace('fa-eye', 'fa-eye-slash');
+        // Kung naka-text type — i-hide
         } else {
-          showError(result.message || "Registration failed. Please try again.");
+          pwd.type = 'password';
+          icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+      }
+
+      // FIX 1 — handleRegister — yung tinatawag ng form onsubmit
+      async function handleRegister(event) {
+        // Prevent page reload pag nag-submit ng form
+        event.preventDefault();
+        hideMessages();
+
+        // Kuhanin yung values mula sa input fields
+        const email     = document.getElementById('email').value.trim();
+        const password  = document.getElementById('password').value.trim();
+        const confirm   = document.getElementById('confirmPassword').value.trim();
+        const name      = document.getElementById('fullname').value.trim();
+        const studentId = document.getElementById('studentId').value.trim();
+        const course    = document.getElementById('course').value;
+        const yearLevel = document.getElementById('yearLevel').value;
+        const section   = document.getElementById('section').value;
+
+        // Validate — dapat hindi blank
+        if (!email || !password || !confirm || !name || !studentId || !course || !yearLevel || !section) {
+          showError("Please fill in all fields!");
+          return;
         }
 
-      } catch (err) {
-        showError("Connection failed. Please try again.");
-      } finally {
-        btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
-        btn.disabled  = false;
+        // Validate — institutional email lang
+        if (!email.endsWith('@asiatech.edu.ph')) {
+          showError("Please use your institutional email (@asiatech.edu.ph)!");
+          return;
+        }
+
+        // Validate — dapat match ang password at confirm password
+        if (password !== confirm) {
+          showError("Passwords do not match!");
+          return;
+        }
+
+        // FIX 2 — correct button ID
+        const btn = document.getElementById('btn-register');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+        btn.disabled  = true;
+
+        try {
+          // POST request sa Google Apps Script
+          // Gamit ang form-urlencoded — accepted ng GAS
+          const response = await fetch(scriptURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `data=${encodeURIComponent(JSON.stringify({
+              action:    "register",
+              email:     email,
+              password:  password,
+              name:      name,
+              studentId: studentId,
+              course:    course,
+              yearLevel: yearLevel,
+              section:   section
+            }))}`,
+            redirect: "follow"
+          });
+
+          // I-convert yung response sa JSON
+          const result = await response.json();
+
+          if (result.success) {
+            // Kung successful — show success message + redirect to login
+            showSuccess("Account created successfully! Redirecting to login...");
+            setTimeout(() => {
+              window.location.href = 'loginpage.html';
+            }, 2000);
+          } else {
+            // Kung may error — show error message
+            showError(result.message || "Registration failed!");
+          }
+
+        } catch(err) {
+          // Kung may connection error
+          showError("Connection failed. Please try again.");
+        } finally {
+          // I-reset yung button kahit success or error
+          btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+          btn.disabled  = false;
+        }
       }
-    }
 
-    function showError(msg) {
-      const err  = document.getElementById('errorMsg');
-      const text = document.getElementById('errorText');
-      text.textContent  = msg;
-      err.style.display = 'block';
-    }
+      // Show error message sa UI
+      function showError(msg) {
+        const err  = document.getElementById('errorMsg');
+        const text = document.getElementById('errorText');
+        text.textContent  = msg;
+        err.style.display = 'block';
+      }
 
-    function showSuccess(msg) {
-      const suc  = document.getElementById('successMsg');
-      const text = document.getElementById('successText');
-      text.textContent  = msg;
-      suc.style.display = 'block';
-    }
+      // Show success message sa UI
+      function showSuccess(msg) {
+        const suc  = document.getElementById('successMsg');
+        const text = document.getElementById('successText');
+        text.textContent  = msg;
+        suc.style.display = 'block';
+      }
 
-    function hideMessages() {
-      document.getElementById('errorMsg').style.display   = 'none';
-      document.getElementById('successMsg').style.display = 'none';
-    }
+      // Hide both error and success messages
+      function hideMessages() {
+        document.getElementById('errorMsg').style.display   = 'none';
+        document.getElementById('successMsg').style.display = 'none';
+      }
   </script>
 
 </body>

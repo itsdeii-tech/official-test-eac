@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Attendance - Student Portal</title>
+  <title>My Attendance - CEITE</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -125,7 +125,7 @@
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
     <a href="student-portal.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span><span class="tooltip">Dashboard</span></a>
     <a href="student-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span><span class="tooltip">Profile</span></a>
-    <a href="view-attendance.html"><i class="fas fa-calendar-check"></i><span class="sidebar-text">My Attendance</span><span class="tooltip">My Attendance</span></a>
+    <a href="student-attendance.html"><i class="fas fa-calendar-check"></i><span class="sidebar-text">My Attendance</span><span class="tooltip">My Attendance</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span><span class="tooltip">Logout</span></a>
   </nav>
 
@@ -139,7 +139,6 @@
         </button>
         <div>
           <h1>My Attendance</h1>
-          <p>Cloud-based Event Attendance Checker for CEITE</p>
         </div>
       </div>
       <div class="top-bar-right">
@@ -243,7 +242,7 @@
       });
     }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMPFF6fA9o6FEbHr1eaRtnLIiE7kvmvOIL9nYx6IIKK9zi_jAc2blqnu3hrYi72u4qwA/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
 
     async function loadAttendance() {
       const tbody = document.getElementById('attendance-tbody');

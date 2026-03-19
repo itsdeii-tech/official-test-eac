@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post New Event - Faculty Attendance System</title>
+  <title>New Event - CEITE</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -349,7 +349,8 @@
 
     // Create event
     async function createEventRealTime() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbyMPFF6fA9o6FEbHr1eaRtnLIiE7kvmvOIL9nYx6IIKK9zi_jAc2blqnu3hrYi72u4qwA/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
+      
 
       const name     = document.getElementById('eventTitle').value.trim();
       const dateVal  = document.getElementById('eventDate').value;
@@ -375,15 +376,21 @@
           `&notes=${encodeURIComponent(notes)}` +
           `&faculty=${encodeURIComponent(user.email)}`;
 
-        await fetch(url, { method: "GET", redirect: "follow" });
+        const response = await fetch(url, { method: "GET", redirect: "follow" });
+        const result = await response.json();
 
-        alert(`Success! "${name}" is now live for all students.`);
+       if (result.success) {
+       alert(`Success! "${name}" is now live for all students.`);
 
         document.getElementById('eventTitle').value = "";
         document.getElementById('eventDate').value  = "";
         document.getElementById('eventTime').value  = "";
         document.getElementById('eventVenue').value = "";
         document.getElementById('eventNote').value  = "";
+
+      } else {
+        alert("Failed: " + JSON.stringify(result));
+      }
 
       } catch (error) {
         alert('Cloud connection failed. Please try again.');

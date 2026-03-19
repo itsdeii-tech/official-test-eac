@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Event Attendance Checker</title>
+  <title>Login Page - CEITE</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -244,76 +244,93 @@
   </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMPFF6fA9o6FEbHr1eaRtnLIiE7kvmvOIL9nYx6IIKK9zi_jAc2blqnu3hrYi72u4qwA/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
 
-    // Show/hide password
+    // Show/hide password toggle
     document.getElementById('togglePassword').addEventListener('click', function() {
       const pwd  = document.getElementById('password');
       const icon = document.getElementById('togglePassword');
+      // Kung naka-password type — i-show
       if (pwd.type === 'password') {
         pwd.type = 'text';
         icon.classList.replace('fa-eye', 'fa-eye-slash');
+      // Kung naka-text type — i-hide
       } else {
         pwd.type = 'password';
         icon.classList.replace('fa-eye-slash', 'fa-eye');
       }
     });
 
+    // Main login function — tinatawag ng form onsubmit
     async function handleLogin(event) {
+      // Prevent page reload pag nag-submit ng form
       event.preventDefault();
-
-      const role     = document.querySelector('input[name="role"]:checked')?.value;
-      const email    = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const btn      = document.getElementById('btn-login');
-
       hideError();
 
-      // Validate institutional email
-      if (!email.endsWith('@asiatech.edu.ph')) {
-        showError("Please use your institutional email (@asiatech.edu.ph) only!");
+      // Kuhanin yung values mula sa input fields
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      // Kuhanin yung napiling role — Faculty or Student
+      const role     = document.querySelector('input[name="role"]:checked').value;
+
+      // Validate — dapat hindi blank
+      if (!email || !password) {
+        showError("Please fill in all fields!");
         return;
       }
 
-      if (!password) {
-        showError("Please enter your password.");
-        return;
-      }
-
+      // I-disable yung button + loading spinner habang nag-lo-login
+      const btn = document.getElementById('btn-login');
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
       btn.disabled  = true;
 
       try {
-        const url = `${scriptURL}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-        const response = await fetch(url, { method: "GET", redirect: "follow" });
-        const result   = await response.json();
+        // POST request sa Google Apps Script
+        // Gamit ang form-urlencoded — accepted ng GAS
+        const response = await fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `data=${encodeURIComponent(JSON.stringify({
+            action:   "login",
+            email:    email,
+            password: password
+          }))}`,
+          redirect: "follow"
+        });
+
+        // I-convert yung response sa JSON
+        const result = await response.json();
 
         if (result.success) {
+          // Kung mali yung role — show error
           if (result.role !== role) {
-            showError(`You are registered as ${result.role}. Please select the correct role.`);
+            showError("Wrong role selected! Please select the correct role.");
             return;
           }
-
+          // I-save yung user data sa sessionStorage
+          // Para magamit sa ibang pages
           sessionStorage.setItem('user', JSON.stringify(result));
 
-          if (result.role === 'faculty') {
-            window.location.href = 'faculty-dashboard.html';
-          } else {
-            window.location.href = 'student-portal.html';
-          }
-
+          // I-redirect based sa role
+          window.location.href = result.role === 'faculty'
+            ? 'faculty-dashboard.html'
+            : 'student-portal.html';
         } else {
+          // Kung mali ang credentials — show error
           showError(result.message || "Invalid email or password!");
         }
 
-      } catch (err) {
+      } catch(err) {
+        // Kung may connection error
         showError("Connection failed. Please try again.");
       } finally {
+        // I-reset yung button kahit success or error
         btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
         btn.disabled  = false;
       }
     }
 
+    // Show error message sa UI
     function showError(msg) {
       const err  = document.getElementById('errorMsg');
       const text = document.getElementById('errorText');
@@ -321,6 +338,7 @@
       err.style.display = 'block';
     }
 
+    // Hide error message sa UI
     function hideError() {
       document.getElementById('errorMsg').style.display = 'none';
     }
