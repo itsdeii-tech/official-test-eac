@@ -309,6 +309,7 @@
     window.onload = () => {
       setGreeting();
       loadAttendance();
+      setInterval(loadAttendance, 30000); // Auto-refresh every 30 seconds
     };
   </script>
 
