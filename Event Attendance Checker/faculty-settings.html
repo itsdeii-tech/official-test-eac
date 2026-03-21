@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Faculty Profile - CEITE</title>
+  <title>Settings - Faculty Portal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f4f0; color: #333; min-height: 100vh; }
@@ -35,26 +36,11 @@
     .sidebar:not(:hover) a:hover .tooltip { display: block; }
 
     /* OVERLAY */
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
-    }
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
     .overlay.active { display: block; }
 
     /* HAMBURGER */
-    .hamburger {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 22px;
-      cursor: pointer;
-      padding: 5px;
-    }
+    .hamburger { display: none; background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 5px; }
 
     /* MAIN */
     .main { margin-left: 70px; min-height: 100vh; }
@@ -68,83 +54,31 @@
     /* CONTENT */
     .content-wrap { padding: 24px 28px; }
 
-    .profile-card {
-      background: white;
-      border: 1px solid #d4e8d4;
-      border-radius: 10px;
-      padding: 36px 30px;
-      max-width: 600px;
-      margin: 0 auto;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-      text-align: center;
-    }
+    /* CARD */
+    .card { background: white; border: 1px solid #d4e8d4; border-radius: 10px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .card-head { padding: 14px 20px; border-bottom: 1px solid #e8f0e8; background: #f5faf5; }
+    .card-head h2 { font-size: 15px; color: #006400; display: flex; align-items: center; gap: 8px; }
 
-    .profile-avatar {
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #228B22;
-      margin-bottom: 15px;
-    }
+    /* SETTINGS ITEMS */
+    .settings-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f0f5f0; cursor: pointer; transition: background 0.2s; text-decoration: none; color: #333; }
+    .settings-item:last-child { border-bottom: none; }
+    .settings-item:hover { background: #fafff8; }
+    .settings-item-left { display: flex; align-items: center; gap: 14px; }
+    .settings-item-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .icon-green  { background: #e8f5e9; color: #006400; }
+    .icon-blue   { background: #e3f2fd; color: #1565c0; }
+    .icon-orange { background: #fff3e0; color: #e65100; }
+    .icon-red    { background: #fff5f5; color: #dc2626; }
+    .settings-item-info h4 { font-size: 14px; font-weight: bold; color: #1a2e1a; margin-bottom: 3px; }
+    .settings-item-info p  { font-size: 12px; color: #888; }
+    .settings-item-arrow { color: #aaa; font-size: 14px; }
 
-    .profile-name {
-      font-size: 24px;
-      color: #006400;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
+    /* COMING SOON BADGE */
+    .badge-soon { background: #fff3e0; color: #e65100; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 20px; }
 
-    .profile-role {
-      font-size: 14px;
-      color: #64748b;
-      margin-bottom: 5px;
-    }
-
-    .profile-info {
-      font-size: 14px;
-      line-height: 1.8;
-      text-align: left;
-      max-width: 400px;
-      margin: 20px auto 0;
-      border-top: 1px solid #e8f0e8;
-      padding-top: 20px;
-    }
-    .profile-info p { margin: 10px 0; }
-    .profile-info strong { color: #006400; }
-
-    .edit-btn {
-      background: #228B22;
-      color: white;
-      padding: 12px 30px;
-      font-size: 15px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 25px auto 0;
-      display: inline-block;
-      font-family: inherit;
-      transition: opacity 0.2s;
-    }
-    .edit-btn:hover { opacity: 0.9; }
-
-    .back-link {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
-      color: #006400;
-      font-weight: bold;
-      text-decoration: underline;
-      font-size: 14px;
-    }
-    .back-link:hover { color: #228B22; }
-
-    /* MOBILE RESPONSIVE */
+    /* MOBILE */
     @media (max-width: 768px) {
-      .sidebar {
-        width: 230px;
-        transform: translateX(-100%);
-      }
+      .sidebar { width: 230px; transform: translateX(-100%); }
       .sidebar:hover { width: 230px; }
       .sidebar.mobile-open { transform: translateX(0); }
       .sidebar.mobile-open .sidebar-text { display: inline; }
@@ -156,13 +90,6 @@
       .top-bar-left p { display: none; }
       .hamburger { display: block; }
       .content-wrap { padding: 15px; }
-      .profile-card { padding: 24px 16px; }
-      .profile-name { font-size: 20px; }
-      .profile-avatar { width: 90px; height: 90px; }
-    }
-
-    @media (max-width: 480px) {
-      .top-bar-left h1 { font-size: 14px; }
     }
   </style>
 </head>
@@ -180,7 +107,7 @@
     <a href="scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scan QR Code</span><span class="tooltip">Scan QR Code</span></a>
     <a href="view-records.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Reports</span><span class="tooltip">Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span><span class="tooltip">Profile</span></a>
-    <a href="faculty-settings.html"><i class="fas fa-cog"></i><span class="sidebar-text">Settings</span><span class="tooltip">Settings</span></a>
+    <a href="faculty-settings.html" class="active"><i class="fas fa-cog"></i><span class="sidebar-text">Settings</span><span class="tooltip">Settings</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span><span class="tooltip">Logout</span></a>
   </nav>
 
@@ -193,59 +120,104 @@
           <i class="fas fa-bars"></i>
         </button>
         <div>
-          <h1>My Profile</h1>
+          <h1>Settings</h1>
+          <p>Manage your account settings</p>
         </div>
       </div>
     </div>
 
     <div class="content-wrap">
-      <div class="profile-card">
 
-        <img id="profileAvatar" class="profile-avatar"
-          src="images/default-avatar.png" alt="Profile Picture"
-          onerror="this.src='https://ui-avatars.com/api/?name=Faculty&background=006400&color=fff&size=120'">
-
-        <div class="profile-name" id="profileName">Loading...</div>
-        <div class="profile-role">Faculty Member - CEITE</div>
-
-        <div class="profile-info">
-          <p><strong><i class="fas fa-envelope"></i> Email:</strong> <span id="profileEmail">—</span></p>
-          <p><strong><i class="fas fa-user-tie"></i> Account:</strong> Faculty</p>
+      <!-- Preferences -->
+      <div class="card">
+        <div class="card-head">
+          <h2><i class="fas fa-sliders"></i> Preferences</h2>
         </div>
 
-        <button class="edit-btn">
-          <i class="fas fa-edit"></i> Edit Profile
-        </button>
+        <div class="settings-item" style="cursor: default; opacity: 0.7;">
+          <div class="settings-item-left">
+            <div class="settings-item-icon icon-blue">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="settings-item-info">
+              <h4>Notification Preferences</h4>
+              <p>Manage email notifications</p>
+            </div>
+          </div>
+        </div>
 
-        <a href="faculty-dashboard.html" class="back-link">← Back to Dashboard</a>
+        <div class="settings-item" style="cursor: default; opacity: 0.7;">
+        </div>
 
       </div>
+
+      <!-- Privacy & Security -->
+      <div class="card">
+        <div class="card-head">
+          <h2><i class="fas fa-shield-halved"></i> Privacy & Security</h2>
+        </div>
+
+        <div class="settings-item" style="cursor: default; opacity: 0.7;">
+          <div class="settings-item-left">
+            <div class="settings-item-icon icon-blue">
+              <i class="fas fa-mobile-screen"></i>
+            </div>
+            <div class="settings-item-info">
+              <h4>Active Sessions</h4>
+              <p>View devices logged in to your account</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-item" style="cursor: default; opacity: 0.7;">
+          <div class="settings-item-left">
+            <div class="settings-item-icon icon-green">
+              <i class="fas fa-shield"></i>
+            </div>
+            <div class="settings-item-info">
+              <h4>Two-Factor Authentication</h4>
+              <p>Add extra security to your account</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="card">
+        <div class="card-head">
+          <h2><i class="fas fa-triangle-exclamation"></i> Danger Zone</h2>
+        </div>
+
+        <div class="settings-item" onclick="logout()">
+          <div class="settings-item-left">
+            <div class="settings-item-icon icon-red">
+              <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <div class="settings-item-info">
+              <h4>Logout</h4>
+              <p>Sign out of your account</p>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right settings-item-arrow"></i>
+        </div>
+
+      </div>
+
     </div>
   </main>
 
   <script>
-    // Auth check
     const user = JSON.parse(sessionStorage.getItem('user'));
     if (!user || user.role !== 'faculty') {
       window.location.href = 'loginpage.html';
     }
 
-    // Load profile
-    function loadProfile() {
-      if (!user) return;
-      document.getElementById('profileName').textContent  = user.name  || '—';
-      document.getElementById('profileEmail').textContent = user.email || '—';
-      document.getElementById('profileAvatar').src =
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=006400&color=fff&size=120`;
-    }
-
-    // Active sidebar link
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.sidebar a').forEach(link => {
       if (link.getAttribute('href') === currentPage) link.classList.add('active');
     });
 
-    // Logout
     function logout() {
       if (confirm("Are you sure you want to logout?")) {
         sessionStorage.removeItem('user');
@@ -253,7 +225,6 @@
       }
     }
 
-    // Mobile sidebar
     function toggleMobileSidebar() {
       document.getElementById('sidebar').classList.toggle('mobile-open');
       document.getElementById('overlay').classList.toggle('active');
@@ -262,8 +233,6 @@
       document.getElementById('sidebar').classList.remove('mobile-open');
       document.getElementById('overlay').classList.remove('active');
     }
-
-    window.onload = loadProfile;
   </script>
 
 </body>

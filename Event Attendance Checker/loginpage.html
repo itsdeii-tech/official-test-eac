@@ -45,7 +45,6 @@
     .header p  { font-size: 13px; opacity: 0.85; }
 
     .form-body { padding: 30px 25px; }
-
     .form-group { margin-bottom: 18px; }
 
     label {
@@ -89,19 +88,9 @@
     }
     .toggle-password:hover { color: #006400; }
 
-    /* SIMPLE ROLE SELECTION */
-    .role-label {
-      font-weight: bold;
-      color: #006400;
-      font-size: 14px;
-      margin-bottom: 8px;
-      display: block;
-    }
-    .role-selection {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+    /* ROLE SELECTION */
+    .role-label { font-weight: bold; color: #006400; font-size: 14px; margin-bottom: 8px; display: block; }
+    .role-selection { display: flex; gap: 12px; margin-bottom: 20px; }
     .role-option { flex: 1; text-align: center; }
     .role-option input[type="radio"] { display: none; }
     .role-option label {
@@ -122,6 +111,7 @@
       font-weight: bold;
     }
 
+    /* MESSAGES */
     .error-message {
       display: none;
       background: #fff5f5;
@@ -132,7 +122,18 @@
       border-left: 4px solid #dc2626;
       margin-bottom: 15px;
     }
+    .success-message {
+      display: none;
+      background: #f0fff4;
+      color: #166534;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      border-left: 4px solid #228B22;
+      margin-bottom: 15px;
+    }
 
+    /* BUTTONS */
     .btn-login {
       width: 100%;
       padding: 14px;
@@ -148,18 +149,65 @@
     .btn-login:hover    { opacity: 0.9; }
     .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .links {
-      text-align: center;
-      margin-top: 18px;
-      font-size: 13px;
-      color: #888;
-    }
-    .links a {
-      color: #006400;
-      text-decoration: none;
+    .btn-secondary {
+      width: 100%;
+      padding: 12px;
+      background: #228B22;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 15px;
       font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 10px;
     }
+    .btn-secondary:hover    { opacity: 0.9; }
+    .btn-secondary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .btn-back {
+      width: 100%;
+      padding: 10px;
+      background: none;
+      color: #006400;
+      border: 1px solid #006400;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+    .btn-back:hover { background: #f0f7f0; }
+
+    /* LINKS */
+    .links { text-align: center; margin-top: 18px; font-size: 13px; color: #888; }
+    .links a { color: #006400; text-decoration: none; font-weight: bold; }
     .links a:hover { text-decoration: underline; }
+
+    .forgot-link {
+      text-align: right;
+      margin-top: -10px;
+      margin-bottom: 15px;
+      font-size: 13px;
+    }
+    .forgot-link a { color: #006400; text-decoration: none; font-weight: bold; }
+    .forgot-link a:hover { text-decoration: underline; }
+
+    /* STEPS — hidden by default */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    /* OTP INPUT */
+    .otp-info {
+      background: #f0f7f0;
+      border-left: 4px solid #228B22;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 15px;
+    }
 
     .footer {
       background: #006400;
@@ -181,60 +229,151 @@
     </div>
 
     <div class="form-body">
-      <form id="loginForm" onsubmit="handleLogin(event)">
 
-        <!-- Role Selection — simple lang -->
-        <span class="role-label">Login as:</span>
-        <div class="role-selection">
-          <div class="role-option">
-            <input type="radio" id="role-faculty" name="role" value="faculty" checked>
-            <label for="role-faculty">Faculty</label>
+      <!-- ═══ STEP 1 — LOGIN FORM ═══ -->
+      <div class="step active" id="step-login">
+        <form id="loginForm" onsubmit="handleLogin(event)">
+
+          <span class="role-label">Login as:</span>
+          <div class="role-selection">
+            <div class="role-option">
+              <input type="radio" id="role-faculty" name="role" value="faculty" checked>
+              <label for="role-faculty">Faculty</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" id="role-student" name="role" value="student">
+              <label for="role-student">Student</label>
+            </div>
           </div>
-          <div class="role-option">
-            <input type="radio" id="role-student" name="role" value="student">
-            <label for="role-student">Student</label>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="email"
+                placeholder="1-230420@asiatech.edu.ph"
+                required autocomplete="email">
+            </div>
           </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="password"
+                placeholder="••••••••"
+                required autocomplete="current-password">
+              <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+          </div>
+
+          <!-- Forgot Password link -->
+          <div class="forgot-link">
+            <a href="#" onclick="showStep('step-forgot-email')">Forgot Password?</a>
+          </div>
+
+          <div class="error-message" id="errorMsg">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText"></span>
+          </div>
+
+          <button type="submit" class="btn-login" id="btn-login">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+
+        </form>
+
+        <div class="links">
+          Don't have an account?
+          <a href="student-register.html">Create Account</a>
         </div>
+      </div>
 
-        <!-- Email -->
+      <!-- ═══ STEP 2 — ENTER EMAIL ═══ -->
+      <div class="step" id="step-forgot-email">
         <div class="form-group">
-          <label for="email">Email</label>
+          <label>Enter your institutional email</label>
           <div class="input-wrapper">
             <i class="fas fa-envelope input-icon"></i>
-            <input type="email" id="email"
-              placeholder="1-230420@asiatech.edu.ph"
-              required autocomplete="email">
+            <input type="email" id="forgot-email"
+              placeholder="1-230420@asiatech.edu.ph">
           </div>
         </div>
 
-        <!-- Password -->
+        <div class="error-message" id="forgotEmailError">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="forgotEmailErrorText"></span>
+        </div>
+
+        <div class="success-message" id="forgotEmailSuccess">
+          <i class="fas fa-circle-check"></i>
+          <span id="forgotEmailSuccessText"></span>
+        </div>
+
+        <button class="btn-login" id="btn-send-otp" onclick="sendOTP()">
+          <i class="fas fa-paper-plane"></i> Send OTP
+        </button>
+        <button class="btn-back" onclick="showStep('step-login')">
+          ← Back to Login
+        </button>
+      </div>
+
+      <!-- ═══ STEP 3 — ENTER OTP + NEW PASSWORD ═══ -->
+      <div class="step" id="step-verify-otp">
+
+        <div class="otp-info">
+          <i class="fas fa-circle-info"></i>
+          OTP sent to your email. Valid for <strong>5 minutes</strong>.
+        </div>
+
         <div class="form-group">
-          <label for="password">Password</label>
+          <label>Enter OTP</label>
+          <div class="input-wrapper">
+            <i class="fas fa-key input-icon"></i>
+            <input type="text" id="otp-input"
+              placeholder="Enter 6-digit OTP"
+              maxlength="6">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>New Password</label>
           <div class="input-wrapper">
             <i class="fas fa-lock input-icon"></i>
-            <input type="password" id="password"
-              placeholder="••••••••"
-              required autocomplete="current-password">
-            <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            <input type="password" id="new-password"
+              placeholder="Enter new password">
+            <i class="fas fa-eye toggle-password" id="toggleNewPwd"></i>
           </div>
         </div>
 
-        <!-- Error -->
-        <div class="error-message" id="errorMsg">
-          <i class="fas fa-exclamation-circle"></i>
-          <span id="errorText"></span>
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="confirm-new-password"
+              placeholder="Re-enter new password">
+            <i class="fas fa-eye toggle-password" id="toggleConfirmPwd"></i>
+          </div>
         </div>
 
-        <button type="submit" class="btn-login" id="btn-login">
-          <i class="fas fa-sign-in-alt"></i> Login
+        <div class="error-message" id="otpError">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="otpErrorText"></span>
+        </div>
+
+        <div class="success-message" id="otpSuccess">
+          <i class="fas fa-circle-check"></i>
+          <span id="otpSuccessText"></span>
+        </div>
+
+        <button class="btn-login" id="btn-verify-otp" onclick="verifyOTPandReset()">
+          <i class="fas fa-check"></i> Reset Password
         </button>
-
-      </form>
-
-      <div class="links">
-        Don't have an account?
-        <a href="student-register.html">Create Account</a>
+        <button class="btn-back" onclick="showStep('step-forgot-email')">
+          ← Back
+        </button>
       </div>
+
     </div>
 
     <div class="footer">
@@ -246,91 +385,204 @@
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
 
-    // Show/hide password toggle
+    // Show/hide password
     document.getElementById('togglePassword').addEventListener('click', function() {
       const pwd  = document.getElementById('password');
       const icon = document.getElementById('togglePassword');
-      // Kung naka-password type — i-show
-      if (pwd.type === 'password') {
-        pwd.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-      // Kung naka-text type — i-hide
-      } else {
-        pwd.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-      }
+      if (pwd.type === 'password') { pwd.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); }
+      else { pwd.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
+    });
+    document.getElementById('toggleNewPwd').addEventListener('click', function() {
+      const pwd  = document.getElementById('new-password');
+      const icon = document.getElementById('toggleNewPwd');
+      if (pwd.type === 'password') { pwd.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); }
+      else { pwd.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
+    });
+    document.getElementById('toggleConfirmPwd').addEventListener('click', function() {
+      const pwd  = document.getElementById('confirm-new-password');
+      const icon = document.getElementById('toggleConfirmPwd');
+      if (pwd.type === 'password') { pwd.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); }
+      else { pwd.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
     });
 
-    // Main login function — tinatawag ng form onsubmit
+    // Step navigation
+    function showStep(stepId) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById(stepId).classList.add('active');
+    }
+
+    // LOGIN
     async function handleLogin(event) {
-      // Prevent page reload pag nag-submit ng form
       event.preventDefault();
       hideError();
 
-      // Kuhanin yung values mula sa input fields
       const email    = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
-      // Kuhanin yung napiling role — Faculty or Student
       const role     = document.querySelector('input[name="role"]:checked').value;
 
-      // Validate — dapat hindi blank
       if (!email || !password) {
         showError("Please fill in all fields!");
         return;
       }
 
-      // I-disable yung button + loading spinner habang nag-lo-login
       const btn = document.getElementById('btn-login');
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
       btn.disabled  = true;
 
       try {
-        // POST request sa Google Apps Script
-        // Gamit ang form-urlencoded — accepted ng GAS
         const response = await fetch(scriptURL, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: `data=${encodeURIComponent(JSON.stringify({
-            action:   "login",
-            email:    email,
-            password: password
+            action: "login", email, password
           }))}`,
           redirect: "follow"
         });
 
-        // I-convert yung response sa JSON
         const result = await response.json();
 
         if (result.success) {
-          // Kung mali yung role — show error
           if (result.role !== role) {
             showError("Wrong role selected! Please select the correct role.");
             return;
           }
-          // I-save yung user data sa sessionStorage
-          // Para magamit sa ibang pages
           sessionStorage.setItem('user', JSON.stringify(result));
-
-          // I-redirect based sa role
           window.location.href = result.role === 'faculty'
             ? 'faculty-dashboard.html'
             : 'student-portal.html';
         } else {
-          // Kung mali ang credentials — show error
           showError(result.message || "Invalid email or password!");
         }
 
       } catch(err) {
-        // Kung may connection error
         showError("Connection failed. Please try again.");
       } finally {
-        // I-reset yung button kahit success or error
         btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
         btn.disabled  = false;
       }
     }
 
-    // Show error message sa UI
+    // SEND OTP
+    async function sendOTP() {
+      const email = document.getElementById('forgot-email').value.trim();
+      const errEl = document.getElementById('forgotEmailError');
+      const sucEl = document.getElementById('forgotEmailSuccess');
+
+      errEl.style.display = 'none';
+      sucEl.style.display = 'none';
+
+      if (!email) {
+        document.getElementById('forgotEmailErrorText').textContent = "Please enter your email!";
+        errEl.style.display = 'block';
+        return;
+      }
+      if (!email.endsWith('@asiatech.edu.ph')) {
+        document.getElementById('forgotEmailErrorText').textContent = "Please use your institutional email!";
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const btn = document.getElementById('btn-send-otp');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending OTP...';
+      btn.disabled  = true;
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `data=${encodeURIComponent(JSON.stringify({
+            action: "sendOTP",
+            email:  email
+          }))}`,
+          redirect: "follow"
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          document.getElementById('forgotEmailSuccessText').textContent = "OTP sent! Check your email.";
+          sucEl.style.display = 'block';
+          // Go to step 3 after 1.5 secs
+          setTimeout(() => showStep('step-verify-otp'), 1500);
+        } else {
+          document.getElementById('forgotEmailErrorText').textContent = result.message || "Email not found!";
+          errEl.style.display = 'block';
+        }
+
+      } catch(err) {
+        document.getElementById('forgotEmailErrorText').textContent = "Connection failed. Please try again.";
+        errEl.style.display = 'block';
+      } finally {
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
+        btn.disabled  = false;
+      }
+    }
+
+    // VERIFY OTP + RESET PASSWORD
+    async function verifyOTPandReset() {
+      const email       = document.getElementById('forgot-email').value.trim();
+      const otp         = document.getElementById('otp-input').value.trim();
+      const newPassword = document.getElementById('new-password').value.trim();
+      const confirmPwd  = document.getElementById('confirm-new-password').value.trim();
+      const errEl       = document.getElementById('otpError');
+      const sucEl       = document.getElementById('otpSuccess');
+
+      errEl.style.display = 'none';
+      sucEl.style.display = 'none';
+
+      if (!otp || !newPassword || !confirmPwd) {
+        document.getElementById('otpErrorText').textContent = "Please fill in all fields!";
+        errEl.style.display = 'block';
+        return;
+      }
+      if (newPassword !== confirmPwd) {
+        document.getElementById('otpErrorText').textContent = "Passwords do not match!";
+        errEl.style.display = 'block';
+        return;
+      }
+      if (newPassword.length < 6) {
+        document.getElementById('otpErrorText').textContent = "Password must be at least 6 characters!";
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const btn = document.getElementById('btn-verify-otp');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
+      btn.disabled  = true;
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `data=${encodeURIComponent(JSON.stringify({
+            action:      "verifyOTP",
+            email:       email,
+            otp:         otp,
+            newPassword: newPassword
+          }))}`,
+          redirect: "follow"
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          document.getElementById('otpSuccessText').textContent = "Password reset successfully! Redirecting to login...";
+          sucEl.style.display = 'block';
+          setTimeout(() => showStep('step-login'), 2000);
+        } else {
+          document.getElementById('otpErrorText').textContent = result.message || "Invalid or expired OTP!";
+          errEl.style.display = 'block';
+        }
+
+      } catch(err) {
+        document.getElementById('otpErrorText').textContent = "Connection failed. Please try again.";
+        errEl.style.display = 'block';
+      } finally {
+        btn.innerHTML = '<i class="fas fa-check"></i> Reset Password';
+        btn.disabled  = false;
+      }
+    }
+
     function showError(msg) {
       const err  = document.getElementById('errorMsg');
       const text = document.getElementById('errorText');
@@ -338,7 +590,6 @@
       err.style.display = 'block';
     }
 
-    // Hide error message sa UI
     function hideError() {
       document.getElementById('errorMsg').style.display = 'none';
     }

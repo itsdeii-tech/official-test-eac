@@ -173,6 +173,7 @@
     <a href="scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scan QR Code</span><span class="tooltip">Scan QR Code</span></a>
     <a href="view-records.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Reports</span><span class="tooltip">Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span><span class="tooltip">Profile</span></a>
+    <a href="faculty-settings.html"><i class="fas fa-cog"></i><span class="sidebar-text">Settings</span><span class="tooltip">Settings</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span><span class="tooltip">Logout</span></a>
   </nav>
 
@@ -248,8 +249,10 @@
     });
 
     function logout() {
-      sessionStorage.removeItem('user');
-      window.location.href = 'loginpage.html';
+      if (confirm("Are you sure you want to logout?")) {
+        sessionStorage.removeItem('user');
+        window.location.href = 'loginpage.html';
+      }
     }
 
     function toggleMobileSidebar() {
