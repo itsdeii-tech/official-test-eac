@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Events - CEITE</title>
+  <title>Faculty Events - EAC</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -337,9 +337,11 @@
           alert(`"${eventName}" deleted successfully!`);
           loadMyEvents();
         } else {
-          alert("Failed to delete: " + result.message);
+          alert("Failed to delete: " + (result.message || result.error || "Unknown server response"));
+          console.log("deleteEvent result:" , result);
+
         }
-      } catch (err) {
+        } catch (err) {
         alert("Connection failed. Please try again.");
       }
     }

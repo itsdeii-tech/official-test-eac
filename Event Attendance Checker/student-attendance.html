@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Attendance - CEITE</title>
+  <title>My Attendance - EAC</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -26,7 +26,7 @@
     .sidebar:hover { width: 230px; }
     .sidebar-text { display: none; white-space: nowrap; }
     .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo { width: 46px; margin: 0 auto 18px; display: block; border-radius: 50%; transition: width 0.3s ease; }
+    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
     .sidebar:hover .sidebar-logo { width: 110px; }
     .sidebar a { display: flex; align-items: center; color: white; text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
     .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
@@ -50,9 +50,8 @@
     .top-bar-left { display: flex; align-items: center; gap: 12px; }
     .top-bar-left h1 { font-size: 18px; font-weight: bold; }
     .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
-    .top-bar-right { display: flex; align-items: center; gap: 12px; }
-    .greeting-chip { background: rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 14px; font-size: 13px; }
-    .date-chip { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 6px 14px; font-size: 12px; opacity: 0.85; }
+
+ 
 
     /* CONTENT */
     .content-wrap { padding: 24px 28px; }
@@ -142,10 +141,6 @@
           <h1>My Attendance</h1>
         </div>
       </div>
-      <div class="top-bar-right">
-        <div class="greeting-chip" id="greeting-chip">👋 Good morning!</div>
-        <div class="date-chip" id="date-chip"></div>
-      </div>
     </div>
 
     <div class="content-wrap">
@@ -233,17 +228,6 @@
       document.getElementById('overlay').classList.remove('active');
     }
 
-    // Greeting
-    function setGreeting() {
-      const now   = new Date();
-      const hour  = now.getHours();
-      const greet = hour < 12 ? '☀️ Good morning' : hour < 18 ? '🌤 Good afternoon' : '🌙 Good evening';
-      const name  = user?.name ? `, ${user.name}!` : '!';
-      document.getElementById('greeting-chip').textContent = greet + name;
-      document.getElementById('date-chip').textContent = now.toLocaleDateString('en-US', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-      });
-    }
 
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
 
@@ -310,7 +294,6 @@
     }
 
     window.onload = () => {
-      setGreeting();
       loadAttendance();
       setInterval(loadAttendance, 30000); // Auto-refresh every 30 seconds
     };

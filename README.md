@@ -14,6 +14,7 @@ Cloud-based QR Attendance System for ASIATECH CEITE
 - QR Code emailed to students upon registration
 - Camera-based QR scanner for check-in / check-out
 - View and download attendance reports (CSV)
-- Student portal with personal attendance records
+- Student portal with attendance records
 - Role-based login system (Faculty & Student)
 - Session-based authentication
+- Added Change password and forgot password
