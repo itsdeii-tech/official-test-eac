@@ -372,15 +372,22 @@
       btn.disabled  = true;
 
       try {
-        const url = `${scriptURL}?action=createEvent` +
-          `&name=${encodeURIComponent(name)}` +
-          `&date=${encodeURIComponent(date)}` +
-          `&location=${encodeURIComponent(location)}` +
-          `&notes=${encodeURIComponent(notes)}` +
-          `&faculty=${encodeURIComponent(user.email)}`;
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `data=${encodeURIComponent(JSON.stringify({
+          action: "createEvent",
+          name: name,
+          date: date,
+          location: location,
+          notes: notes,
+          faculty: user.email
+        }))}`,
+        redirect: "follow"
+      });
+      const result = await response.json();
 
-        const response = await fetch(url, { method: "GET", redirect: "follow" });
-        const result = await response.json();
+
 
        if (result.success) {
        alert(`Success! "${name}" is now live for all students.`);

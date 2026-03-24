@@ -329,9 +329,17 @@
       if (!confirm(`Are you sure you want to delete "${eventName}"?`)) return;
 
       try {
-        const url = `${scriptURL}?action=deleteEvent&name=${encodeURIComponent(eventName)}&faculty=${encodeURIComponent(user.email)}`;
-        const response = await fetch(url, { method: "GET", redirect: "follow" });
-        const result   = await response.json();
+       const response = await fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `data=${encodeURIComponent(JSON.stringify({
+            action: "deleteEvent",
+            name: eventName,
+            faculty: user.email
+          }))}`,
+          redirect: "follow"
+        });
+        const result = await response.json();
 
         if (result.success) {
           alert(`"${eventName}" deleted successfully!`);

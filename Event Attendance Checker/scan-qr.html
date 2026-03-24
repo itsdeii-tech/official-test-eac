@@ -392,33 +392,43 @@
       }
     }
 
-    function onScanSuccess(decodedText) {
+    async function onScanSuccess(decodedText) {
       if (html5QrCode && scanning) {
         html5QrCode.stop().then(() => { scanning = false; });
       }
+
       document.getElementById('scan-line').classList.remove('active');
       document.getElementById('btn-stop').classList.remove('visible');
       document.getElementById('btn-again').classList.add('visible');
       setStatus('success', 'QR scanned! Processing...');
 
-      const box     = document.getElementById('result-box');
-      const title   = document.getElementById('result-title');
+      const box = document.getElementById('result-box');
+      const title = document.getElementById('result-title');
       const content = document.getElementById('result-content');
       const eventName = document.getElementById('eventSelect').value;
 
-      box.className   = 'result-box success';
+      box.className = 'result-box success';
       title.className = 'result-title ok';
       title.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
       content.innerHTML = `QR Code: <strong>${decodedText}</strong><br>Updating attendance...`;
 
-      fetch(`${scriptURL}?action=scan&code=${encodeURIComponent(decodedText)}&event=${encodeURIComponent(eventName)}`, {
-        method: "GET", redirect: "follow"
-      })
-      .then(res => res.json())
-      .then(result => {
+      try {
+        const response = await fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `data=${encodeURIComponent(JSON.stringify({
+            action: "scan",
+            code: decodedText,
+            event: eventName
+          }))}`,
+          redirect: "follow"
+        });
+
+        const result = await response.json();
+
         if (result.success) {
           if (result.action === 'CHECK-IN') {
-            box.className   = 'result-box success';
+            box.className = 'result-box success';
             title.className = 'result-title ok';
             title.innerHTML = '<i class="fas fa-circle-check"></i> Check-In Recorded!';
             content.innerHTML = `
@@ -431,7 +441,7 @@
               <strong>Status:</strong> PRESENT ✅`;
             setStatus('success', 'Check-In recorded successfully!');
           } else if (result.action === 'CHECK-OUT') {
-            box.className   = 'result-box success';
+            box.className = 'result-box success';
             title.className = 'result-title ok';
             title.innerHTML = '<i class="fas fa-circle-check"></i> Check-Out Recorded!';
             content.innerHTML = `
@@ -444,7 +454,7 @@
               <strong>Status:</strong> COMPLETED ✅`;
             setStatus('success', 'Check-Out recorded successfully!');
           } else if (result.action === 'ALREADY_SCANNED') {
-            box.className   = 'result-box error';
+            box.className = 'result-box error';
             title.className = 'result-title err';
             title.innerHTML = '<i class="fas fa-circle-exclamation"></i> Already Scanned!';
             content.innerHTML = `
@@ -453,24 +463,26 @@
             setStatus('error', 'Student already checked in and out!');
           }
         } else {
-          box.className   = 'result-box error';
+          box.className = 'result-box error';
           title.className = 'result-title err';
           title.innerHTML = '<i class="fas fa-circle-xmark"></i> QR Not Found!';
           content.innerHTML = `
             <strong>Code Scanned:</strong> ${decodedText}<br>
             <strong>Event:</strong> ${eventName}<br>
-            <strong>Message:</strong> ${result.message}`;
+            <strong>Message:</strong> ${result.message || result.error || 'Unknown error'}`;
           setStatus('error', 'QR Code not recognized!');
         }
-      })
-      .catch(() => {
-        box.className   = 'result-box error';
+
+      } catch (err) {
+        box.className = 'result-box error';
         title.className = 'result-title err';
         title.innerHTML = '<i class="fas fa-circle-xmark"></i> Connection Error!';
         content.innerHTML = 'Failed to connect to server. Please try again.';
         setStatus('error', 'Connection failed!');
-      });
+        console.error("Scan error:", err);
+      }
     }
+
 
     function onScanFailure(error) { /* silent */ }
 
