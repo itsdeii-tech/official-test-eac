@@ -5,211 +5,351 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Registration - EAC</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #f8f9fa 0%, #e6f0e6 100%);
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(135deg, #f3f7f3 0%, #e2efe5 55%, #f6f9f6 100%);
+      color: #1f2937;
       padding: 20px;
+      cursor: default;
     }
 
-    .register-container {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 8px 30px rgba(0,100,0,0.15);
-      overflow: hidden;
+    .register-shell {
       width: 100%;
-      max-width: 420px;
+      max-width: 1060px;
+      margin: 0 auto;
+      min-height: calc(100vh - 40px);
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #d4e8d8;
+      box-shadow: 0 14px 38px rgba(0, 100, 0, 0.12);
+      background: #fff;
     }
 
-    .header {
-      background: #006400;
-      color: white;
-      padding: 25px 20px;
+    .left-pane {
+      background: linear-gradient(160deg, #0b5b2e 0%, #0d6a35 50%, #11743b 100%);
+      color: #fff;
+      padding: 34px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
       text-align: center;
     }
-    .header img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
+
+    .brand img {
+      width: 82px;
+      height: 82px;
       border-radius: 50%;
-      border: 3px solid white;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.9);
       margin-bottom: 12px;
     }
-    .header h1 { font-size: 20px; margin-bottom: 5px; }
-    .header p  { font-size: 12px; opacity: 0.85; }
 
-    .form-body { padding: 25px; }
+    .brand h1 {
+      font-size: 21px;
+      line-height: 1.2;
+    }
 
-    .form-group { margin-bottom: 15px; }
+    .features {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      margin: 17px 0;
+    }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #006400;
+    .features li {
       font-size: 13px;
+      line-height: 1.45;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 10px 11px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
     }
 
-    .input-wrapper { position: relative; }
-    .input-wrapper i.input-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-      font-size: 14px;
+    .features i {
+      margin-top: 2px;
+      color: #c5f5d4;
+      font-size: 12px;
     }
-    .input-wrapper input,
-    .input-wrapper select {
-      width: 100%;
-      padding: 11px 14px 11px 36px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: border 0.2s;
-      background: white;
-    }
-    .input-wrapper input:focus,
-    .input-wrapper select:focus {
-      outline: none;
-      border-color: #228B22;
-      box-shadow: 0 0 0 3px rgba(34,139,34,0.1);
-    }
-    .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #888;
-      font-size: 14px;
-    }
-    .toggle-password:hover { color: #006400; }
 
-    /* Two columns for Course, Year, Section */
-    .form-row {
+    .left-foot {
+      font-size: 11px;
+      opacity: 0.9;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      padding-top: 12px;
+    }
+
+    .right-pane {
+      padding: 34px 28px 24px;
+    }
+
+    .right-pane h2 {
+      color: #0b5b2e;
+      font-size: 30px;
+      margin-bottom: 7px;
+    }
+
+    .subtext {
+      font-size: 14px;
+      color: #647066;
+      margin-bottom: 16px;
+    }
+
+    .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
 
-    .error-message {
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: bold;
+      color: #0b5b2e;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap .icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7d8a81;
+      font-size: 14px;
+    }
+
+    .input-wrap input,
+    .input-wrap select {
+      width: 100%;
+      height: 42px;
+      border: 1px solid #ccd7cf;
+      border-radius: 9px;
+      padding: 0 12px 0 38px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      background: #fff;
+      color: #1f2937;
+      font-family: inherit;
+    }
+
+    .input-wrap input:focus,
+    .input-wrap select:focus {
+      border-color: #228B22;
+      box-shadow: 0 0 0 4px rgba(34, 139, 34, 0.12);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7d8a81;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .toggle-password:hover {
+      color: #0b5b2e;
+    }
+
+    .error-message,
+    .success-message {
       display: none;
+      font-size: 13px;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 12px;
+    }
+
+    .error-message {
       background: #fff5f5;
       color: #dc2626;
-      font-size: 13px;
-      padding: 10px 14px;
-      border-radius: 6px;
       border-left: 4px solid #dc2626;
-      margin-bottom: 15px;
     }
 
     .success-message {
-      display: none;
-      background: #f0fff4;
+      background: #eefcf3;
       color: #166534;
-      font-size: 13px;
-      padding: 10px 14px;
-      border-radius: 6px;
       border-left: 4px solid #228B22;
-      margin-bottom: 15px;
+    }
+
+    .actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
 
     .btn-register {
-      width: 100%;
-      padding: 13px;
-      background: #006400;
-      color: white;
+      flex: 1;
       border: none;
-      border-radius: 30px;
-      font-size: 15px;
+      background: #0b5b2e;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
       font-weight: bold;
       cursor: pointer;
-      transition: opacity 0.2s;
+      transition: opacity .2s;
+      font-family: inherit;
     }
-    .btn-register:hover    { opacity: 0.9; }
-    .btn-register:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .links {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 13px;
-      color: #888;
-    }
-    .links a {
-      color: #006400;
+    .btn-register:hover { opacity: .92; }
+    .btn-register:disabled { opacity: .65; cursor: not-allowed; }
+
+    .btn-login-link {
       text-decoration: none;
+      color: #0b5b2e;
+      border: 1px solid #b6ccbb;
+      border-radius: 10px;
+      font-size: 14px;
       font-weight: bold;
-    }
-    .links a:hover { text-decoration: underline; }
-
-    .footer {
-      background: #006400;
-      color: white;
+      padding: 11px 14px;
+      min-width: 130px;
       text-align: center;
-      padding: 12px;
+      background: #fff;
+    }
+
+    .btn-login-link:hover { background: #f5fbf6; }
+
+    .page-footer {
+      text-align: center;
+      margin-top: 14px;
+      color: #7b867d;
       font-size: 12px;
+    }
+
+    .password-policy {
+      margin-top: 10px;
+      background: #f7faf7;
+      border: 1px solid #dbe9df;
+      border-radius: 8px;
+      padding: 9px 11px;
+      font-size: 12px;
+      color: #4f5f54;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 900px) {
+      .register-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .left-pane {
+        padding: 24px 18px;
+      }
+
+      .right-pane {
+        padding: 26px 18px 20px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding: 10px;
+      }
+
+      .register-shell {
+        min-height: calc(100vh - 20px);
+        border-radius: 12px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn-login-link {
+        width: 100%;
+      }
+
+      .right-pane h2 {
+        font-size: 25px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="register-shell">
+    <aside class="left-pane">
+      <div>
+        <div class="brand">
+          <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo">
+          <h1>Student Account Setup</h1>
+        </div>
 
-  <div class="register-container">
+        <ul class="features">
+          <li><i class="fas fa-check"></i> Access upcoming events</li>
+          <li><i class="fas fa-check"></i> View your attendance records</li>
+          <li><i class="fas fa-check"></i> Stay updated with EAC announcements</li>
+        </ul>
+      </div>
+      <div class="left-foot">YOUR KEY TO GLOBAL SUCCESS!</div>
+    </aside>
 
-    <div class="header">
-      <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo">
-      <h1>Student Registration</h1>
-      <p>Create your account to access the system</p>
-    </div>
+    <main class="right-pane">
+      <h2>Create Student Account</h2>
+      <p class="subtext">Fill in your details then click create account.</p>
 
-    <div class="form-body">
       <form id="registerForm" onsubmit="handleRegister(event)">
-
-        <!-- Full Name -->
-        <div class="form-group">
-          <label for="fullname">Full Name</label>
-          <div class="input-wrapper">
-            <i class="fas fa-user input-icon"></i>
-            <input type="text" id="fullname"
-              placeholder="Juan dela Cruz"
-              required>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="fullname">Full Name</label>
+            <div class="input-wrap">
+              <i class="fas fa-user icon"></i>
+              <input type="text" id="fullname" placeholder="Juan Dela Cruz" required>
+            </div>
           </div>
-        </div>
 
-        <!-- Student ID -->
-        <div class="form-group">
-          <label for="studentId">Student ID</label>
-          <div class="input-wrapper">
-            <i class="fas fa-id-card input-icon"></i>
-            <input type="text" id="studentId"
-              placeholder="1-230420"
-              required>
+          <div class="field">
+            <label for="studentId">Student ID</label>
+            <div class="input-wrap">
+              <i class="fas fa-id-card icon"></i>
+              <input type="text" id="studentId" placeholder="1-230420" required>
+            </div>
           </div>
-        </div>
 
-        <!-- Email -->
-        <div class="form-group">
-          <label for="email">Institutional Email</label>
-          <div class="input-wrapper">
-            <i class="fas fa-envelope input-icon"></i>
-            <input type="email" id="email"
-              placeholder="1-230420@asiatech.edu.ph"
-              required autocomplete="email">
+          <div class="field">
+            <label for="email">Email Address</label>
+            <div class="input-wrap">
+              <i class="fas fa-envelope icon"></i>
+              <input type="email" id="email" placeholder="1-230420@asiatech.edu.ph" required autocomplete="email">
+            </div>
           </div>
-        </div>
 
-        <!-- Course, Year Level -->
-        <div class="form-row">
-          <div class="form-group">
+          <div class="field">
             <label for="course">Course</label>
-            <div class="input-wrapper">
-              <i class="fas fa-book input-icon"></i>
+            <div class="input-wrap">
+              <i class="fas fa-book icon"></i>
               <select id="course" required>
                 <option value="">Select</option>
                 <option value="BSIT">BSIT</option>
@@ -219,10 +359,10 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="field">
             <label for="yearLevel">Year Level</label>
-            <div class="input-wrapper">
-              <i class="fas fa-layer-group input-icon"></i>
+            <div class="input-wrap">
+              <i class="fas fa-layer-group icon"></i>
               <select id="yearLevel" required>
                 <option value="">Select</option>
                 <option value="1st">1st</option>
@@ -232,205 +372,184 @@
               </select>
             </div>
           </div>
-        </div>
 
-        <!-- Section -->
-        <div class="form-group">
-          <label for="section">Section</label>
-          <div class="input-wrapper">
-            <i class="fas fa-users input-icon"></i>
-            <select id="section" required>
-              <option value="">Select</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
+          <div class="field">
+            <label for="section">Section</label>
+            <div class="input-wrap">
+              <i class="fas fa-users icon"></i>
+              <select id="section" required>
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock icon"></i>
+              <input type="password" id="password" placeholder="At least 8 characters" required>
+              <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock icon"></i>
+              <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+              <i class="fas fa-eye toggle-password" id="toggleConfirm"></i>
+            </div>
           </div>
         </div>
 
-        <!-- Password -->
-        <div class="form-group">
-          <label for="password">Password</label>
-          <div class="input-wrapper">
-            <i class="fas fa-lock input-icon"></i>
-            <input type="password" id="password"
-              placeholder="Min. 6 characters"
-              required>
-            <i class="fas fa-eye toggle-password" id="togglePassword"></i>
-          </div>
+        <div class="password-policy">
+          Password rule: minimum 8 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.
         </div>
 
-        <!-- Confirm Password -->
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <div class="input-wrapper">
-            <i class="fas fa-lock input-icon"></i>
-            <input type="password" id="confirmPassword"
-              placeholder="Re-enter password"
-              required>
-            <i class="fas fa-eye toggle-password" id="toggleConfirm"></i>
-          </div>
-        </div>
-
-        <!-- Error / Success -->
         <div class="error-message" id="errorMsg">
-          <i class="fas fa-exclamation-circle"></i>
-          <span id="errorText"></span>
+          <i class="fas fa-circle-exclamation"></i> <span id="errorText"></span>
         </div>
         <div class="success-message" id="successMsg">
-          <i class="fas fa-check-circle"></i>
-          <span id="successText"></span>
+          <i class="fas fa-circle-check"></i> <span id="successText"></span>
         </div>
 
-        <button type="submit" class="btn-register" id="btn-register">
-          <i class="fas fa-user-plus"></i> Create Account
-        </button>
-
+        <div class="actions">
+          <button type="submit" class="btn-register" id="btn-register">
+            <i class="fas fa-user-plus"></i> Create Account
+          </button>
+          <a href="loginpage.html" class="btn-login-link">Back to Login</a>
+        </div>
       </form>
 
-      <div class="links">
-        Already have an account?
-        <a href="loginpage.html">Login here</a>
-      </div>
-    </div>
-
-    <div class="footer">
-      YOUR KEY TO GLOBAL SUCCESS! &nbsp;•&nbsp; &copy; 2026 ASIATECH
-    </div>
-
+      <p class="page-footer">&copy; 2026 ASIATECH</p>
+    </main>
   </div>
 
   <script>
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
 
-      // Show/hide password toggle — reusable function
-      document.getElementById('togglePassword').addEventListener('click', function() {
-        togglePwd('password', 'togglePassword');
-      });
-      document.getElementById('toggleConfirm').addEventListener('click', function() {
-        togglePwd('confirmPassword', 'toggleConfirm');
-      });
+    document.getElementById('togglePassword').addEventListener('click', function() {
+      togglePwd('password', 'togglePassword');
+    });
 
-      // Toggle password visibility — ginagamit ng dalawang password fields
-      function togglePwd(inputId, iconId) {
-        const pwd  = document.getElementById(inputId);
-        const icon = document.getElementById(iconId);
-        // Kung naka-password type — i-show
-        if (pwd.type === 'password') {
-          pwd.type = 'text';
-          icon.classList.replace('fa-eye', 'fa-eye-slash');
-        // Kung naka-text type — i-hide
+    document.getElementById('toggleConfirm').addEventListener('click', function() {
+      togglePwd('confirmPassword', 'toggleConfirm');
+    });
+
+    function togglePwd(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    function showError(msg) {
+      const err = document.getElementById('errorMsg');
+      const errText = document.getElementById('errorText');
+      document.getElementById('successMsg').style.display = 'none';
+      errText.textContent = msg;
+      err.style.display = 'block';
+    }
+
+    function showSuccess(msg) {
+      const suc = document.getElementById('successMsg');
+      const sucText = document.getElementById('successText');
+      document.getElementById('errorMsg').style.display = 'none';
+      sucText.textContent = msg;
+      suc.style.display = 'block';
+    }
+
+    function hideMessages() {
+      document.getElementById('errorMsg').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'none';
+    }
+
+    const PASSWORD_POLICY_MESSAGE = 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
+
+    function isStrongPassword(password) {
+      return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/.test(password);
+    }
+
+    async function handleRegister(event) {
+      event.preventDefault();
+      hideMessages();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirm = document.getElementById('confirmPassword').value.trim();
+      const name = document.getElementById('fullname').value.trim();
+      const studentId = document.getElementById('studentId').value.trim();
+      const course = document.getElementById('course').value;
+      const yearLevel = document.getElementById('yearLevel').value;
+      const section = document.getElementById('section').value;
+
+      if (!email || !password || !confirm || !name || !studentId || !course || !yearLevel || !section) {
+        showError('Please fill in all fields!');
+        return;
+      }
+
+      if (!email.toLowerCase().endsWith('@asiatech.edu.ph')) {
+        showError('Please use your @asiatech.edu.ph email.');
+        return;
+      }
+
+      if (password !== confirm) {
+        showError('Passwords do not match!');
+        return;
+      }
+
+      if (!isStrongPassword(password)) {
+        showError(PASSWORD_POLICY_MESSAGE);
+        return;
+      }
+
+      const btn = document.getElementById('btn-register');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'data=' + encodeURIComponent(JSON.stringify({
+            action: 'register',
+            email: email,
+            password: password,
+            name: name,
+            studentId: studentId,
+            course: course,
+            yearLevel: yearLevel,
+            section: section
+          })),
+          redirect: 'follow'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showSuccess('Account created successfully! Redirecting to login...');
+          setTimeout(function() {
+            window.location.href = 'loginpage.html';
+          }, 1500);
         } else {
-          pwd.type = 'password';
-          icon.classList.replace('fa-eye-slash', 'fa-eye');
+          showError(result.message || 'Registration failed!');
         }
+      } catch (err) {
+        showError('Connection failed. Please try again.');
+      } finally {
+        btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+        btn.disabled = false;
       }
-
-      // FIX 1 — handleRegister — yung tinatawag ng form onsubmit
-      async function handleRegister(event) {
-        // Prevent page reload pag nag-submit ng form
-        event.preventDefault();
-        hideMessages();
-
-        // Kuhanin yung values mula sa input fields
-        const email     = document.getElementById('email').value.trim();
-        const password  = document.getElementById('password').value.trim();
-        const confirm   = document.getElementById('confirmPassword').value.trim();
-        const name      = document.getElementById('fullname').value.trim();
-        const studentId = document.getElementById('studentId').value.trim();
-        const course    = document.getElementById('course').value;
-        const yearLevel = document.getElementById('yearLevel').value;
-        const section   = document.getElementById('section').value;
-
-        // Validate — dapat hindi blank
-        if (!email || !password || !confirm || !name || !studentId || !course || !yearLevel || !section) {
-          showError("Please fill in all fields!");
-          return;
-        }
-
-        // Validate — institutional email lang
-        if (!email.endsWith('@asiatech.edu.ph')) {
-          showError("Please use your institutional email (@asiatech.edu.ph)!");
-          return;
-        }
-
-        // Validate — dapat match ang password at confirm password
-        if (password !== confirm) {
-          showError("Passwords do not match!");
-          return;
-        }
-
-        // FIX 2 — correct button ID
-        const btn = document.getElementById('btn-register');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
-        btn.disabled  = true;
-
-        try {
-          // POST request sa Google Apps Script
-          // Gamit ang form-urlencoded — accepted ng GAS
-          const response = await fetch(scriptURL, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `data=${encodeURIComponent(JSON.stringify({
-              action:    "register",
-              email:     email,
-              password:  password,
-              name:      name,
-              studentId: studentId,
-              course:    course,
-              yearLevel: yearLevel,
-              section:   section
-            }))}`,
-            redirect: "follow"
-          });
-
-          // I-convert yung response sa JSON
-          const result = await response.json();
-
-          if (result.success) {
-            // Kung successful — show success message + redirect to login
-            showSuccess("Account created successfully! Redirecting to login...");
-            setTimeout(() => {
-              window.location.href = 'loginpage.html';
-            }, 2000);
-          } else {
-            // Kung may error — show error message
-            showError(result.message || "Registration failed!");
-          }
-
-        } catch(err) {
-          // Kung may connection error
-          showError("Connection failed. Please try again.");
-        } finally {
-          // I-reset yung button kahit success or error
-          btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
-          btn.disabled  = false;
-        }
-      }
-
-      // Show error message sa UI
-      function showError(msg) {
-        const err  = document.getElementById('errorMsg');
-        const text = document.getElementById('errorText');
-        text.textContent  = msg;
-        err.style.display = 'block';
-      }
-
-      // Show success message sa UI
-      function showSuccess(msg) {
-        const suc  = document.getElementById('successMsg');
-        const text = document.getElementById('successText');
-        text.textContent  = msg;
-        suc.style.display = 'block';
-      }
-
-      // Hide both error and success messages
-      function hideMessages() {
-        document.getElementById('errorMsg').style.display   = 'none';
-        document.getElementById('successMsg').style.display = 'none';
-      }
+    }
   </script>
-
 </body>
 </html>

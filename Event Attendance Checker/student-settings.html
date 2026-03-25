@@ -149,6 +149,16 @@
     .error-msg.show { display: flex; }
 
     .section-divider { border: none; border-top: 1px solid #e8f0e8; margin: 20px 0; }
+    .policy-note {
+      background: #f7faf7;
+      border: 1px solid #dbe9df;
+      border-radius: 6px;
+      padding: 9px 11px;
+      font-size: 12px;
+      color: #4f5f54;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
 
     /* MOBILE */
     @media (max-width: 768px) {
@@ -330,7 +340,7 @@
               <label>New Password</label>
               <div class="input-wrapper">
                 <i class="fas fa-key input-icon"></i>
-                <input type="password" id="newPassword" placeholder="Enter new password">
+                <input type="password" id="newPassword" placeholder="At least 8 characters">
                 <i class="fas fa-eye toggle-password" id="toggleNew"></i>
               </div>
             </div>
@@ -342,6 +352,10 @@
                 <input type="password" id="confirmPassword" placeholder="Re-enter new password">
                 <i class="fas fa-eye toggle-password" id="toggleConfirm"></i>
               </div>
+            </div>
+
+            <div class="policy-note">
+              Password rule: minimum 8 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.
             </div>
 
             <div class="btn-row">
@@ -438,6 +452,11 @@
       document.getElementById('errorMsg').classList.remove('show');
     }
 
+    const PASSWORD_POLICY_MESSAGE = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+    function isStrongPassword(password) {
+      return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/.test(password);
+    }
+
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
 
     async function changePassword() {
@@ -455,8 +474,8 @@
         showError("New passwords do not match!");
         return;
       }
-      if (newPassword.length < 6) {
-        showError("New password must be at least 6 characters!");
+      if (!isStrongPassword(newPassword)) {
+        showError(PASSWORD_POLICY_MESSAGE);
         return;
       }
       if (newPassword === currentPassword) {
