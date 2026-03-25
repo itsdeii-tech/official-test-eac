@@ -296,7 +296,7 @@
           <div class="input-wrapper">
             <i class="fas fa-envelope input-icon"></i>
             <input type="email" id="forgot-email"
-              placeholder="1-230420@asiatech.edu.ph">
+              placeholder="1-******@asiatech.edu.ph">
           </div>
         </div>
 
@@ -449,7 +449,7 @@
           sessionStorage.setItem('user', JSON.stringify(result));
           window.location.href = result.role === 'faculty'
             ? 'faculty-dashboard.html'
-            : 'student-portal.html';
+            : 'student-dashboard.html';
         } else {
           showError(result.message || "Invalid email or password!");
         }
@@ -597,3 +597,4 @@
 
 </body>
 </html>
+
