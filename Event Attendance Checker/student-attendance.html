@@ -159,7 +159,7 @@
         <div class="stat-chip">
           <i class="fas fa-circle-xmark"></i>
           <span class="num" id="stat-absent">—</span>
-          <span class="lbl">Absent</span>
+          <span class="lbl">Registered</span>
         </div>
       </div>
 
@@ -256,7 +256,7 @@
         tbody.innerHTML = "";
         result.data.forEach((row, i) => {
           const isPresent  = row.status === 'PRESENT' || row.status === 'COMPLETED (OUT)';
-          const isAbsent   = row.status === 'ABSENT';
+          const isAbsent   = row.status === 'REGISTERED';
           if (isPresent) present++;
           if (isAbsent)  absent++;
 
