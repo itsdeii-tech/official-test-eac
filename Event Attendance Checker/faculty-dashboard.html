@@ -296,6 +296,7 @@
         if (!response.ok) throw new Error("Network error");
 
         const events = await response.json();
+        const orderedEvents = events.slice().reverse();
 
         const today  = new Date();
         const active = events.filter(event => new Date(event.date) >= today);
@@ -322,7 +323,7 @@
               </tr>
             </thead><tbody>`;
 
-        events.forEach(event => {
+        orderedEvents.forEach(event => {
           html += `
             <tr>
               <td><strong>${event.name}</strong></td>

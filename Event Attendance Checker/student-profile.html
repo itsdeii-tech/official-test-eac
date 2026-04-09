@@ -5,149 +5,476 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Profile - EAC</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f4f0; color: #333; min-height: 100vh; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top left, rgba(34, 139, 34, 0.12), transparent 28%), linear-gradient(180deg, #f6fbf6, #edf5ed);
+      color: #223322;
+      min-height: 100vh;
+    }
 
     /* SIDEBAR */
     .sidebar {
       width: 70px;
-      background-color: #006400;
-      color: white;
+      background: #006400;
+      color: #fff;
       padding: 20px 10px;
       height: 100vh;
       position: fixed;
-      left: 0; top: 0;
+      left: 0;
+      top: 0;
       overflow: hidden;
       transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
-    .sidebar:hover { width: 230px; }
-    .sidebar-text { display: none; white-space: nowrap; }
-    .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
-    .sidebar:hover .sidebar-logo { width: 110px; }
-    .sidebar a { display: flex; align-items: center; color: white; text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
-    .sidebar a:hover, .sidebar a.active { background-color: #228B22; }
-    .sidebar i { min-width: 24px; font-size: 17px; text-align: center; margin-right: 0; transition: margin 0.3s ease; }
-    .sidebar:hover i { margin-right: 12px; }
-    .tooltip { display: none; position: absolute; left: 72px; top: 50%; transform: translateY(-50%); background: #333; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 9999; pointer-events: none; }
-    .sidebar:not(:hover) a:hover .tooltip { display: block; }
+
+    .sidebar:hover {
+      width: 230px;
+    }
+
+    .sidebar-text {
+      display: none;
+      white-space: nowrap;
+    }
+
+    .sidebar:hover .sidebar-text {
+      display: inline;
+    }
+
+    .sidebar-logo {
+      width: 50px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 50%;
+      transition: width 0.3s ease;
+    }
+
+    .sidebar:hover .sidebar-logo {
+      width: 110px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      text-decoration: none;
+      padding: 11px 10px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: #228b22;
+    }
+
+    .sidebar i {
+      min-width: 24px;
+      font-size: 17px;
+      text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
+    }
+
+    .sidebar:hover i {
+      margin-right: 12px;
+    }
+
+    .tooltip {
+      display: none;
+      position: absolute;
+      left: 72px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .sidebar:not(:hover) a:hover .tooltip {
+      display: block;
+    }
 
     /* OVERLAY */
-    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
-    .overlay.active { display: block; }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .overlay.active {
+      display: block;
+    }
 
     /* HAMBURGER */
-    .hamburger { display: none; background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 5px; }
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 5px;
+    }
 
     /* MAIN */
-    .main { margin-left: 70px; min-height: 100vh; }
+    .main {
+      margin-left: 70px;
+      min-height: 100vh;
+    }
 
     /* TOP BAR */
-    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-    .top-bar-left { display: flex; align-items: center; gap: 12px; }
-    .top-bar-left h1 { font-size: 18px; font-weight: bold; cursor: default;}
-    .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+    .top-bar {
+      background: #006400;
+      color: #fff;
+      padding: 0 28px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top-left h1 {
+      font-size: 18px;
+    }
+
+    .top-left p {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
 
     /* CONTENT */
-    .content-wrap { padding: 24px 28px; cursor: default; }
-
-    /* PROFILE CARD */
-    .profile-card {
-      background: white;
-      border: 1px solid #d4e8d4;
-      border-radius: 10px;
-      padding: 36px 30px;
-      max-width: 600px;
-      margin: 0 auto;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-      text-align: center;
+    .content {
+      padding: 28px;
+      display: grid;
+      gap: 20px;
     }
 
-    .profile-avatar {
-      width: 120px; height: 120px;
+    .card {
+      background: #fff;
+      border: 1px solid #d7e9d7;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(7, 54, 16, 0.06);
+    }
+
+    /* HERO */
+    .hero {
+      overflow: hidden;
+    }
+
+    .hero-banner {
+      height: 110px;
+      background: linear-gradient(135deg, #0d6f26, #2e8b57);
+    }
+
+    .hero-body {
+      padding: 0 24px 24px;
+      margin-top: -42px;
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 22px;
+    }
+
+    .avatar-col {
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 128px;
+      height: 128px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid #228B22;
-      margin-bottom: 15px;
+      border: 5px solid #fff;
+      background: #dff1df;
+      box-shadow: 0 10px 25px rgba(8, 68, 21, 0.18);
     }
 
-    .profile-name {
-      font-size: 24px;
-      color: #006400;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
-
-    .profile-info {
-      font-size: 14px;
-      line-height: 1.8;
-      text-align: left;
-      max-width: 400px;
-      margin: 20px auto 0;
-      border-top: 1px solid #e8f0e8;
-      padding-top: 20px;
-    }
-    .profile-info p { margin: 10px 0; }
-    .profile-info strong { color: #006400; }
-
-    .edit-btn {
-      background: #228B22;
-      color: white;
-      padding: 12px 30px;
-      font-size: 15px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 25px auto 0;
-      display: inline-block;
-      font-family: inherit;
-      transition: opacity 0.2s;
-    }
-    .edit-btn:hover { opacity: 0.9; }
-
-    .back-link {
-      display: block;
+    .photo-actions {
+      width: 100%;
+      display: grid;
+      gap: 8px;
       text-align: center;
-      margin-top: 20px;
-      color: #006400;
-      font-weight: bold;
-      text-decoration: underline;
-      font-size: 14px;
     }
 
-    /* MOBILE */
+    .photo-input {
+      display: none;
+    }
+
+    .photo-btn,
+    .photo-remove,
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .photo-btn,
+    .btn-primary {
+      background: #166534;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #2e8b57;
+      color: #fff;
+    }
+
+    .photo-remove,
+    .btn-ghost {
+      background: #eff7ef;
+      color: #166534;
+      border: 1px solid #d8ead8;
+    }
+
+    .photo-btn:hover,
+    .photo-remove:hover,
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.94;
+    }
+
+    .note {
+      font-size: 11px;
+      line-height: 1.5;
+      color: #617861;
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 16px;
+      padding-top: 18px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .name {
+      font-size: 31px;
+      line-height: 1.08;
+      color: #12361b;
+    }
+
+    .sub {
+      margin-top: 8px;
+      color: #5a705a;
+      font-size: 15px;
+    }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .badge.primary {
+      background: #dff3e2;
+      color: #166534;
+    }
+
+    .badge.soft {
+      background: #eef3ef;
+      color: #556855;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .stat {
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #678167;
+      font-size: 13px;
+    }
+
+    .stat-top i {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: #eef6ef;
+      color: #166534;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-value {
+      font-size: 34px;
+      font-weight: 700;
+      color: #143c1e;
+      line-height: 1;
+    }
+
+    .stat-copy {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #678067;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-body {
+        grid-template-columns: 1fr;
+      }
+
+      .avatar-col {
+        justify-items: start;
+      }
+    }
+
     @media (max-width: 768px) {
-      .sidebar { width: 230px; transform: translateX(-100%); }
-      .sidebar:hover { width: 230px; }
-      .sidebar.mobile-open { transform: translateX(0); }
-      .sidebar.mobile-open .sidebar-text { display: inline; }
-      .sidebar.mobile-open i { margin-right: 12px; }
-      .sidebar.mobile-open .sidebar-logo { width: 110px; }
-      .main { margin-left: 0; }
-      .top-bar { padding: 0 15px; }
-      .top-bar-left h1 { font-size: 15px; }
-      .top-bar-left p { display: none; }
-      .hamburger { display: block; }
-      .content-wrap { padding: 15px; }
-      .profile-card { padding: 24px 16px; }
-      .profile-name { font-size: 20px; }
-      .profile-avatar { width: 90px; height: 90px; }
+      .sidebar {
+        width: 230px;
+        transform: translateX(-100%);
+      }
+
+      .sidebar:hover {
+        width: 230px;
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .sidebar.mobile-open .sidebar-text {
+        display: inline;
+      }
+
+      .sidebar.mobile-open i {
+        margin-right: 12px;
+      }
+
+      .sidebar.mobile-open .sidebar-logo {
+        width: 110px;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .top-bar {
+        padding: 0 15px;
+      }
+
+      .top-left h1 {
+        font-size: 15px;
+      }
+
+      .top-left p {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .content {
+        padding: 15px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-body {
+        padding: 0 18px 20px;
+      }
+
+      .avatar-col {
+        justify-items: center;
+      }
+
+      .name {
+        font-size: 25px;
+      }
     }
 
     @media (max-width: 480px) {
-      .top-bar-left h1 { font-size: 14px; }
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .avatar {
+        width: 112px;
+        height: 112px;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- OVERLAY -->
   <div class="overlay" id="overlay" onclick="closeMobileSidebar()"></div>
-
-  <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
     <a href="student-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span><span class="tooltip">Dashboard</span></a>
@@ -157,89 +484,120 @@
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span><span class="tooltip">Logout</span></a>
   </nav>
 
-  <!-- MAIN -->
   <main class="main">
-
     <div class="top-bar">
-      <div class="top-bar-left">
-        <button class="hamburger" onclick="toggleMobileSidebar()">
-          <i class="fas fa-bars"></i>
-        </button>
-        <div>
-          <h1>My Profile</h1>
-        </div>
+      <div class="top-left">
+        <button class="hamburger" onclick="toggleMobileSidebar()"><i class="fas fa-bars"></i></button>
+        <div><h1>Student Profile</h1></div>
       </div>
     </div>
 
-    <div class="content-wrap">
-      <div class="profile-card">
+    <div class="content">
+      <section class="card hero">
+        <div class="hero-banner"></div>
+        <div class="hero-body">
+          <div class="avatar-col">
+            <img id="profileAvatar" class="avatar" alt="Student profile photo">
+            <div class="photo-actions">
+              <label class="photo-btn" for="profilePhotoInput"><i class="fas fa-camera"></i> Upload Photo</label>
+              <input id="profilePhotoInput" class="photo-input" type="file" accept="image/*">
+              <button class="photo-remove" type="button" id="removePhotoBtn"><i class="fas fa-trash-can"></i> Remove Photo</button>
+              <p class="note"></p>
+            </div>
+          </div>
 
-        <img src="images/default-avatar.png" alt="Profile Picture"
-             class="profile-avatar" id="profileAvatar"
-             onerror="this.src='https://ui-avatars.com/api/?name=Student&background=006400&color=fff&size=120'">
-
-        <div class="profile-name" id="profileName">Loading...</div>
-
-        <div class="profile-info">
-          <p><strong><i class="fas fa-id-card"></i> Student ID:</strong> <span id="profileStudentId">—</span></p>
-          <p><strong><i class="fas fa-book"></i> Course:</strong> <span id="profileCourse">—</span></p>
-          <p><strong><i class="fas fa-layer-group"></i> Year Level:</strong> <span id="profileYearLevel">—</span></p>
-          <p><strong><i class="fas fa-users"></i> Section:</strong> <span id="profileSection">—</span></p>
-          <p><strong><i class="fas fa-envelope"></i> Email:</strong> <span id="profileEmail">—</span></p>
+          <div class="hero-copy">
+            <div>
+              <p class="eyebrow">Student account center</p>
+              <h2 class="name" id="profileName">Loading profile...</h2>
+              <p class="sub" id="profileSubtitle">Student account - CEITE</p>
+            </div>
+            <div class="badges" id="badgeRow">
+              <span class="badge primary">Student</span>
+              <span class="badge soft">Institutional account</span>
+            </div>
+            <div class="actions">
+              <a href="student-attendance.html" class="btn btn-primary"><i class="fas fa-calendar-check"></i> My Attendance</a>
+              <a href="student-settings.html" class="btn btn-secondary"><i class="fas fa-key"></i> Change Password</a>
+              <button type="button" class="btn btn-ghost" id="refreshProfileBtn"><i class="fas fa-rotate-right"></i> Refresh Summary</button>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <button class="edit-btn">
-          <i class="fas fa-edit"></i> Edit Profile
-        </button>
+      <section class="stats">
+        <article class="card stat"><div class="stat-top"><span>Registered</span><i class="fas fa-clipboard-check"></i></div><div class="stat-value" id="statRegistered">0</div><p class="stat-copy">Total event registrations on your account.</p></article>
+        <article class="card stat"><div class="stat-top"><span>Present</span><i class="fas fa-user-check"></i></div><div class="stat-value" id="statPresent">0</div><p class="stat-copy">Registrations already marked as present.</p></article>
+        <article class="card stat"><div class="stat-top"><span>Completed</span><i class="fas fa-door-open"></i></div><div class="stat-value" id="statCompleted">0</div><p class="stat-copy">Events with successful checkout scans.</p></article>
+        <article class="card stat"><div class="stat-top"><span>Attendance rate</span><i class="fas fa-chart-line"></i></div><div class="stat-value" id="statRate">0%</div><p class="stat-copy">Present or completed records versus total registrations.</p></article>
+      </section>
 
-        <a href="student-dashboard.html" class="back-link">← Back to Dashboard</a>
-
-      </div>
     </div>
   </main>
 
   <script>
-    const user = JSON.parse(sessionStorage.getItem('user'));
-    if (!user || user.role !== 'student') {
-      window.location.href = 'loginpage.html';
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (!user || user.role !== "student") window.location.href = "loginpage.html";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec";
+    const photoKey = "eacProfilePhoto:student:" + ((user && user.email) || "").toLowerCase();
+
+    document.querySelectorAll(".sidebar a").forEach(function(link){ if(link.getAttribute("href") === window.location.pathname.split("/").pop()) link.classList.add("active"); });
+    function logout(){ if(confirm("Are you sure you want to logout?")){ sessionStorage.removeItem("user"); window.location.href = "loginpage.html"; } }
+    function toggleMobileSidebar(){ document.getElementById("sidebar").classList.toggle("mobile-open"); document.getElementById("overlay").classList.toggle("active"); }
+    function closeMobileSidebar(){ document.getElementById("sidebar").classList.remove("mobile-open"); document.getElementById("overlay").classList.remove("active"); }
+    function norm(v){ return (v || "").toString().trim().toLowerCase(); }
+    function escapeHtml(v){ return (v || "").toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+    function setTextIfExists(id, text){ const el = document.getElementById(id); if (el) el.textContent = text; }
+    function parseEventDate(v){ const d = new Date(v); return isNaN(d.getTime()) ? null : d; }
+    function formatEventDate(v){ const d = v instanceof Date ? v : parseEventDate(v); return d ? d.toLocaleString("en-US",{year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"}) : "Schedule unavailable"; }
+    function initials(name){ const clean = (name || "").trim(); return clean ? clean.split(/\s+/).slice(0,2).map(function(part){ return part.charAt(0).toUpperCase(); }).join("") : "EA"; }
+    function avatarDataUrl(name){ const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17853a"/><stop offset="1" stop-color="#0c5c22"/></linearGradient></defs><rect width="320" height="320" rx="160" fill="url(#g)"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="116" fill="#fff">' + initials(name) + "</text></svg>"; return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg); }
+    function currentPhoto(){ return localStorage.getItem(photoKey) || user.profileImage || user.profilePhoto || user.photoUrl || user.avatarUrl || avatarDataUrl(user.name || "Student"); }
+    function setPhoto(src){ document.getElementById("profileAvatar").src = src; }
+    function loadBase(){
+      document.getElementById("profileName").textContent = user.name || "Student account";
+      document.getElementById("profileSubtitle").textContent = (user.course || "Student") + " - " + (user.yearLevel || "Year level") + " - Section " + (user.section || "-");
+      document.getElementById("badgeRow").innerHTML = '<span class="badge primary">Student</span><span class="badge soft">' + escapeHtml(user.course || "Institutional account") + "</span><span class=\"badge soft\">" + escapeHtml(user.yearLevel || "Year level") + "</span>";
+      setPhoto(currentPhoto());
     }
+    function squareDataUrl(file){ return new Promise(function(resolve,reject){ const reader = new FileReader(); reader.onload = function(e){ const img = new Image(); img.onload = function(){ const size = 320, canvas = document.createElement("canvas"), ctx = canvas.getContext("2d"); canvas.width = size; canvas.height = size; const srcSize = Math.min(img.width,img.height), sx = (img.width - srcSize)/2, sy = (img.height - srcSize)/2; ctx.drawImage(img,sx,sy,srcSize,srcSize,0,0,size,size); resolve(canvas.toDataURL("image/jpeg",0.88)); }; img.onerror = function(){ reject(new Error("Image load failed")); }; img.src = e.target.result; }; reader.onerror = function(){ reject(new Error("File read failed")); }; reader.readAsDataURL(file); }); }
+    async function handlePhotoUpload(event){ const file = event.target.files && event.target.files[0]; if(!file) return; try{ const dataUrl = await squareDataUrl(file); localStorage.setItem(photoKey,dataUrl); setPhoto(dataUrl); } catch (error){ alert("Photo upload failed. Please try another image."); } finally { event.target.value = ""; } }
+    function removePhoto(){ localStorage.removeItem(photoKey); setPhoto(avatarDataUrl(user.name || "Student")); }
+    async function loadStats(){
+      ["statRegistered","statPresent","statCompleted"].forEach(function(id){ document.getElementById(id).textContent = "..."; });
+      document.getElementById("statRate").textContent = "...";
+      try{
+        const responses = await Promise.all([
+          fetch(scriptURL + "?action=getStudentAttendance&email=" + encodeURIComponent(user.email), { method:"GET", redirect:"follow" }),
+          fetch(scriptURL + "?action=getEvents", { method:"GET", redirect:"follow" })
+        ]);
+        const attendancePayload = await responses[0].json();
+        const eventPayload = await responses[1].json();
+        const records = attendancePayload && attendancePayload.success && Array.isArray(attendancePayload.data) ? attendancePayload.data : [];
+        const events = Array.isArray(eventPayload) ? eventPayload.map(function(event){ return Object.assign({}, event, { parsedDate: parseEventDate(event.date) }); }) : [];
+        const eventMap = {};
+        events.forEach(function(event){ eventMap[norm(event.name)] = event; });
 
-    function loadProfile() {
-      if (!user) return;
-      document.getElementById('profileName').textContent      = user.name      || '—';
-      document.getElementById('profileStudentId').textContent = user.studentId || '—';
-      document.getElementById('profileCourse').textContent    = user.course    || '—';
-      document.getElementById('profileYearLevel').textContent = user.yearLevel || '—';
-      document.getElementById('profileSection').textContent   = user.section   || '—';
-      document.getElementById('profileEmail').textContent     = user.email     || '—';
-      document.getElementById('profileAvatar').src =
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=006400&color=fff&size=120`;
-    }
-
-    const currentPage = window.location.pathname.split('/').pop();
-    document.querySelectorAll('.sidebar a').forEach(link => {
-      if (link.getAttribute('href') === currentPage) link.classList.add('active');
-    });
-
-    function logout() {
-      if (confirm("Are you sure you want to logout?")) {
-        sessionStorage.removeItem('user');
-        window.location.href = 'loginpage.html';
+        const present = records.filter(function(record){ return record.status === "PRESENT"; }).length;
+        const completed = records.filter(function(record){ return record.status === "COMPLETED (OUT)"; }).length;
+        const attended = records.filter(function(record){ return record.status === "PRESENT" || record.status === "COMPLETED (OUT)"; }).length;
+        const rate = records.length ? Math.round((attended / records.length) * 100) : 0;
+        document.getElementById("statRegistered").textContent = String(records.length);
+        document.getElementById("statPresent").textContent = String(present);
+        document.getElementById("statCompleted").textContent = String(completed);
+        document.getElementById("statRate").textContent = rate + "%";
+        setTextIfExists("profileSummary", records.length ? "You are currently registered in " + records.length + " event" + (records.length === 1 ? "" : "s") + ", with an attendance rate of " + rate + "% based on your scanned records." : "No attendance record yet. Once you register for an event, this page can summarize your participation automatically.");
+      }catch(error){
+        ["statRegistered","statPresent","statCompleted"].forEach(function(id){ document.getElementById(id).textContent = "0"; });
+        document.getElementById("statRate").textContent = "0%";
+        setTextIfExists("profileSummary", "Cloud summary could not be loaded right now, but your identity card and photo tools are still available.");
       }
     }
 
-    function toggleMobileSidebar() {
-      document.getElementById('sidebar').classList.toggle('mobile-open');
-      document.getElementById('overlay').classList.toggle('active');
-    }
-    function closeMobileSidebar() {
-      document.getElementById('sidebar').classList.remove('mobile-open');
-      document.getElementById('overlay').classList.remove('active');
-    }
-
-    window.onload = loadProfile;
+    document.getElementById("profilePhotoInput").addEventListener("change", handlePhotoUpload);
+    document.getElementById("removePhotoBtn").addEventListener("click", removePhoto);
+    document.getElementById("refreshProfileBtn").addEventListener("click", loadStats);
+    window.onload = function(){ loadBase(); loadStats(); };
   </script>
-
 </body>
 </html>
-

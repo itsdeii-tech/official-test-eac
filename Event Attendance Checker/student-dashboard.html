@@ -308,7 +308,7 @@
         const activeEvents = events.filter(event => {
           var eventDate = new Date(Date.parse(event.date));
           return eventDate >= today;
-        });
+        }).reverse();
 
         // Registered count
         const registered = attendance.success ? attendance.total : 0;
