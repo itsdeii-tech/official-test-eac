@@ -52,12 +52,17 @@
     .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
 
     /* CONTENT */
-    .content-wrap { padding: 24px 28px; cursor: default;}
+    .content-wrap { padding: 24px 28px; cursor: default; }
+
+    /* VIEWS */
+    .view { display: none; }
+    .view.active { display: block; }
 
     /* CARD */
     .card { background: white; border: 1px solid #d4e8d4; border-radius: 10px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
     .card-head { padding: 14px 20px; border-bottom: 1px solid #e8f0e8; background: #f5faf5; }
     .card-head h2 { font-size: 15px; color: #006400; display: flex; align-items: center; gap: 8px; }
+    .card-body { padding: 20px; }
 
     /* SETTINGS ITEMS */
     .settings-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f0f5f0; cursor: pointer; transition: background 0.2s; text-decoration: none; color: #333; }
@@ -69,12 +74,65 @@
     .icon-blue   { background: #e3f2fd; color: #1565c0; }
     .icon-orange { background: #fff3e0; color: #e65100; }
     .icon-red    { background: #fff5f5; color: #dc2626; }
+    .icon-gray   { background: #f5f5f5; color: #666; }
     .settings-item-info h4 { font-size: 14px; font-weight: bold; color: #1a2e1a; margin-bottom: 3px; }
     .settings-item-info p  { font-size: 12px; color: #888; }
     .settings-item-arrow { color: #aaa; font-size: 14px; }
 
     /* COMING SOON BADGE */
     .badge-soon { background: #fff3e0; color: #e65100; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 20px; }
+
+    /* FORM */
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: bold; color: #006400; }
+    .input-wrapper { position: relative; }
+    .input-wrapper i.input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 14px; }
+    .input-wrapper input {
+      width: 100%;
+      padding: 11px 14px 11px 36px;
+      border: 1px solid #d4e8d4;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fafff8;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .input-wrapper input:focus {
+      outline: none;
+      border-color: #228B22;
+      box-shadow: 0 0 0 3px rgba(34,139,34,0.1);
+      background: white;
+    }
+    .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #aaa; font-size: 14px; }
+    .toggle-password:hover { color: #006400; }
+
+    /* BUTTONS */
+    .btn { padding: 11px 24px; font-size: 14px; font-weight: bold; color: white; border: none; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s; font-family: inherit; }
+    .btn:hover { opacity: 0.88; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-primary { background: #006400; }
+    .btn-outline { background: none; color: #006400; border: 1px solid #006400; padding: 10px 20px; font-size: 13px; font-weight: bold; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; font-family: inherit; }
+    .btn-outline:hover { background: #f0f7f0; }
+
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+
+    /* MESSAGES */
+    .success-msg { display: none; background: #f0fff4; color: #166534; border-left: 4px solid #228B22; padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 13px; margin-bottom: 16px; align-items: center; gap: 8px; }
+    .success-msg.show { display: flex; }
+    .error-msg { display: none; background: #fff5f5; color: #dc2626; border-left: 4px solid #dc2626; padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 13px; margin-bottom: 16px; align-items: center; gap: 8px; }
+    .error-msg.show { display: flex; }
+
+    .section-divider { border: none; border-top: 1px solid #e8f0e8; margin: 20px 0; }
+    .policy-note {
+      background: #f7faf7;
+      border: 1px solid #dbe9df;
+      border-radius: 6px;
+      padding: 9px 11px;
+      font-size: 12px;
+      color: #4f5f54;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
 
     /* MOBILE */
     @media (max-width: 768px) {
@@ -128,80 +186,153 @@
 
     <div class="content-wrap">
 
-      <!-- Preferences -->
-      <div class="card">
-        <div class="card-head">
-          <h2><i class="fas fa-sliders"></i> Preferences</h2>
-        </div>
+      <!-- VIEW 1: SETTINGS MENU -->
+      <div class="view active" id="view-menu">
 
-        <div class="settings-item" style="cursor: default; opacity: 0.7;">
-          <div class="settings-item-left">
-            <div class="settings-item-icon icon-blue">
-              <i class="fas fa-bell"></i>
+        <!-- Account Settings -->
+        <div class="card">
+          <div class="card-head">
+            <h2><i class="fas fa-user-gear"></i> Account Settings</h2>
+          </div>
+
+          <div class="settings-item" onclick="showView('view-change-password')">
+            <div class="settings-item-left">
+              <div class="settings-item-icon icon-green">
+                <i class="fas fa-lock"></i>
+              </div>
+              <div class="settings-item-info">
+                <h4>Change Password</h4>
+                <p>Update your account password</p>
+              </div>
             </div>
-            <div class="settings-item-info">
-              <h4>Notification Preferences</h4>
-              <p>Manage email notifications</p>
+            <i class="fas fa-chevron-right settings-item-arrow"></i>
+          </div>
+
+          <div class="settings-item" style="cursor: default; opacity: 0.7;">
+            <div class="settings-item-left">
+              <div class="settings-item-icon icon-blue">
+                <i class="fas fa-bell"></i>
+              </div>
+              <div class="settings-item-info">
+                <h4>Notification Preferences</h4>
+                <p>Manage email notifications</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="settings-item" style="cursor: default; opacity: 0.7;">
+        <!-- Privacy & Security -->
+        <div class="card">
+          <div class="card-head">
+            <h2><i class="fas fa-shield-halved"></i> Privacy & Security</h2>
+          </div>
+
+          <div class="settings-item" style="cursor: default; opacity: 0.7;">
+            <div class="settings-item-left">
+              <div class="settings-item-icon icon-blue">
+                <i class="fas fa-mobile-screen"></i>
+              </div>
+              <div class="settings-item-info">
+                <h4>Active Sessions</h4>
+                <p>View devices logged in to your account</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-item" style="cursor: default; opacity: 0.7;">
+            <div class="settings-item-left">
+              <div class="settings-item-icon icon-green">
+                <i class="fas fa-shield"></i>
+              </div>
+              <div class="settings-item-info">
+                <h4>Two-Factor Authentication</h4>
+                <p>Add extra security to your account</p>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- Danger Zone -->
+        <div class="card">
+          <div class="card-head">
+            <h2><i class="fas fa-triangle-exclamation"></i> Danger Zone</h2>
+          </div>
+
+          <div class="settings-item" onclick="logout()">
+            <div class="settings-item-left">
+              <div class="settings-item-icon icon-red">
+                <i class="fas fa-sign-out-alt"></i>
+              </div>
+              <div class="settings-item-info">
+                <h4>Logout</h4>
+                <p>Sign out of your account</p>
+              </div>
+            </div>
+            <i class="fas fa-chevron-right settings-item-arrow"></i>
+          </div>
+        </div>
       </div>
 
-      <!-- Privacy & Security -->
-      <div class="card">
-        <div class="card-head">
-          <h2><i class="fas fa-shield-halved"></i> Privacy & Security</h2>
-        </div>
+      <!-- VIEW 2: CHANGE PASSWORD -->
+      <div class="view" id="view-change-password">
+        <div class="card">
+          <div class="card-head">
+            <h2><i class="fas fa-lock"></i> Change Password</h2>
+          </div>
+          <div class="card-body">
 
-        <div class="settings-item" style="cursor: default; opacity: 0.7;">
-          <div class="settings-item-left">
-            <div class="settings-item-icon icon-blue">
-              <i class="fas fa-mobile-screen"></i>
+            <div class="success-msg" id="successMsg">
+              <i class="fas fa-circle-check"></i>
+              <span id="successText"></span>
             </div>
-            <div class="settings-item-info">
-              <h4>Active Sessions</h4>
-              <p>View devices logged in to your account</p>
+            <div class="error-msg" id="errorMsg">
+              <i class="fas fa-circle-exclamation"></i>
+              <span id="errorText"></span>
+            </div>
+
+            <div class="form-group">
+              <label>Current Password</label>
+              <div class="input-wrapper">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="currentPassword" placeholder="Enter current password">
+                <i class="fas fa-eye toggle-password" id="toggleCurrent"></i>
+              </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="form-group">
+              <label>New Password</label>
+              <div class="input-wrapper">
+                <i class="fas fa-key input-icon"></i>
+                <input type="password" id="newPassword" placeholder="At least 8 characters">
+                <i class="fas fa-eye toggle-password" id="toggleNew"></i>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <div class="input-wrapper">
+                <i class="fas fa-key input-icon"></i>
+                <input type="password" id="confirmPassword" placeholder="Re-enter new password">
+                <i class="fas fa-eye toggle-password" id="toggleConfirm"></i>
+              </div>
+            </div>
+
+            <div class="policy-note">
+              Password rule: minimum 8 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-primary" id="btn-save" onclick="changePassword()">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+              <button class="btn-outline" onclick="showView('view-menu')">
+                <i class="fas fa-arrow-left"></i> Back to Settings
+              </button>
             </div>
           </div>
         </div>
-
-        <div class="settings-item" style="cursor: default; opacity: 0.7;">
-          <div class="settings-item-left">
-            <div class="settings-item-icon icon-green">
-              <i class="fas fa-shield"></i>
-            </div>
-            <div class="settings-item-info">
-              <h4>Two-Factor Authentication</h4>
-              <p>Add extra security to your account</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Danger Zone -->
-      <div class="card">
-        <div class="card-head">
-          <h2><i class="fas fa-triangle-exclamation"></i> Danger Zone</h2>
-        </div>
-
-        <div class="settings-item" onclick="logout()">
-          <div class="settings-item-left">
-            <div class="settings-item-icon icon-red">
-              <i class="fas fa-sign-out-alt"></i>
-            </div>
-            <div class="settings-item-info">
-              <h4>Logout</h4>
-              <p>Sign out of your account</p>
-            </div>
-          </div>
-          <i class="fas fa-chevron-right settings-item-arrow"></i>
-        </div>
-
       </div>
 
     </div>
@@ -229,9 +360,118 @@
       document.getElementById('sidebar').classList.toggle('mobile-open');
       document.getElementById('overlay').classList.toggle('active');
     }
+
     function closeMobileSidebar() {
       document.getElementById('sidebar').classList.remove('mobile-open');
       document.getElementById('overlay').classList.remove('active');
+    }
+
+    function showView(viewId) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
+      hideMessages();
+    }
+
+    function togglePwd(inputId, iconId) {
+      const pwd = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        pwd.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    document.getElementById('toggleCurrent').addEventListener('click', () => togglePwd('currentPassword', 'toggleCurrent'));
+    document.getElementById('toggleNew').addEventListener('click', () => togglePwd('newPassword', 'toggleNew'));
+    document.getElementById('toggleConfirm').addEventListener('click', () => togglePwd('confirmPassword', 'toggleConfirm'));
+
+    function showSuccess(msg) {
+      const el = document.getElementById('successMsg');
+      document.getElementById('successText').textContent = msg;
+      el.classList.add('show');
+      document.getElementById('errorMsg').classList.remove('show');
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      document.getElementById('errorText').textContent = msg;
+      el.classList.add('show');
+      document.getElementById('successMsg').classList.remove('show');
+    }
+
+    function hideMessages() {
+      document.getElementById('successMsg').classList.remove('show');
+      document.getElementById('errorMsg').classList.remove('show');
+    }
+
+    const PASSWORD_POLICY_MESSAGE = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+    function isStrongPassword(password) {
+      return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/.test(password);
+    }
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
+
+    async function changePassword() {
+      hideMessages();
+
+      const currentPassword = document.getElementById('currentPassword').value.trim();
+      const newPassword = document.getElementById('newPassword').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        showError("Please fill in all fields!");
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        showError("New passwords do not match!");
+        return;
+      }
+      if (!isStrongPassword(newPassword)) {
+        showError(PASSWORD_POLICY_MESSAGE);
+        return;
+      }
+      if (newPassword === currentPassword) {
+        showError("New password must be different from current password!");
+        return;
+      }
+
+      const btn = document.getElementById('btn-save');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `data=${encodeURIComponent(JSON.stringify({
+            action: "changePassword",
+            email: user.email,
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+            role: user.role
+          }))}`,
+          redirect: "follow"
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showSuccess("Password changed successfully!");
+          document.getElementById('currentPassword').value = "";
+          document.getElementById('newPassword').value = "";
+          document.getElementById('confirmPassword').value = "";
+        } else {
+          showError(result.message || "Failed to change password!");
+        }
+      } catch (err) {
+        showError("Connection failed. Please try again.");
+      } finally {
+        btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        btn.disabled = false;
+      }
     }
   </script>
 
