@@ -208,19 +208,12 @@
       padding-top: 18px;
     }
 
-    .eyebrow {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #fff;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
 
     .name {
       font-size: 31px;
       line-height: 1.08;
       color: #12361b;
+      margin-top: 22px;
     }
 
     .sub {
@@ -438,11 +431,10 @@
 
           <div class="hero-copy">
             <div>
-              <p class="eyebrow">Faculty account center</p>
               <h2 class="name" id="profileName">Loading profile...</h2>
-              <p class="sub" id="profileSubtitle">Faculty Member - CEITE</p>
+              <p class="sub" id="profileSubtitle"></p>
             </div>
-            <div class="badges"><span class="badge primary">Faculty</span><span class="badge soft">Institutional account</span></div>
+            <div class="badges"><span class="badge primary">BSIT</span></div>
             <div class="actions">
               <a href="faculty-my-events.html" class="btn btn-primary"><i class="fas fa-calendar-alt"></i> View My Events</a>
               <a href="faculty-settings.html" class="btn btn-secondary"><i class="fas fa-key"></i> Change Password</a>
@@ -479,7 +471,7 @@
     function avatarDataUrl(name){ const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17853a"/><stop offset="1" stop-color="#0c5c22"/></linearGradient></defs><rect width="320" height="320" rx="160" fill="url(#g)"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="116" fill="#fff">' + initials(name) + "</text></svg>"; return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg); }
     function currentPhoto(){ return localStorage.getItem(photoKey) || user.profileImage || user.profilePhoto || user.photoUrl || user.avatarUrl || avatarDataUrl(user.name || "Faculty"); }
     function setPhoto(src){ document.getElementById("profileAvatar").src = src; }
-    function loadBase(){ document.getElementById("profileName").textContent = user.name || "Faculty account"; document.getElementById("profileSubtitle").textContent = (user.email || "Institutional email") + " - Faculty Member"; setPhoto(currentPhoto()); }
+    function loadBase(){ document.getElementById("profileName").textContent = user.name || "Faculty account"; document.getElementById("profileSubtitle").textContent = (user.email || "Institutional email") +  " - " + (user.role || "Faculty Member"); setPhoto(currentPhoto()); }
     function squareDataUrl(file){ return new Promise(function(resolve,reject){ const reader = new FileReader(); reader.onload = function(e){ const img = new Image(); img.onload = function(){ const size = 320, canvas = document.createElement("canvas"), ctx = canvas.getContext("2d"); canvas.width = size; canvas.height = size; const srcSize = Math.min(img.width,img.height), sx = (img.width - srcSize)/2, sy = (img.height - srcSize)/2; ctx.drawImage(img,sx,sy,srcSize,srcSize,0,0,size,size); resolve(canvas.toDataURL("image/jpeg",0.88)); }; img.onerror = function(){ reject(new Error("Image load failed")); }; img.src = e.target.result; }; reader.onerror = function(){ reject(new Error("File read failed")); }; reader.readAsDataURL(file); }); }
     async function handlePhotoUpload(event){ const file = event.target.files && event.target.files[0]; if(!file) return; try{ const dataUrl = await squareDataUrl(file); localStorage.setItem(photoKey,dataUrl); setPhoto(dataUrl); } catch (error){ alert("Photo upload failed. Please try another image."); } finally { event.target.value = ""; } }
     function removePhoto(){ localStorage.removeItem(photoKey); setPhoto(avatarDataUrl(user.name || "Faculty")); }
