@@ -18,3 +18,4 @@ Cloud-based QR Attendance System for ASIATECH CEITE
 - Role-based login system (Faculty & Student)
 - Session-based authentication
 - Added Change password and forgot password
+  
