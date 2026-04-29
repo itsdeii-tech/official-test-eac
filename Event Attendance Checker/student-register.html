@@ -256,6 +256,55 @@
       line-height: 1.45;
     }
 
+    .otp-panel {
+      display: none;
+      margin-top: 14px;
+      background: #f7faf7;
+      border: 1px solid #dbe9df;
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .otp-panel.show {
+      display: block;
+    }
+
+    .otp-panel h3 {
+      color: #0b5b2e;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .otp-panel p {
+      font-size: 13px;
+      color: #5d6d61;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .otp-actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      border: 1px solid #b6ccbb;
+      background: #fff;
+      color: #0b5b2e;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity .2s;
+      font-family: inherit;
+    }
+
+    .btn-secondary:hover { opacity: .92; }
+    .btn-secondary:disabled { opacity: .65; cursor: not-allowed; }
+
     @media (max-width: 900px) {
       .register-shell {
         grid-template-columns: 1fr;
@@ -288,6 +337,10 @@
         flex-direction: column;
       }
 
+      .otp-actions {
+        flex-direction: column;
+      }
+
       .btn-login-link {
         width: 100%;
       }
@@ -317,9 +370,9 @@
 
     <main class="right-pane">
       <h2>Create Student Account</h2>
-      <p class="subtext">Fill in your details then click create account.</p>
+      <p class="subtext">Fill in your details, request an OTP, then verify it before the account is created.</p>
 
-      <form id="registerForm" onsubmit="handleRegister(event)">
+      <form id="registerForm">
         <div class="form-grid">
           <div class="field full">
             <label for="fullname">Full Name</label>
@@ -418,11 +471,33 @@
 
         <div class="actions">
           <button type="submit" class="btn-register" id="btn-register">
-            <i class="fas fa-user-plus"></i> Create Account
+            <i class="fas fa-paper-plane"></i> Send OTP
           </button>
           <a href="loginpage.html" class="btn-login-link">Back to Login</a>
         </div>
       </form>
+
+      <div class="otp-panel" id="otpPanel">
+        <h3>Verify Institutional Email</h3>
+        <p id="otpPanelText">An OTP has been sent to your ASIATECH email. Enter it below to complete your account creation.</p>
+
+        <div class="field">
+          <label for="registrationOtp">Registration OTP</label>
+          <div class="input-wrap">
+            <i class="fas fa-shield-halved icon"></i>
+            <input type="text" id="registrationOtp" placeholder="Enter 6-digit OTP" maxlength="6">
+          </div>
+        </div>
+
+        <div class="otp-actions">
+          <button type="button" class="btn-register" id="btn-verify-register">
+            <i class="fas fa-user-check"></i> Verify OTP & Create Account
+          </button>
+          <button type="button" class="btn-secondary" id="btn-resend-register-otp">
+            <i class="fas fa-rotate-right"></i> Resend OTP
+          </button>
+        </div>
+      </div>
 
       <p class="page-footer">&copy; 2026 ASIATECH</p>
     </main>
@@ -430,14 +505,40 @@
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzYdDr94uC7aByOQG7l2DNXUuIVfUxmn5aHBdl5_ZHvCabQoz0wHNSAtTdnRPVwepRK4g/exec';
+    const registrationState = {
+      email: '',
+      payload: null
+    };
 
-    document.getElementById('togglePassword').addEventListener('click', function() {
-      togglePwd('password', 'togglePassword');
-    });
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+      registerForm.addEventListener('submit', sendRegistrationOTP);
+    }
 
-    document.getElementById('toggleConfirm').addEventListener('click', function() {
-      togglePwd('confirmPassword', 'toggleConfirm');
-    });
+    const verifyRegisterBtn = document.getElementById('btn-verify-register');
+    if (verifyRegisterBtn) {
+      verifyRegisterBtn.addEventListener('click', verifyRegistrationOTPAndCreateAccount);
+    }
+
+    const resendRegisterOtpBtn = document.getElementById('btn-resend-register-otp');
+    if (resendRegisterOtpBtn) {
+      resendRegisterOtpBtn.addEventListener('click', resendRegistrationOTP);
+    }
+
+    const togglePasswordBtn = document.getElementById('togglePassword');
+      if (togglePasswordBtn) {
+        togglePasswordBtn.addEventListener('click', function() {
+          togglePwd('password', 'togglePassword');
+        });
+      }
+
+      const toggleConfirmBtn = document.getElementById('toggleConfirm');
+      if (toggleConfirmBtn) {
+        toggleConfirmBtn.addEventListener('click', function() {
+          togglePwd('confirmPassword', 'toggleConfirm');
+        });
+      }
+
 
     function togglePwd(inputId, iconId) {
       const input = document.getElementById(inputId);
@@ -472,47 +573,66 @@
       document.getElementById('successMsg').style.display = 'none';
     }
 
+    function showOtpPanel(email) {
+      const panel = document.getElementById('otpPanel');
+      const text = document.getElementById('otpPanelText');
+      text.textContent = `An OTP has been sent to ${email}. Enter it below to complete your account creation.`;
+      panel.classList.add('show');
+    }
+
+    function getRegistrationPayload() {
+      return {
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value.trim(),
+        confirm: document.getElementById('confirmPassword').value.trim(),
+        name: document.getElementById('fullname').value.trim(),
+        studentId: document.getElementById('studentId').value.trim(),
+        course: document.getElementById('course').value,
+        yearLevel: document.getElementById('yearLevel').value,
+        section: document.getElementById('section').value
+      };
+    }
+
+    function validateRegistrationPayload(payload) {
+      if (!payload.email || !payload.password || !payload.confirm || !payload.name || !payload.studentId || !payload.course || !payload.yearLevel || !payload.section) {
+        return 'Please fill in all fields!';
+      }
+
+      if (!payload.email.toLowerCase().endsWith('@asiatech.edu.ph')) {
+        return 'Please use your @asiatech.edu.ph email.';
+      }
+
+      if (payload.password !== payload.confirm) {
+        return 'Passwords do not match!';
+      }
+
+      if (!isStrongPassword(payload.password)) {
+        return PASSWORD_POLICY_MESSAGE;
+      }
+
+      return '';
+    }
+
     const PASSWORD_POLICY_MESSAGE = 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
 
     function isStrongPassword(password) {
       return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])\S{8,}$/.test(password);
     }
 
-    async function handleRegister(event) {
-      event.preventDefault();
+    async function sendRegistrationOTP(event) {
+      if (event) event.preventDefault();
       hideMessages();
 
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const confirm = document.getElementById('confirmPassword').value.trim();
-      const name = document.getElementById('fullname').value.trim();
-      const studentId = document.getElementById('studentId').value.trim();
-      const course = document.getElementById('course').value;
-      const yearLevel = document.getElementById('yearLevel').value;
-      const section = document.getElementById('section').value;
+      const payload = getRegistrationPayload();
+      const validationError = validateRegistrationPayload(payload);
 
-      if (!email || !password || !confirm || !name || !studentId || !course || !yearLevel || !section) {
-        showError('Please fill in all fields!');
-        return;
-      }
-
-      if (!email.toLowerCase().endsWith('@asiatech.edu.ph')) {
-        showError('Please use your @asiatech.edu.ph email.');
-        return;
-      }
-
-      if (password !== confirm) {
-        showError('Passwords do not match!');
-        return;
-      }
-
-      if (!isStrongPassword(password)) {
-        showError(PASSWORD_POLICY_MESSAGE);
+      if (validationError) {
+        showError(validationError);
         return;
       }
 
       const btn = document.getElementById('btn-register');
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending OTP...';
       btn.disabled = true;
 
       try {
@@ -520,14 +640,66 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: 'data=' + encodeURIComponent(JSON.stringify({
-            action: 'register',
-            email: email,
-            password: password,
-            name: name,
-            studentId: studentId,
-            course: course,
-            yearLevel: yearLevel,
-            section: section
+            action: 'sendRegistrationOTP',
+            email: payload.email
+          })),
+          redirect: 'follow'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          registrationState.email = payload.email;
+          registrationState.payload = payload;
+          showOtpPanel(payload.email);
+          showSuccess(result.message || 'OTP sent successfully. Verify it to complete account creation.');
+        } else {
+          showError(result.message || 'Failed to send OTP.');
+        }
+      } catch (err) {
+        showError('Connection failed. Please try again.');
+      } finally {
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
+        btn.disabled = false;
+      }
+    }
+
+    async function resendRegistrationOTP() {
+      await sendRegistrationOTP();
+    }
+
+    async function verifyRegistrationOTPAndCreateAccount() {
+      hideMessages();
+
+      if (!registrationState.payload || !registrationState.email) {
+        showError('Please fill in the form and request an OTP first.');
+        return;
+      }
+
+      const otp = document.getElementById('registrationOtp').value.trim();
+      if (!otp) {
+        showError('Please enter the OTP sent to your email.');
+        return;
+      }
+
+      const btn = document.getElementById('btn-verify-register');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'data=' + encodeURIComponent(JSON.stringify({
+            action: 'registerWithOTP',
+            email: registrationState.payload.email,
+            password: registrationState.payload.password,
+            name: registrationState.payload.name,
+            studentId: registrationState.payload.studentId,
+            course: registrationState.payload.course,
+            yearLevel: registrationState.payload.yearLevel,
+            section: registrationState.payload.section,
+            otp: otp
           })),
           redirect: 'follow'
         });
@@ -540,12 +712,12 @@
             window.location.href = 'loginpage.html';
           }, 1500);
         } else {
-          showError(result.message || 'Registration failed!');
+          showError(result.message || 'OTP verification failed.');
         }
       } catch (err) {
         showError('Connection failed. Please try again.');
       } finally {
-        btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+        btn.innerHTML = '<i class="fas fa-user-check"></i> Verify OTP & Create Account';
         btn.disabled = false;
       }
     }
