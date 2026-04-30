@@ -6,14 +6,19 @@
   <title>My Attendance - EAC</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: Arial, Helvetica, sans-serif;
       background-color: #f0f4f0;
       color: #223322;
       min-height: 100vh;
     }
-
+    
     .sidebar {
       width: 70px;
       background-color: #006400;
@@ -27,17 +32,66 @@
       transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
-    .sidebar:hover { width: 230px; }
-    .sidebar-text { display: none; white-space: nowrap; }
-    .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
-    .sidebar:hover .sidebar-logo { width: 110px; }
-    .sidebar a { display: flex; align-items: center; color: white; text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
-    .sidebar a:hover, .sidebar a.active { background-color: #228B22; color: white; }
-    .sidebar i { min-width: 24px; font-size: 17px; text-align: center; margin-right: 0; transition: margin 0.3s ease; }
-    .sidebar:hover i { margin-right: 12px; }
-    .sidebar:not(:hover) a:hover { display: block; }
-
+    
+    .sidebar:hover {
+      width: 230px;
+    }
+    
+    .sidebar-text {
+      display: none;
+      white-space: nowrap;
+    }
+    
+    .sidebar:hover .sidebar-text {
+      display: inline;
+    }
+    
+    .sidebar-logo {
+      width: 50px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 50%;
+      transition: width 0.3s ease;
+    }
+    
+    .sidebar:hover .sidebar-logo {
+      width: 110px;
+    }
+    
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      padding: 11px 10px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      font-size: 14px;
+      position: relative;
+    }
+    
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #228B22;
+      color: white;
+    }
+    
+    .sidebar i {
+      min-width: 24px;
+      font-size: 17px;
+      text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
+    }
+    
+    .sidebar:hover i {
+      margin-right: 12px;
+    }
+    
+    .sidebar:not(:hover) a:hover {
+      display: block;
+    }
+    
     .overlay {
       display: none;
       position: fixed;
@@ -45,8 +99,11 @@
       background: rgba(0, 0, 0, 0.5);
       z-index: 999;
     }
-    .overlay.active { display: block; }
-
+    
+    .overlay.active {
+      display: block;
+    }
+    
     .hamburger {
       display: none;
       background: none;
@@ -56,12 +113,12 @@
       cursor: pointer;
       padding: 5px;
     }
-
+    
     .main {
       margin-left: 70px;
       min-height: 100vh;
     }
-
+    
     .top-bar {
       background-color: #006400;
       color: white;
@@ -72,20 +129,22 @@
       justify-content: space-between;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
+    
     .top-bar-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
+    
     .top-bar-left h1 {
       font-size: 18px;
       font-weight: bold;
     }
-
+    
     .content-wrap {
       padding: 28px;
     }
-
+    
     .records-card {
       background: white;
       border: 1px solid #d6e9d6;
@@ -93,35 +152,39 @@
       box-shadow: 0 10px 30px rgba(7, 54, 16, 0.06);
       overflow: hidden;
     }
-
+    
     .records-head {
       padding: 22px 26px 10px;
     }
+    
     .records-head h2 {
       color: #0d5f21;
       font-size: 18px;
       margin-bottom: 8px;
     }
+    
     .records-head p {
       color: #577257;
       font-size: 13px;
       line-height: 1.6;
     }
-
+    
     .table-wrap {
       overflow-x: auto;
       padding: 10px 26px 24px;
     }
-
+    
     .attendance-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 14px;
       min-width: 1050px;
     }
+    
     .attendance-table thead tr {
       background: #f4faf4;
     }
+    
     .attendance-table th {
       padding: 14px 18px;
       border-bottom: 2px solid #d3e6d3;
@@ -132,29 +195,32 @@
       text-align: left;
       white-space: nowrap;
     }
+    
     .attendance-table td {
       padding: 18px;
       border-bottom: 1px solid #ebf3eb;
       vertical-align: middle;
       color: #213821;
     }
+    
     .attendance-table tr:last-child td {
       border-bottom: none;
     }
-
+    
     .event-name {
       font-size: 16px;
       font-weight: 700;
       color: #132f13;
       line-height: 1.4;
     }
+    
     .event-note {
       margin-top: 6px;
       font-size: 12px;
       color: #698169;
       line-height: 1.5;
     }
-
+    
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -165,55 +231,93 @@
       font-weight: 700;
       white-space: nowrap;
     }
+    
     .status-completed {
       background: #dff3e6;
       color: #006c1f;
     }
+    
     .status-present {
       background: #e7f6eb;
       color: #1b7d35;
     }
+    
     .status-registered {
       background: #fff3e1;
       color: #b27000;
     }
-
+    
     .muted {
       color: #6e856e;
     }
-
-    .loading-text,
-    .empty-text,
-    .error-text {
+    
+    .loading-text, .empty-text, .error-text {
       text-align: center;
       padding: 36px 20px;
       font-size: 14px;
     }
-    .loading-text,
-    .empty-text {
+    
+    .loading-text, .empty-text {
       color: #879a87;
     }
+    
     .error-text {
       color: #dc2626;
     }
-
+    
     @media (max-width: 768px) {
       .sidebar {
         width: 230px;
         transform: translateX(-100%);
       }
-      .sidebar:hover { width: 230px; }
-      .sidebar.mobile-open { transform: translateX(0); }
-      .sidebar.mobile-open .sidebar-text { display: inline; }
-      .sidebar.mobile-open i { margin-right: 12px; }
-      .sidebar.mobile-open .sidebar-logo { width: 110px; }
-      .main { margin-left: 0; }
-      .top-bar { padding: 0 15px; }
-      .top-bar-left h1 { font-size: 15px; }
-      .hamburger { display: block; }
-      .content-wrap { padding: 15px; }
-      .records-head { padding: 18px 18px 8px; }
-      .table-wrap { padding: 8px 18px 18px; }
+    
+      .sidebar:hover {
+        width: 230px;
+      }
+    
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+    
+      .sidebar.mobile-open .sidebar-text {
+        display: inline;
+      }
+    
+      .sidebar.mobile-open i {
+        margin-right: 12px;
+      }
+    
+      .sidebar.mobile-open .sidebar-logo {
+        width: 110px;
+      }
+    
+      .main {
+        margin-left: 0;
+      }
+    
+      .top-bar {
+        padding: 0 15px;
+      }
+    
+      .top-bar-left h1 {
+        font-size: 15px;
+      }
+    
+      .hamburger {
+        display: block;
+      }
+    
+      .content-wrap {
+        padding: 15px;
+      }
+    
+      .records-head {
+        padding: 18px 18px 8px;
+      }
+    
+      .table-wrap {
+        padding: 8px 18px 18px;
+      }
     }
   </style>
 </head>
@@ -224,7 +328,7 @@
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
     <a href="student-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span></a>
     <a href="student-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span></a>
-    <a href="student-attendance.html"><i class="fas fa-calendar-check"></i><span class="sidebar-text">My Attendance</span></a>
+    <a href="student-attendance.html"><i class="fas fa-calendar-check"></i><span class="sidebar-text">Attendance History</span></a>
     <a href="student-settings.html"><i class="fas fa-cog"></i><span class="sidebar-text">Settings</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span></a>
   </nav>

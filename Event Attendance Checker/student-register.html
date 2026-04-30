@@ -6,8 +6,12 @@
   <title>Student Registration - EAC</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: Arial, Helvetica, sans-serif;
       min-height: 100vh;
@@ -16,7 +20,7 @@
       padding: 20px;
       cursor: default;
     }
-
+    
     .register-shell {
       width: 100%;
       max-width: 1060px;
@@ -30,7 +34,7 @@
       box-shadow: 0 14px 38px rgba(0, 100, 0, 0.12);
       background: #fff;
     }
-
+    
     .left-pane {
       background: linear-gradient(160deg, #0b5b2e 0%, #0d6a35 50%, #11743b 100%);
       color: #fff;
@@ -40,11 +44,11 @@
       justify-content: space-between;
       gap: 20px;
     }
-
+    
     .brand {
       text-align: center;
     }
-
+    
     .brand img {
       width: 82px;
       height: 82px;
@@ -53,19 +57,19 @@
       border: 3px solid rgba(255, 255, 255, 0.9);
       margin-bottom: 12px;
     }
-
+    
     .brand h1 {
       font-size: 21px;
       line-height: 1.2;
     }
-
+    
     .features {
       list-style: none;
       display: grid;
       gap: 10px;
       margin: 17px 0;
     }
-
+    
     .features li {
       font-size: 13px;
       line-height: 1.45;
@@ -77,13 +81,13 @@
       align-items: flex-start;
       gap: 8px;
     }
-
+    
     .features i {
       margin-top: 2px;
       color: #c5f5d4;
       font-size: 12px;
     }
-
+    
     .left-foot {
       font-size: 11px;
       opacity: 0.9;
@@ -91,49 +95,49 @@
       border-top: 1px solid rgba(255, 255, 255, 0.25);
       padding-top: 12px;
     }
-
+    
     .right-pane {
       padding: 34px 28px 24px;
     }
-
+    
     .right-pane h2 {
       color: #0b5b2e;
       font-size: 30px;
       margin-bottom: 7px;
     }
-
+    
     .subtext {
       font-size: 14px;
       color: #647066;
       margin-bottom: 16px;
     }
-
+    
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-
+    
     .field {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-
+    
     .field.full {
       grid-column: 1 / -1;
     }
-
+    
     label {
       font-size: 13px;
       font-weight: bold;
       color: #0b5b2e;
     }
-
+    
     .input-wrap {
       position: relative;
     }
-
+    
     .input-wrap .icon {
       position: absolute;
       left: 12px;
@@ -142,9 +146,8 @@
       color: #7d8a81;
       font-size: 14px;
     }
-
-    .input-wrap input,
-    .input-wrap select {
+    
+    .input-wrap input, .input-wrap select {
       width: 100%;
       height: 42px;
       border: 1px solid #ccd7cf;
@@ -157,13 +160,12 @@
       color: #1f2937;
       font-family: inherit;
     }
-
-    .input-wrap input:focus,
-    .input-wrap select:focus {
+    
+    .input-wrap input:focus, .input-wrap select:focus {
       border-color: #228B22;
       box-shadow: 0 0 0 4px rgba(34, 139, 34, 0.12);
     }
-
+    
     .toggle-password {
       position: absolute;
       right: 12px;
@@ -173,39 +175,38 @@
       font-size: 14px;
       cursor: pointer;
     }
-
+    
     .toggle-password:hover {
       color: #0b5b2e;
     }
-
-    .error-message,
-    .success-message {
+    
+    .error-message, .success-message {
       display: none;
       font-size: 13px;
       border-radius: 8px;
       padding: 10px 12px;
       margin-top: 12px;
     }
-
+    
     .error-message {
       background: #fff5f5;
       color: #dc2626;
       border-left: 4px solid #dc2626;
     }
-
+    
     .success-message {
       background: #eefcf3;
       color: #166534;
       border-left: 4px solid #228B22;
     }
-
+    
     .actions {
       margin-top: 15px;
       display: flex;
       gap: 10px;
       align-items: center;
     }
-
+    
     .btn-register {
       flex: 1;
       border: none;
@@ -219,10 +220,16 @@
       transition: opacity .2s;
       font-family: inherit;
     }
-
-    .btn-register:hover { opacity: .92; }
-    .btn-register:disabled { opacity: .65; cursor: not-allowed; }
-
+    
+    .btn-register:hover {
+      opacity: .92;
+    }
+    
+    .btn-register:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+    
     .btn-login-link {
       text-decoration: none;
       color: #0b5b2e;
@@ -235,16 +242,18 @@
       text-align: center;
       background: #fff;
     }
-
-    .btn-login-link:hover { background: #f5fbf6; }
-
+    
+    .btn-login-link:hover {
+      background: #f5fbf6;
+    }
+    
     .page-footer {
       text-align: center;
       margin-top: 14px;
       color: #7b867d;
       font-size: 12px;
     }
-
+    
     .password-policy {
       margin-top: 10px;
       background: #f7faf7;
@@ -255,7 +264,7 @@
       color: #4f5f54;
       line-height: 1.45;
     }
-
+    
     .otp-panel {
       display: none;
       margin-top: 14px;
@@ -264,31 +273,31 @@
       border-radius: 10px;
       padding: 14px;
     }
-
+    
     .otp-panel.show {
       display: block;
     }
-
+    
     .otp-panel h3 {
       color: #0b5b2e;
       font-size: 16px;
       margin-bottom: 6px;
     }
-
+    
     .otp-panel p {
       font-size: 13px;
       color: #5d6d61;
       line-height: 1.45;
       margin-bottom: 12px;
     }
-
+    
     .otp-actions {
       margin-top: 12px;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
-
+    
     .btn-secondary {
       border: 1px solid #b6ccbb;
       background: #fff;
@@ -301,50 +310,56 @@
       transition: opacity .2s;
       font-family: inherit;
     }
-
-    .btn-secondary:hover { opacity: .92; }
-    .btn-secondary:disabled { opacity: .65; cursor: not-allowed; }
-
+    
+    .btn-secondary:hover {
+      opacity: .92;
+    }
+    
+    .btn-secondary:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+    
     @media (max-width: 900px) {
       .register-shell {
         grid-template-columns: 1fr;
       }
-
+    
       .left-pane {
         padding: 24px 18px;
       }
-
+    
       .right-pane {
         padding: 26px 18px 20px;
       }
     }
-
+    
     @media (max-width: 650px) {
       body {
         padding: 10px;
       }
-
+    
       .register-shell {
         min-height: calc(100vh - 20px);
         border-radius: 12px;
       }
-
+    
       .form-grid {
         grid-template-columns: 1fr;
       }
-
+    
       .actions {
         flex-direction: column;
       }
-
+    
       .otp-actions {
         flex-direction: column;
       }
-
+    
       .btn-login-link {
         width: 100%;
       }
-
+    
       .right-pane h2 {
         font-size: 25px;
       }

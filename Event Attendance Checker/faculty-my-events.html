@@ -7,9 +7,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f4f0; color: #333; min-height: 100vh; }
-
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f0f4f0;
+      color: #333;
+      min-height: 100vh;
+    }
+    
     /* SIDEBAR */
     .sidebar {
       width: 70px;
@@ -17,33 +27,88 @@
       padding: 20px 10px;
       height: 100vh;
       position: fixed;
-      left: 0; top: 0;
+      left: 0;
+      top: 0;
       overflow: hidden;
       transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
-    .sidebar:hover { width: 230px; }
-    .sidebar-text { display: none; white-space: nowrap; }
-    .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
-    .sidebar:hover .sidebar-logo { width: 110px; }
-    .sidebar a { display: flex; align-items: center; color: rgba(255,255,255,0.85); text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
-    .sidebar a:hover, .sidebar a.active { background-color: #228B22; color: white; }
-    .sidebar i { min-width: 24px; font-size: 17px; text-align: center; margin-right: 0; transition: margin 0.3s ease; }
-    .sidebar:hover i { margin-right: 12px; }
-    .sidebar:not(:hover) a:hover { display: block; }
-
+    
+    .sidebar:hover {
+      width: 230px;
+    }
+    
+    .sidebar-text {
+      display: none;
+      white-space: nowrap;
+    }
+    
+    .sidebar:hover .sidebar-text {
+      display: inline;
+    }
+    
+    .sidebar-logo {
+      width: 50px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 50%;
+      transition: width 0.3s ease;
+    }
+    
+    .sidebar:hover .sidebar-logo {
+      width: 110px;
+    }
+    
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      padding: 11px 10px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      font-size: 14px;
+      position: relative;
+    }
+    
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #228B22;
+      color: white;
+    }
+    
+    .sidebar i {
+      min-width: 24px;
+      font-size: 17px;
+      text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
+    }
+    
+    .sidebar:hover i {
+      margin-right: 12px;
+    }
+    
+    .sidebar:not(:hover) a:hover {
+      display: block;
+    }
+    
     /* OVERLAY */
     .overlay {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
       z-index: 999;
     }
-    .overlay.active { display: block; }
-
+    
+    .overlay.active {
+      display: block;
+    }
+    
     /* HAMBURGER */
     .hamburger {
       display: none;
@@ -54,18 +119,43 @@
       cursor: pointer;
       padding: 5px;
     }
-
+    
     /* MAIN */
-    .main { margin-left: 70px; min-height: 100vh; }
-
+    .main {
+      margin-left: 70px;
+      min-height: 100vh;
+    }
+    
     /* TOP BAR */
-    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15);  cursor: default;}
-    .top-bar-left { display: flex; align-items: center; gap: 12px; }
-    .top-bar-left h1 { font-size: 18px; font-weight: bold; }
-
+    .top-bar {
+      background-color: #006400;
+      color: white;
+      padding: 0 28px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      cursor: default;
+    }
+    
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .top-bar-left h1 {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
     /* CONTENT */
-    .content-wrap { padding: 24px 28px; cursor: default; }
-
+    .content-wrap {
+      padding: 24px 28px;
+      cursor: default;
+    }
+    
     /* TOOLBAR ROW */
     .toolbar-row {
       display: flex;
@@ -74,6 +164,7 @@
       margin-bottom: 22px;
       flex-wrap: wrap;
     }
+    
     .stat-chip {
       background: white;
       border: 1px solid #d4e8d4;
@@ -82,34 +173,131 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
       white-space: nowrap;
     }
-    .stat-chip i { color: #006400; font-size: 15px; }
-    .stat-chip .num { font-size: 16px; font-weight: bold; color: #1a2e1a; }
-    .stat-chip .lbl { font-size: 12px; color: #7a9a7a; margin-left: 3px; }
-    .divider { width: 1px; height: 32px; background: #d4e8d4; flex-shrink: 0; }
-
+    
+    .stat-chip i {
+      color: #006400;
+      font-size: 15px;
+    }
+    
+    .stat-chip .num {
+      font-size: 16px;
+      font-weight: bold;
+      color: #1a2e1a;
+    }
+    
+    .stat-chip .lbl {
+      font-size: 12px;
+      color: #7a9a7a;
+      margin-left: 3px;
+    }
+    
+    .divider {
+      width: 1px;
+      height: 32px;
+      background: #d4e8d4;
+      flex-shrink: 0;
+    }
+    
     /* BUTTONS */
-    .btn { padding: 9px 18px; font-size: 13px; font-weight: bold; color: white; border: none; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; transition: opacity 0.2s; font-family: inherit; white-space: nowrap; }
-    .btn:hover { opacity: 0.88; }
-    .btn-primary { background: #228B22; }
-
+    .btn {
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: bold;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: opacity 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    
+    .btn:hover {
+      opacity: 0.88;
+    }
+    
+    .btn-primary {
+      background: #228B22;
+    }
+    
     /* CARD */
-    .card { background: white; border: 1px solid #d4e8d4; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
-    .card-head { padding: 14px 20px; border-bottom: 1px solid #e8f0e8; background: #f5faf5; display: flex; align-items: center; justify-content: space-between; }
-    .card-head h2 { font-size: 15px; color: #006400; display: flex; align-items: center; gap: 8px; }
-    .card-head p { color: #888; font-size: 13px; }
-
+    .card {
+      background: white;
+      border: 1px solid #d4e8d4;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .card-head {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e8f0e8;
+      background: #f5faf5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .card-head h2 {
+      font-size: 15px;
+      color: #006400;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .card-head p {
+      color: #888;
+      font-size: 13px;
+    }
+    
     /* TABLE */
-    .table-wrap { overflow-x: auto; }
-    .events-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 550px; }
-    .events-table thead tr { background: #f5faf5; }
-    .events-table th { padding: 10px 14px; border-bottom: 2px solid #d4e8d4; color: #006400; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; text-align: left; }
-    .events-table td { padding: 13px 14px; border-bottom: 1px solid #f0f5f0; vertical-align: middle; }
-    .events-table tr:last-child td { border-bottom: none; }
-    .events-table tr:hover td { background: #fafff8; }
-
+    .table-wrap {
+      overflow-x: auto;
+    }
+    
+    .events-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      min-width: 550px;
+    }
+    
+    .events-table thead tr {
+      background: #f5faf5;
+    }
+    
+    .events-table th {
+      padding: 10px 14px;
+      border-bottom: 2px solid #d4e8d4;
+      color: #006400;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: left;
+    }
+    
+    .events-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid #f0f5f0;
+      vertical-align: middle;
+    }
+    
+    .events-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .events-table tr:hover td {
+      background: #fafff8;
+    }
+    
     .delete-btn {
       background: #dc3545;
       color: white;
@@ -123,36 +311,98 @@
       align-items: center;
       gap: 5px;
     }
-    .delete-btn:hover { opacity: 0.85; }
-
-    .loading-text { text-align: center; color: #aaa; padding: 36px; font-size: 14px; }
-    .empty-text   { text-align: center; color: #aaa; padding: 36px; font-size: 14px; }
-
+    
+    .delete-btn:hover {
+      opacity: 0.85;
+    }
+    
+    .loading-text {
+      text-align: center;
+      color: #aaa;
+      padding: 36px;
+      font-size: 14px;
+    }
+    
+    .empty-text {
+      text-align: center;
+      color: #aaa;
+      padding: 36px;
+      font-size: 14px;
+    }
+    
     /* MOBILE RESPONSIVE */
     @media (max-width: 768px) {
       .sidebar {
         width: 230px;
         transform: translateX(-100%);
       }
-      .sidebar:hover { width: 230px; }
-      .sidebar.mobile-open { transform: translateX(0); }
-      .sidebar.mobile-open .sidebar-text { display: inline; }
-      .sidebar.mobile-open i { margin-right: 12px; }
-      .sidebar.mobile-open .sidebar-logo { width: 110px; }
-      .main { margin-left: 0; }
-      .top-bar { padding: 0 15px; }
-      .top-bar-left h1 { font-size: 15px; }
-      .top-bar-left p { display: none; }
-      .hamburger { display: block; }
-      .content-wrap { padding: 15px; }
-      .toolbar-row { gap: 8px; }
-      .divider { display: none; }
-      .btn { padding: 8px 14px; font-size: 12px; }
-      .stat-chip .lbl { display: none; }
+    
+      .sidebar:hover {
+        width: 230px;
+      }
+    
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+    
+      .sidebar.mobile-open .sidebar-text {
+        display: inline;
+      }
+    
+      .sidebar.mobile-open i {
+        margin-right: 12px;
+      }
+    
+      .sidebar.mobile-open .sidebar-logo {
+        width: 110px;
+      }
+    
+      .main {
+        margin-left: 0;
+      }
+    
+      .top-bar {
+        padding: 0 15px;
+      }
+    
+      .top-bar-left h1 {
+        font-size: 15px;
+      }
+    
+      .top-bar-left p {
+        display: none;
+      }
+    
+      .hamburger {
+        display: block;
+      }
+    
+      .content-wrap {
+        padding: 15px;
+      }
+    
+      .toolbar-row {
+        gap: 8px;
+      }
+    
+      .divider {
+        display: none;
+      }
+    
+      .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+    
+      .stat-chip .lbl {
+        display: none;
+      }
     }
-
+    
     @media (max-width: 480px) {
-      .top-bar-left h1 { font-size: 14px; }
+      .top-bar-left h1 {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -165,10 +415,10 @@
   <nav class="sidebar" id="sidebar">
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
     <a href="faculty-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span></a>
-    <a href="faculty-create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Post New Event</span></a>
-    <a href="faculty-my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">My Events</span></a>
-    <a href="faculty-scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scan QR Code</span></a>
-    <a href="faculty-reports.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Reports</span></a>
+    <a href="faculty-create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Create Event</span></a>
+    <a href="faculty-my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text"> Manage Events</span></a>
+    <a href="faculty-scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Attendance Scanner</span></a>
+    <a href="faculty-reports.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Attendance Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span></a>
     <a href="faculty-settings.html"><i class="fas fa-cog"></i><span class="sidebar-text">Settings</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span></a>
@@ -183,7 +433,7 @@
           <i class="fas fa-bars"></i>
         </button>
         <div>
-          <h1>My Events</h1>
+          <h1>Events</h1>
         </div>
       </div>
     </div>
@@ -194,7 +444,7 @@
       <div class="toolbar-row">
         <div class="stat-chip">
           <i class="fas fa-calendar-alt"></i>
-          <span class="num" id="event-count">—</span>
+          <span class="num" id="event-count">--</span>
           <span class="lbl">My Events</span>
         </div>
         <div class="divider"></div>
@@ -206,7 +456,7 @@
       <!-- TABLE CARD -->
       <div class="card">
         <div class="card-head">
-          <h2><i class="fas fa-calendar-alt"></i> My Posted Events</h2>
+          <h2>My Posted Events</h2>
         </div>
         <div class="table-wrap">
           <table class="events-table">
@@ -292,7 +542,7 @@
                 <a href="faculty-create-event.html" style="color:#006400; font-weight:bold; margin-left:5px;">Create</a>
               </td>
             </tr>`;
-          count.textContent = "0";
+          count.textContent = "--";
           return;
         }
 
@@ -305,8 +555,8 @@
               <td>${index + 1}</td>
               <td><strong>${event.name}</strong></td>
               <td>${formatDate(event.date)}</td>
-              <td>${event.location || '—'}</td>
-              <td>${event.notes || '—'}</td>
+              <td>${event.location || '--'}</td>
+              <td>${event.notes || '--'}</td>
               <td>
                 <button class="delete-btn" onclick="deleteEvent('${event.name.replace(/'/g, "\\'")}')">
                   <i class="fas fa-trash"></i> Delete
@@ -318,7 +568,7 @@
 
       } catch (err) {
         tbody.innerHTML = `<tr><td colspan="6" style="color:#dc2626; text-align:center; padding:20px;">Failed to load events.</td></tr>`;
-        count.textContent = "—";
+        count.textContent = "--";
       }
     }
 

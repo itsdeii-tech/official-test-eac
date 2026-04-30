@@ -11,14 +11,14 @@
       padding: 0;
       box-sizing: border-box;
     }
-
+    
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: radial-gradient(circle at top left, rgba(34, 139, 34, 0.12), transparent 28%), linear-gradient(180deg, #f6fbf6, #edf5ed);
       color: #223322;
       min-height: 100vh;
     }
-
+    
     /* SIDEBAR */
     .sidebar {
       width: 70px;
@@ -33,18 +33,66 @@
       transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
-    .sidebar:hover { width: 230px; }
-    .sidebar-text { display: none; white-space: nowrap; }
-    .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
-    .sidebar:hover .sidebar-logo { width: 110px; }
-    .sidebar a { display: flex; align-items: center; color: #fff; text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
-    .sidebar a:hover,
-    .sidebar a.active { background: #228b22; color: white; }
-    .sidebar i { min-width: 24px; font-size: 17px; text-align: center;  margin-right: 0; transition: margin 0.3s ease; }
-    .sidebar:hover i { margin-right: 12px; }
-    .sidebar:not(:hover) a:hover .tooltip { display: block; }
-
+    
+    .sidebar:hover {
+      width: 230px;
+    }
+    
+    .sidebar-text {
+      display: none;
+      white-space: nowrap;
+    }
+    
+    .sidebar:hover .sidebar-text {
+      display: inline;
+    }
+    
+    .sidebar-logo {
+      width: 50px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 50%;
+      transition: width 0.3s ease;
+    }
+    
+    .sidebar:hover .sidebar-logo {
+      width: 110px;
+    }
+    
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      padding: 11px 10px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      font-size: 14px;
+      position: relative;
+    }
+    
+    .sidebar a:hover, .sidebar a.active {
+      background: #228b22;
+      color: white;
+    }
+    
+    .sidebar i {
+      min-width: 24px;
+      font-size: 17px;
+      text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
+    }
+    
+    .sidebar:hover i {
+      margin-right: 12px;
+    }
+    
+    .sidebar:not(:hover) a:hover .tooltip {
+      display: block;
+    }
+    
     /* OVERLAY */
     .overlay {
       display: none;
@@ -53,11 +101,11 @@
       background: rgba(0, 0, 0, 0.5);
       z-index: 999;
     }
-
+    
     .overlay.active {
       display: block;
     }
-
+    
     /* HAMBURGER */
     .hamburger {
       display: none;
@@ -68,13 +116,13 @@
       cursor: pointer;
       padding: 5px;
     }
-
+    
     /* MAIN */
     .main {
       margin-left: 70px;
       min-height: 100vh;
     }
-
+    
     /* TOP BAR */
     .top-bar {
       background: #006400;
@@ -85,47 +133,47 @@
       align-items: center;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
-
+    
     .top-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-
+    
     .top-left h1 {
       font-size: 18px;
     }
-
+    
     .top-left p {
       font-size: 12px;
       opacity: 0.8;
       margin-top: 2px;
     }
-
+    
     /* CONTENT */
     .content {
       padding: 28px;
       display: grid;
       gap: 20px;
     }
-
+    
     .card {
       background: #fff;
       border: 1px solid #d7e9d7;
       border-radius: 18px;
       box-shadow: 0 10px 30px rgba(7, 54, 16, 0.06);
     }
-
+    
     /* HERO */
     .hero {
       overflow: hidden;
     }
-
+    
     .hero-banner {
       height: 110px;
       background: linear-gradient(135deg, #0d6f26, #2e8b57);
     }
-
+    
     .hero-body {
       padding: 0 24px 24px;
       margin-top: -42px;
@@ -133,13 +181,13 @@
       grid-template-columns: 210px 1fr;
       gap: 22px;
     }
-
+    
     .avatar-col {
       display: grid;
       justify-items: center;
       gap: 10px;
     }
-
+    
     .avatar {
       width: 128px;
       height: 128px;
@@ -149,21 +197,19 @@
       background: #dff1df;
       box-shadow: 0 10px 25px rgba(8, 68, 21, 0.18);
     }
-
+    
     .photo-actions {
       width: 100%;
       display: grid;
       gap: 8px;
       text-align: center;
     }
-
+    
     .photo-input {
       display: none;
     }
-
-    .photo-btn,
-    .photo-remove,
-    .btn {
+    
+    .photo-btn, .photo-remove, .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -178,99 +224,95 @@
       text-decoration: none;
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
-
-    .photo-btn,
-    .btn-primary {
+    
+    .photo-btn, .btn-primary {
       background: #166534;
       color: #fff;
     }
-
+    
     .btn-secondary {
       background: #2e8b57;
       color: #fff;
     }
-
-    .photo-remove,
-    .btn-ghost {
+    
+    .photo-remove, .btn-ghost {
       background: #eff7ef;
       color: #166534;
       border: 1px solid #d8ead8;
     }
-
-    .photo-btn:hover,
-    .photo-remove:hover,
-    .btn:hover {
+    
+    .photo-btn:hover, .photo-remove:hover, .btn:hover {
       transform: translateY(-1px);
       opacity: 0.94;
     }
-
+    
     .note {
       font-size: 11px;
       line-height: 1.5;
       color: #617861;
     }
-
+    
     .hero-copy {
       display: grid;
       gap: 16px;
       padding-top: 18px;
     }
-
+    
     .name {
       font-size: 31px;
       line-height: 1.08;
       color: #12361b;
       margin-top: 22px;
     }
-
+    
     .sub {
       margin-top: 8px;
       color: #5a705a;
       font-size: 15px;
     }
-
+    
     .badges {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
-
+    
     .badge {
       padding: 8px 12px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: 700;
     }
-
+    
     .badge.primary {
       background: #dff3e2;
       color: #166534;
     }
-
+    
     .badge.soft {
       background: #eef3ef;
       color: #556855;
     }
-
+    
     .actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
     }
-
+    
     /* STATS */
     .stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
-
+    
     .stat {
       padding: 18px;
       display: grid;
       gap: 10px;
     }
-
+    
     .stat-top {
       display: flex;
       justify-content: space-between;
@@ -278,7 +320,7 @@
       color: #678167;
       font-size: 13px;
     }
-
+    
     .stat-top i {
       width: 36px;
       height: 36px;
@@ -289,111 +331,111 @@
       align-items: center;
       justify-content: center;
     }
-
+    
     .stat-value {
       font-size: 34px;
       font-weight: 700;
       color: #143c1e;
       line-height: 1;
     }
-
+    
     .stat-copy {
       font-size: 12px;
       line-height: 1.5;
       color: #678067;
     }
-
+    
     /* RESPONSIVE */
     @media (max-width: 1024px) {
       .stats {
         grid-template-columns: repeat(2, 1fr);
       }
-
+    
       .hero-body {
         grid-template-columns: 1fr;
       }
-
+    
       .avatar-col {
         justify-items: start;
       }
     }
-
+    
     @media (max-width: 768px) {
       .sidebar {
         width: 230px;
         transform: translateX(-100%);
       }
-
+    
       .sidebar:hover {
         width: 230px;
       }
-
+    
       .sidebar.mobile-open {
         transform: translateX(0);
       }
-
+    
       .sidebar.mobile-open .sidebar-text {
         display: inline;
       }
-
+    
       .sidebar.mobile-open i {
         margin-right: 12px;
       }
-
+    
       .sidebar.mobile-open .sidebar-logo {
         width: 110px;
       }
-
+    
       .main {
         margin-left: 0;
       }
-
+    
       .top-bar {
         padding: 0 15px;
       }
-
+    
       .top-left h1 {
         font-size: 15px;
       }
-
+    
       .top-left p {
         display: none;
       }
-
+    
       .hamburger {
         display: block;
       }
-
+    
       .content {
         padding: 15px;
       }
-
+    
       .stats {
         grid-template-columns: 1fr;
       }
-
+    
       .hero-body {
         padding: 0 18px 20px;
       }
-
+    
       .avatar-col {
         justify-items: center;
       }
-
+    
       .name {
         font-size: 25px;
       }
     }
-
+    
     @media (max-width: 480px) {
       .actions {
         flex-direction: column;
       }
-
+    
       .btn {
         width: 100%;
       }
-
+    
       .avatar {
         width: 112px;
         height: 112px;
@@ -407,7 +449,7 @@
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
     <a href="student-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span></a>
     <a href="student-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span></a>
-    <a href="student-attendance.html"><i class="fas fa-calendar-check"></i><span class="sidebar-text">My Attendance</span></a>
+    <a href="student-attendance.html"><i class="fas fa-calendar-check"></i><span class="sidebar-text">Attendance History</span></a>
     <a href="student-settings.html"><i class="fas fa-cog"></i><span class="sidebar-text">Settings</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span></a>
   </nav>

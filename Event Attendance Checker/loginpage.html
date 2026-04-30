@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: linear-gradient(135deg, #f8f9fa 0%, #e6f0e6 100%);
@@ -17,22 +22,23 @@
       justify-content: center;
       padding: 20px;
     }
-
+    
     .login-container {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 8px 30px rgba(0,100,0,0.15);
+      box-shadow: 0 8px 30px rgba(0, 100, 0, 0.15);
       overflow: hidden;
       width: 100%;
       max-width: 420px;
     }
-
+    
     .header {
       background: #006400;
       color: white;
       padding: 30px 20px;
       text-align: center;
     }
+    
     .header img {
       width: 100px;
       height: 100px;
@@ -41,12 +47,25 @@
       border: 3px solid white;
       margin-bottom: 15px;
     }
-    .header h1 { font-size: 22px; margin-bottom: 6px; }
-    .header p  { font-size: 13px; opacity: 0.85; }
-
-    .form-body { padding: 30px 25px; }
-    .form-group { margin-bottom: 18px; }
-
+    
+    .header h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    
+    .header p {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+    
+    .form-body {
+      padding: 30px 25px;
+    }
+    
+    .form-group {
+      margin-bottom: 18px;
+    }
+    
     label {
       display: block;
       margin-bottom: 6px;
@@ -54,8 +73,11 @@
       color: #006400;
       font-size: 14px;
     }
-
-    .input-wrapper { position: relative; }
+    
+    .input-wrapper {
+      position: relative;
+    }
+    
     .input-wrapper i.input-icon {
       position: absolute;
       left: 12px;
@@ -64,6 +86,7 @@
       color: #888;
       font-size: 15px;
     }
+    
     .input-wrapper input {
       width: 100%;
       padding: 12px 14px 12px 38px;
@@ -72,11 +95,13 @@
       font-size: 15px;
       transition: border 0.2s;
     }
+    
     .input-wrapper input:focus {
       outline: none;
       border-color: #228B22;
-      box-shadow: 0 0 0 3px rgba(34,139,34,0.1);
+      box-shadow: 0 0 0 3px rgba(34, 139, 34, 0.1);
     }
+    
     .toggle-password {
       position: absolute;
       right: 12px;
@@ -86,13 +111,35 @@
       color: #888;
       font-size: 15px;
     }
-    .toggle-password:hover { color: #006400; }
-
+    
+    .toggle-password:hover {
+      color: #006400;
+    }
+    
     /* ROLE SELECTION */
-    .role-label { font-weight: bold; color: #006400; font-size: 14px; margin-bottom: 8px; display: block; }
-    .role-selection { display: flex; gap: 12px; margin-bottom: 20px; }
-    .role-option { flex: 1; text-align: center; }
-    .role-option input[type="radio"] { display: none; }
+    .role-label {
+      font-weight: bold;
+      color: #006400;
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .role-selection {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .role-option {
+      flex: 1;
+      text-align: center;
+    }
+    
+    .role-option input[type="radio"] {
+      display: none;
+    }
+    
     .role-option label {
       display: block;
       padding: 10px;
@@ -104,13 +151,14 @@
       font-size: 14px;
       color: #333;
     }
+    
     .role-option input[type="radio"]:checked + label {
       background: #228B22;
       color: white;
       border-color: #006400;
       font-weight: bold;
     }
-
+    
     /* MESSAGES */
     .error-message {
       display: none;
@@ -122,6 +170,7 @@
       border-left: 4px solid #dc2626;
       margin-bottom: 15px;
     }
+    
     .success-message {
       display: none;
       background: #f0fff4;
@@ -132,7 +181,7 @@
       border-left: 4px solid #228B22;
       margin-bottom: 15px;
     }
-
+    
     /* BUTTONS */
     .btn-login {
       width: 100%;
@@ -146,9 +195,16 @@
       cursor: pointer;
       transition: opacity 0.2s;
     }
-    .btn-login:hover    { opacity: 0.9; }
-    .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
-
+    
+    .btn-login:hover {
+      opacity: 0.9;
+    }
+    
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
     .btn-secondary {
       width: 100%;
       padding: 12px;
@@ -162,9 +218,16 @@
       transition: opacity 0.2s;
       margin-top: 10px;
     }
-    .btn-secondary:hover    { opacity: 0.9; }
-    .btn-secondary:disabled { opacity: 0.6; cursor: not-allowed; }
-
+    
+    .btn-secondary:hover {
+      opacity: 0.9;
+    }
+    
+    .btn-secondary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
     .btn-back {
       width: 100%;
       padding: 10px;
@@ -178,26 +241,55 @@
       transition: all 0.2s;
       margin-top: 8px;
     }
-    .btn-back:hover { background: #f0f7f0; }
-
+    
+    .btn-back:hover {
+      background: #f0f7f0;
+    }
+    
     /* LINKS */
-    .links { text-align: center; margin-top: 18px; font-size: 13px; color: #888; }
-    .links a { color: #006400; text-decoration: none; font-weight: bold; }
-    .links a:hover { text-decoration: underline; }
-
+    .links {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13px;
+      color: #888;
+    }
+    
+    .links a {
+      color: #006400;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .links a:hover {
+      text-decoration: underline;
+    }
+    
     .forgot-link {
       text-align: right;
       margin-top: -10px;
       margin-bottom: 15px;
       font-size: 13px;
     }
-    .forgot-link a { color: #006400; text-decoration: none; font-weight: bold; }
-    .forgot-link a:hover { text-decoration: underline; }
-
-    /* STEPS — hidden by default */
-    .step { display: none; }
-    .step.active { display: block; }
-
+    
+    .forgot-link a {
+      color: #006400;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .forgot-link a:hover {
+      text-decoration: underline;
+    }
+    
+    /* STEPS - hidden by default */
+    .step {
+      display: none;
+    }
+    
+    .step.active {
+      display: block;
+    }
+    
     /* OTP INPUT */
     .otp-info {
       background: #f0f7f0;
@@ -208,7 +300,7 @@
       color: #555;
       margin-bottom: 15px;
     }
-
+    
     .policy-note {
       background: #f7faf7;
       border: 1px solid #dbe9df;
@@ -219,7 +311,7 @@
       margin-bottom: 12px;
       line-height: 1.4;
     }
-
+    
     .footer {
       background: #006400;
       color: white;
@@ -241,7 +333,7 @@
 
     <div class="form-body">
 
-      <!-- ═══ STEP 1 — LOGIN FORM ═══ -->
+      <!-- STEP 1 - LOGIN FORM -->
       <div class="step active" id="step-login">
         <form id="loginForm" onsubmit="handleLogin(event)">
 
@@ -272,7 +364,7 @@
             <div class="input-wrapper">
               <i class="fas fa-lock input-icon"></i>
               <input type="password" id="password"
-                placeholder="••••••••"
+                placeholder="********"
                 required autocomplete="current-password">
               <i class="fas fa-eye toggle-password" id="togglePassword"></i>
             </div>
@@ -300,7 +392,7 @@
         </div>
       </div>
 
-      <!-- ═══ STEP 2 — ENTER EMAIL ═══ -->
+      <!-- STEP 2 - ENTER EMAIL -->
       <div class="step" id="step-forgot-email">
         <div class="form-group">
           <label>Enter your institutional email</label>
@@ -329,7 +421,7 @@
         </button>
       </div>
 
-      <!-- ═══ STEP 3 — ENTER OTP + NEW PASSWORD ═══ -->
+      <!-- STEP 3 - ENTER OTP + NEW PASSWORD -->
       <div class="step" id="step-verify-otp">
 
         <div class="otp-info">
@@ -383,15 +475,13 @@
         <button class="btn-login" id="btn-verify-otp" onclick="verifyOTPandReset()">
           <i class="fas fa-check"></i> Reset Password
         </button>
-        <button class="btn-back" onclick="showStep('step-forgot-email')">
-          ← Back
-        </button>
+        <button class="btn-back" onclick="showStep('step-forgot-email')">Back</button>
       </div>
 
     </div>
 
     <div class="footer">
-      YOUR KEY TO GLOBAL SUCCESS! &nbsp;•&nbsp; &copy; 2026 ASIATECH
+      YOUR KEY TO GLOBAL SUCCESS! &copy; 2026 ASIATECH
     </div>
 
   </div>

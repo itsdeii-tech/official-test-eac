@@ -6,9 +6,19 @@
   <title>New Event - EAC</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f4f0; color: #333; min-height: 100vh; }
-
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f0f4f0;
+      color: #333;
+      min-height: 100vh;
+    }
+    
     /* SIDEBAR */
     .sidebar {
       width: 70px;
@@ -16,33 +26,88 @@
       padding: 20px 10px;
       height: 100vh;
       position: fixed;
-      left: 0; top: 0;
+      left: 0;
+      top: 0;
       overflow: hidden;
       transition: width 0.3s ease, transform 0.3s ease;
       z-index: 1000;
     }
-    .sidebar:hover { width: 230px; }
-    .sidebar-text { display: none; white-space: nowrap; }
-    .sidebar:hover .sidebar-text { display: inline; }
-    .sidebar-logo { width: 50px; margin: 0 auto 20px; display: block; border-radius: 50%; transition: width 0.3s ease; }
-    .sidebar:hover .sidebar-logo { width: 110px; }
-    .sidebar a { display: flex; align-items: center; color: rgba(255,255,255,0.85); text-decoration: none; padding: 11px 10px; margin-bottom: 4px; border-radius: 6px; transition: background 0.2s; font-size: 14px; position: relative; }
-    .sidebar a:hover, .sidebar a.active { background-color: #228B22; color: white; }
-    .sidebar i { min-width: 24px; font-size: 17px; text-align: center; margin-right: 0; transition: margin 0.3s ease; }
-    .sidebar:hover i { margin-right: 12px; }
-    .sidebar:not(:hover) a:hover { display: block; }
-
+    
+    .sidebar:hover {
+      width: 230px;
+    }
+    
+    .sidebar-text {
+      display: none;
+      white-space: nowrap;
+    }
+    
+    .sidebar:hover .sidebar-text {
+      display: inline;
+    }
+    
+    .sidebar-logo {
+      width: 50px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 50%;
+      transition: width 0.3s ease;
+    }
+    
+    .sidebar:hover .sidebar-logo {
+      width: 110px;
+    }
+    
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      padding: 11px 10px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      font-size: 14px;
+      position: relative;
+    }
+    
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #228B22;
+      color: white;
+    }
+    
+    .sidebar i {
+      min-width: 24px;
+      font-size: 17px;
+      text-align: center;
+      margin-right: 0;
+      transition: margin 0.3s ease;
+    }
+    
+    .sidebar:hover i {
+      margin-right: 12px;
+    }
+    
+    .sidebar:not(:hover) a:hover {
+      display: block;
+    }
+    
     /* OVERLAY */
     .overlay {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
       z-index: 999;
     }
-    .overlay.active { display: block; }
-
+    
+    .overlay.active {
+      display: block;
+    }
+    
     /* HAMBURGER */
     .hamburger {
       display: none;
@@ -53,19 +118,47 @@
       cursor: pointer;
       padding: 5px;
     }
-
+    
     /* MAIN */
-    .main { margin-left: 70px; min-height: 100vh; }
-
+    .main {
+      margin-left: 70px;
+      min-height: 100vh;
+    }
+    
     /* TOP BAR */
-    .top-bar { background-color: #006400; color: white; padding: 0 28px; height: 64px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-    .top-bar-left { display: flex; align-items: center; gap: 12px; }
-    .top-bar-left h1 { font-size: 18px; font-weight: bold; }
-    .top-bar-left p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
-
+    .top-bar {
+      background-color: #006400;
+      color: white;
+      padding: 0 28px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .top-bar-left h1 {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .top-bar-left p {
+      font-size: 12px;
+      opacity: 0.75;
+      margin-top: 2px;
+    }
+    
     /* CONTENT */
-    .content-wrap { padding: 24px 28px; }
-
+    .content-wrap {
+      padding: 24px 28px;
+    }
+    
     /* FORM CARD */
     .form-card {
       background: white;
@@ -74,8 +167,9 @@
       padding: 30px;
       max-width: 680px;
       margin: 0 auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     }
+    
     .form-card h2 {
       color: #006400;
       margin-bottom: 25px;
@@ -86,7 +180,7 @@
       justify-content: center;
       gap: 8px;
     }
-
+    
     /* LABELS */
     label {
       display: block;
@@ -95,9 +189,12 @@
       font-weight: bold;
       color: #006400;
     }
-
+    
     /* INPUTS */
-    .input-wrapper { position: relative; }
+    .input-wrapper {
+      position: relative;
+    }
+    
     .input-wrapper i.input-icon {
       position: absolute;
       left: 12px;
@@ -106,8 +203,8 @@
       color: #aaa;
       font-size: 14px;
     }
-    .input-wrapper input,
-    .input-wrapper textarea {
+    
+    .input-wrapper input, .input-wrapper textarea {
       width: 100%;
       padding: 11px 14px 11px 36px;
       border: 1px solid #d4e8d4;
@@ -117,22 +214,31 @@
       transition: border 0.2s, box-shadow 0.2s;
       background: #fafff8;
     }
+    
     .input-wrapper textarea {
       padding-top: 12px;
       resize: vertical;
     }
-    .input-wrapper input:focus,
-    .input-wrapper textarea:focus {
+    
+    .input-wrapper input:focus, .input-wrapper textarea:focus {
       outline: none;
       border-color: #228B22;
-      box-shadow: 0 0 0 3px rgba(34,139,34,0.1);
+      box-shadow: 0 0 0 3px rgba(34, 139, 34, 0.1);
       background: white;
     }
-
+    
     /* DATE + TIME ROW */
-    .row { display: flex; gap: 16px; flex-wrap: wrap; }
-    .row > div { flex: 1; min-width: 160px; }
-
+    .row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .row > div {
+      flex: 1;
+      min-width: 160px;
+    }
+    
     /* CREATE BTN */
     .create-btn {
       background: #228B22;
@@ -153,9 +259,16 @@
       justify-content: center;
       gap: 8px;
     }
-    .create-btn:hover    { opacity: 0.9; }
-    .create-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
+    
+    .create-btn:hover {
+      opacity: 0.9;
+    }
+    
+    .create-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
     /* LINKS */
     .links-row {
       display: flex;
@@ -165,14 +278,18 @@
       flex-wrap: wrap;
       gap: 10px;
     }
+    
     .links-row a {
       color: #006400;
       font-weight: bold;
       text-decoration: underline;
       font-size: 13px;
     }
-    .links-row a:hover { color: #228B22; }
-
+    
+    .links-row a:hover {
+      color: #228B22;
+    }
+    
     /* NOTE */
     .note {
       text-align: center;
@@ -182,31 +299,76 @@
       padding-top: 15px;
       border-top: 1px solid #e8f0e8;
     }
-
+    
     /* MOBILE RESPONSIVE */
     @media (max-width: 768px) {
       .sidebar {
         width: 230px;
         transform: translateX(-100%);
       }
-      .sidebar:hover { width: 230px; }
-      .sidebar.mobile-open { transform: translateX(0); }
-      .sidebar.mobile-open .sidebar-text { display: inline; }
-      .sidebar.mobile-open i { margin-right: 12px; }
-      .sidebar.mobile-open .sidebar-logo { width: 110px; }
-      .main { margin-left: 0; }
-      .top-bar { padding: 0 15px; }
-      .top-bar-left h1 { font-size: 15px; }
-      .top-bar-left p { display: none; }
-      .hamburger { display: block; }
-      .content-wrap { padding: 15px; }
-      .form-card { padding: 20px 16px; }
-      .row { flex-direction: column; gap: 0; }
+    
+      .sidebar:hover {
+        width: 230px;
+      }
+    
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+    
+      .sidebar.mobile-open .sidebar-text {
+        display: inline;
+      }
+    
+      .sidebar.mobile-open i {
+        margin-right: 12px;
+      }
+    
+      .sidebar.mobile-open .sidebar-logo {
+        width: 110px;
+      }
+    
+      .main {
+        margin-left: 0;
+      }
+    
+      .top-bar {
+        padding: 0 15px;
+      }
+    
+      .top-bar-left h1 {
+        font-size: 15px;
+      }
+    
+      .top-bar-left p {
+        display: none;
+      }
+    
+      .hamburger {
+        display: block;
+      }
+    
+      .content-wrap {
+        padding: 15px;
+      }
+    
+      .form-card {
+        padding: 20px 16px;
+      }
+    
+      .row {
+        flex-direction: column;
+        gap: 0;
+      }
     }
-
+    
     @media (max-width: 480px) {
-      .top-bar-left h1 { font-size: 14px; }
-      .form-card h2 { font-size: 17px; }
+      .top-bar-left h1 {
+        font-size: 14px;
+      }
+    
+      .form-card h2 {
+        font-size: 17px;
+      }
     }
   </style>
 </head>
@@ -220,9 +382,9 @@
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
     <a href="faculty-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span></a>
     <a href="faculty-create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Create Event</span></a>
-    <a href="faculty-my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">My Events</span></a>
-    <a href="faculty-scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scan QR Code</span></a>
-    <a href="faculty-reports.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Reports</span></a>
+    <a href="faculty-my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">Manage Events</span></a>
+    <a href="faculty-scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Attendance Scanner</span></a>
+    <a href="faculty-reports.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Attendance Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span></a>
     <a href="faculty-settings.html"><i class="fas fa-cog"></i><span class="sidebar-text">Settings</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span></a>
@@ -288,7 +450,7 @@
 
         <!-- Create Button -->
         <button class="create-btn" onclick="createEventRealTime()">
-          <i class="fas fa-plus"></i> Create Event
+          <i class="fas fa-plus"></i> Post Event
         </button>
 
         <!-- Links -->
