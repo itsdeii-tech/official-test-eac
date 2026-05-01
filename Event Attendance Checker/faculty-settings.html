@@ -280,16 +280,6 @@
       font-size: 14px;
     }
     
-    /* COMING SOON BADGE */
-    .badge-soon {
-      background: #fff3e0;
-      color: #e65100;
-      font-size: 11px;
-      font-weight: bold;
-      padding: 3px 8px;
-      border-radius: 20px;
-    }
-    
     /* FORM */
     .form-group {
       margin-bottom: 18px;
@@ -519,9 +509,9 @@
     <img src="images/asiatech_logo.jpg" alt="ASIATECH Logo" class="sidebar-logo">
     <a href="faculty-dashboard.html"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span></a>
     <a href="faculty-create-event.html"><i class="fas fa-plus-circle"></i><span class="sidebar-text">Create Event</span></a>
-    <a href="faculty-my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">Manage Events</span></a>
-    <a href="faculty-scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Attendance Scanner</span></a>
-    <a href="faculty-reports.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Attendance Reports</span></a>
+    <a href="faculty-my-events.html"><i class="fas fa-calendar-alt"></i><span class="sidebar-text">Events</span></a>
+    <a href="faculty-scan-qr.html"><i class="fas fa-qrcode"></i><span class="sidebar-text">Scanner</span></a>
+    <a href="faculty-reports.html"><i class="fas fa-list-check"></i><span class="sidebar-text">Reports</span></a>
     <a href="faculty-profile.html"><i class="fas fa-user-circle"></i><span class="sidebar-text">Profile</span></a>
     <a href="faculty-settings.html" class="active"><i class="fas fa-cog"></i><span class="sidebar-text">Settings</span></a>
     <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span class="sidebar-text">Logout</span></a>
@@ -566,56 +556,6 @@
             <i class="fas fa-chevron-right settings-item-arrow"></i>
           </div>
 
-          <div class="settings-item" style="cursor: default; opacity: 0.7;">
-            <div class="settings-item-left">
-              <div class="settings-item-icon icon-blue">
-                <i class="fas fa-bell"></i>
-              </div>
-              <div class="settings-item-info">
-                <h4>Notification Preferences</h4>
-                <p>Manage email notifications</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Privacy & Security -->
-        <div class="card">
-          <div class="card-head">
-            <h2><i class="fas fa-shield-halved"></i> Privacy & Security</h2>
-          </div>
-
-          <div class="settings-item" style="cursor: default; opacity: 0.7;">
-            <div class="settings-item-left">
-              <div class="settings-item-icon icon-blue">
-                <i class="fas fa-mobile-screen"></i>
-              </div>
-              <div class="settings-item-info">
-                <h4>Active Sessions</h4>
-                <p>View devices logged in to your account</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="settings-item" style="cursor: default; opacity: 0.7;">
-            <div class="settings-item-left">
-              <div class="settings-item-icon icon-green">
-                <i class="fas fa-shield"></i>
-              </div>
-              <div class="settings-item-info">
-                <h4>Two-Factor Authentication</h4>
-                <p>Add extra security to your account</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Danger Zone -->
-        <div class="card">
-          <div class="card-head">
-            <h2><i class="fas fa-triangle-exclamation"></i> Danger Zone</h2>
-          </div>
-
           <div class="settings-item" onclick="logout()">
             <div class="settings-item-left">
               <div class="settings-item-icon icon-red">
@@ -628,6 +568,7 @@
             </div>
             <i class="fas fa-chevron-right settings-item-arrow"></i>
           </div>
+
         </div>
       </div>
 
